@@ -3,14 +3,38 @@ org 100h
 include emu8086.inc 
 
 
-;build du 07/02/2019: 
+ 
+Menu:
+ 
+   call CLEAR_SCREEN
+  ;affiche le menu:
+      
+      mov ah,09h
+      mov dh,0
+      mov dx, offset game_menu_str
+      int 21h
+  
+wait_keypress:
+     ;test les key pressed:
+    mov ah, 0h
+    int 16h                                              
+    
+    
+    cmp al, 112 ;if "p":
+    je start_maze_game 
+
+    
+    cmp al, 113 ;if "q":
+    je give_up
+
+    loop wait_keypress
 
 
 
 start_maze_game: 
 
     call CLEAR_SCREEN
-    include "maze_creator_forgame.asm" 
+    ;include "maze_creator_forgame.asm" 
     ;end of maze_creator_forgame = "jmp init_var"
     
 init_var:    
@@ -213,12 +237,76 @@ main:
           mov ah, 02h
           mov bh, 00
           int 10h
+          
+          
+   ;commande a ajouter dans la fonction de la derniere porte (pour gagner):
+          jmp win
           jmp inside_loop
     
   
   
   
-  
+   give_up:
+        call CLEAR_SCREEN
+        mov dl,22
+        mov dh,10 
+        mov ah, 02h
+        mov bh, 00
+        int 10h       
+        
+        PRINT 'You give up...:('
+        ADD dh ,1
+        mov ah, 02h
+        mov bh, 00
+        int 10h
+        
+        PRINT 'press any key to exit maze_game'
+        mov ah, 0h
+        int 16h                                              
+        jmp theEND
+   
+   win:
+        call CLEAR_SCREEN
+        mov dl,22
+        mov dh,10 
+        mov ah, 02h
+        mov bh, 00
+        int 10h       
+        
+        PRINT 'You beat the maze :D awesome!'
+        ADD dh ,1
+        sub dl,8
+        mov ah, 02h
+        mov bh, 00
+        int 10h
+        
+        PRINT 'press p key to go back on the menu'
+        
+        add dh,1
+        add dl,16 
+        mov ah, 02h
+        mov bh, 00 
+        int 10h
+        
+        PRINT 'Or press any other key to quit the game'
+        
+        
+        end_wait_keypress:
+            ;test les key pressed:
+            mov ah, 0h
+            int 16h                                              
+    
+    
+            cmp al, 112 ;if "p":
+            je Menu 
+
+            jmp theEND
+
+           
+                                                    
+        
+   
+    
   
    clear_oldmessage proc near
         mov dl,62
@@ -247,7 +335,36 @@ main:
         PRINT '  '       
         ret
         
-    clear_player endp
+    clear_player endp  
+   
+   
+   
+   
+   game_menu_str dw '  ',0ah,0dh
+dw '                                              ',0ah,0dh
+dw '                                              ',0ah,0dh
+dw '                 __  __                  _____                ',0ah,0dh       
+dw '                |  \/  |                / ____|               ',0ah,0dh       
+dw '                | \  / | __ _ _______  | |  __  __ _ _ __ ___   ___    ',0ah,0dh
+dw '                | |\/| |/ _` |_  / _ \ | | |_ |/ _  |  _   _ \ / _ \   ',0ah,0dh
+dw '                | |  | | (_| |/ /  __/ | |__| | (_| | | | | | |  __/   ',0ah,0dh
+dw '                |_|  |_|\__ _/___\___|  \_____|\__ _|_| |_| |_|\___|   ',0ah,0dh
+dw '                                              ',0ah,0dh
+dw '                                              ',0ah,0dh
+dw '                                              ',0ah,0dh
+dw '                                              ',0ah,0dh
+dw '                                              ',0ah,0dh
+dw '                                              ',0ah,0dh
+dw '                                              ',0ah,0dh
+dw '                                              ',0ah,0dh
+dw '                                              ',0ah,0dh
+dw '            |---------------------------||---------------------------|  ',0ah,0dh
+dw '            | ^   Press "p" to play   ^ || ^   Press "q" to quit   ^ | ',0ah,0dh
+dw '            |___________________________||___________________________|',0ah,0dh
+
+dw '$',0ah,0dh
        
-       DEFINE_CLEAR_SCREEN 
+       DEFINE_CLEAR_SCREEN
+       theEnd:
+       ret  
        END
