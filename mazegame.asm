@@ -3,50 +3,20 @@ org 100h
 include emu8086.inc 
 
 
+;build du 07/02/2019: 
 
-start_maze_game:
-    call CLEAR_SCREEN 
-    ;init var:
+
+
+start_maze_game: 
+
+    call CLEAR_SCREEN
+    include "maze_creator_forgame.asm" 
+    ;end of maze_creator_forgame = "jmp init_var"
+    
+init_var:    
     mov sp,1 ;eviter duplication d'evenement key
     mov bp,0 ;variable d'ouverture de porte / si la bonne key
     mov si,0 ;eviter duplication d'evenement door 
-
-    ;object(1stkey) spawn draw 
-    
-    mov dl,2
-    mov dh,6
-    ;setcursor:
-    mov ah, 02h
-    mov bh, 00
-    int 10h
-    ;key:       
-    PRINT 216
-    
-    draw_door1:
-        ;object(door) spawn draw 
-    
-        mov dl,16
-        mov dh,6
-        ;setcursor:
-        mov ah, 02h
-        mov bh, 00
-        int 10h
-        ;door:       
-        PRINT 177
-
-
-
-    ;hero spawn draw
-
-    mov dl, 6 ; column
-    mov dh, 6 ; row 
-
-    ;setcursor:
-    mov ah, 02h
-    mov bh, 00
-    int 10h
-
-    PRINT ':)'
 
     jmp inside_loop
 
@@ -57,11 +27,11 @@ main:
         ;test de position pour l'obtention des objets / ouverture des portes 
         ;besoin de faire un "and" pour verifier la ligne ET la collonne (cette fonction n'est pas complete...
         ;verifie pos pour key1
-        cmp dl,2
+        cmp dl,24
         je objectpickup 
         
         ;verifie pos pour porte 1
-        cmp dl,14 
+        cmp dl,25 
         je haskey
         
        
@@ -156,22 +126,22 @@ main:
         
         jmp inside_loop
         key1pickup:
-            mov dl,20
-            mov dh,20
+            mov dl,62
+            mov dh,6
             ;setcursor:
             mov ah, 02h
             mov bh, 00
             int 10h
           
             ;message pour prevenir de l'obtention de l'objet  
-            PRINT 'maxon a pecho une clef' 
+            PRINT 'You found a key' 
             ;stock cette info dans une variable:
             mov bp,1
             ;met a jour "si" pour pouvoir ressayer d'ouvrir la porte associer:
             mov si,0
             ;remet le cursor a sa position d'origine:
-            mov dl,2
-            mov dh,6
+            mov dl,24;pas la position d'origine pour eviter d'effacer le mur:
+            mov dh,20
             ;setcursor:
             mov ah, 02h
             mov bh, 00
@@ -196,19 +166,19 @@ main:
         
             call clear_oldmessage
           
-            mov dl,20
-            mov dh,20
+            mov dl,62
+            mov dh,6
             ;setcursor:
             mov ah, 02h
             mov bh, 00
             int 10h 
           
-            PRINT 'maxon na pas de clef'
+            PRINT 'you have no key'
           
           
             ;remet le cursor a sa position d'origine:
-            mov dl,14 ;pas la position d'origine pour eviter d'effacer la porte:
-            mov dh,6
+            mov dl,25 ;pas la position d'origine pour eviter d'effacer la porte:
+            mov dh,17
             ;setcursor:
             mov ah, 02h
             mov bh, 00
@@ -217,20 +187,28 @@ main:
    opendoor:
           call clear_oldmessage
           
-          mov dl,20
-          mov dh,20
+          mov dl,62
+          mov dh,6
           ;setcursor:
           mov ah, 02h
           mov bh, 00
           int 10h 
           
-          PRINT 'maxon open door'
+          PRINT 'you have open'
+          mov dl,62
+          mov dh,7
+          ;setcursor:
+          mov ah, 02h
+          mov bh, 00
+          int 10h
+          
+          PRINT 'a door'
           
           ;avance "si":
           mov si,2
           ;remet le cursor a sa position d'origine:
-          mov dl,14  ;pas la position d'origine pour eviter d'effacer la porte:
-          mov dh,6
+          mov dl,25  ;pas la position d'origine pour eviter d'effacer la porte:
+          mov dh,17
           ;setcursor:
           mov ah, 02h
           mov bh, 00
@@ -243,12 +221,17 @@ main:
   
   
    clear_oldmessage proc near
-        mov dl,20
-        mov dh,20 
+        mov dl,62
+        mov dh,6 
         mov ah, 02h
         mov bh, 00
         int 10h       
-        PRINT '                                '
+        PRINT '               '
+        sub dh,1
+        mov ah, 02h
+        mov bh, 00
+        int 10h       
+        PRINT '               '
         ret
        
                
@@ -261,7 +244,7 @@ main:
         mov ah, 02h
         mov bh, 00
         int 10h       
-        PRINT '  '
+        PRINT '  '       
         ret
         
     clear_player endp

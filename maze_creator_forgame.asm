@@ -1,8 +1,7 @@
-org 100h
-
-include emu8086.inc 
-          
- 
+         
+   
+        
+    
  
    draw_maze_contour:
         mov dl,1
@@ -226,11 +225,10 @@ include emu8086.inc
     
     
    
-                    
+              jmp init_var
+    
+   
     
     
-    
-    
-    
-    ret 
+     
                   
