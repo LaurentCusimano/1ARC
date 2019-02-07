@@ -111,7 +111,7 @@ main:
     Right:
         call clear_player
         ;move player to his new location
-        add dl, 2
+        add dl, 1
         call SetCursor
         PRINT ':)'
         jmp main
@@ -120,7 +120,7 @@ main:
     Left:
       call clear_player
       ;move player to his new location
-      sub dl, 2
+      sub dl, 1
       call SetCursor
       PRINT '(:'
       jmp main
@@ -129,7 +129,7 @@ main:
    Up:
      call clear_player
      ;move player to his new location
-     sub dh, 2
+     sub dh, 1
      call SetCursor
      PRINT ':)'
      jmp main
@@ -138,7 +138,7 @@ main:
    Down:
       call clear_player
       ;move player to his new location
-      add dh, 2
+      add dh, 1
       call SetCursor
       PRINT ':)'
       jmp main
