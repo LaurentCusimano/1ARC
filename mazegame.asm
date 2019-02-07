@@ -2,7 +2,7 @@ org 100h
 
 include emu8086.inc 
 
-
+;build 07/02 with menu:
  
 Menu:
  
@@ -34,7 +34,7 @@ wait_keypress:
 start_maze_game: 
 
     call CLEAR_SCREEN
-    ;include "maze_creator_forgame.asm" 
+    include "maze_creator_forgame.asm" 
     ;end of maze_creator_forgame = "jmp init_var"
     
 init_var:    
@@ -291,7 +291,7 @@ main:
         PRINT 'Or press any other key to quit the game'
         
         
-        end_wait_keypress:
+        
             ;test les key pressed:
             mov ah, 0h
             int 16h                                              
@@ -364,7 +364,13 @@ dw '            |___________________________||___________________________|',0ah,
 
 dw '$',0ah,0dh
        
+       
+       theEnd: 
+       
+       
        DEFINE_CLEAR_SCREEN
-       theEnd:
-       ret  
+       
+       
+       
+         
        END
