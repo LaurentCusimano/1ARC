@@ -52,26 +52,10 @@
             ;wall:       
             PRINT 'I' 
             cmp dh,0
-            je intro
+            je draw_redzone
            loop draw_upmaze 
            
            
-           
- 
- 
-     Intro:
-        mov dl,30
-        mov dh,11
-        mov ah, 02h
-        mov bh, 00
-        int 10h       
-        PRINT 'MazeGame'
-        mov dl,25
-        mov dh,11
-        mov ah, 02h
-        mov bh, 00
-        int 10h
-        PRINT '             '
         
         
      
