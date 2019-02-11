@@ -3,8 +3,8 @@ org 100h
 include emu8086.inc 
 
 
-  ;that skip the menu for testing:
-  jmp start_maze_game
+  ;BUILD 11/02:
+  
 Menu:
  
    call CLEAR_SCREEN
@@ -143,7 +143,7 @@ main:
         ;move cursor to new location
         add dl, 1
         call SetCursor
-        ;test colid  
+        ;test colid do not work:  
         cmp dx,73
         je testos 
         ;print player to his new location
@@ -151,7 +151,7 @@ main:
         jmp main
         ret
             
-    ;a suppr
+    ;a suppr test for collid:
     testos:
         PRINT 'yees'        
     Left:
@@ -272,7 +272,7 @@ main:
         cmp si,1
         je bluekeytest
         
-        mov si ,99  ;sert a eviter les repetitions
+        
         
         jmp inside_loop
         testkey:
@@ -280,15 +280,17 @@ main:
             redkeytest:
                 cmp bp,1
                 je opendoor1
+                jmp display_nokeymessage 
             bluekeytest:
                 cmp bp,2
                 je opendoor2
+                jmp display_nokeymessage
             
             
         display_nokeymessage:
         
             call clear_oldmessage
-          
+            mov si,99
             mov dl,62
             mov dh,6
             ;setcursor:
@@ -335,7 +337,7 @@ main:
           
           PRINT 'red door'
           
-          ;avance "si":
+          ;avance "si" a 1 pour pouvoir tester la porte bleu:
           mov si,1
           ;remet le cursor a sa position d'origine:
           mov dl,25  ;pas la position d'origine pour eviter d'effacer la porte:
@@ -367,7 +369,7 @@ main:
           PRINT 'blue door'
           
           ;avance "si":
-          mov si,2
+          mov si,99
           ;remet le cursor a sa position d'origine:
           mov dl,28  ;pas la position d'origine pour eviter d'effacer la porte:
           mov dh,17
