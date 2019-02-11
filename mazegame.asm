@@ -50,13 +50,36 @@ main:
     testpos: 
         ;test de position pour l'obtention des objets / ouverture des portes 
         ;besoin de faire un "and" pour verifier la ligne ET la collonne (cette fonction n'est pas complete...
-        ;verifie pos pour key1
-        cmp dl,24
-        je objectpickup 
+        ;verifie pos pour key1 
+        testposkey1:
+        
+            testlinekey1:
+                cmp dh,20
+                je testcollumnkey1
+                jmp testposdoor1
+                
+            testcollumnkey1:
+                cmp dl,24
+                je objectpickup
+                jmp testposdoor1 
         
         ;verifie pos pour porte 1
-        cmp dl,25 
-        je haskey
+        testposdoor1:
+            testlinedoor1:
+                cmp dh,17
+                je testcollumndoor1
+                jmp inside_loop
+                
+            testcollumndoor1:
+                cmp dl,24
+                je haskey
+                jmp inside_loop
+        
+        
+        
+        
+        
+        
         
        
     
@@ -86,17 +109,17 @@ main:
 
     
     jmp main
-
+            
  
 
     Right:
+        call clear_player
         ;move cursor to new location
         add dl, 1
         call SetCursor
         ;test colid  
-        cmp ax,73
+        cmp dx,73
         je testos 
-        call clear_player
         ;print player to his new location
         PRINT ':)'
         jmp main
@@ -104,7 +127,7 @@ main:
             
     ;a suppr
     testos:
-        PRINT 'ANAL'        
+        PRINT 'yees'        
     Left:
       call clear_player
       ;move player to his new location
