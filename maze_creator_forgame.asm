@@ -192,24 +192,46 @@
                 ;door:       
                 PRINT 177
 
-
-
-            draw_hero:
-            
-
-                mov dl, 15 ; column
-                mov dh, 21 ; row 
-
+       draw_object_bluezone:
+        ;object 2nd key (BLUE key) spawn draw 
+            draw_bluekey:
+                mov dl,28
+                mov dh,20
                 ;setcursor:
                 mov ah, 02h
                 mov bh, 00
                 int 10h
+                ;key:       
+                PRINT 216
+    
+            draw_bluedoor:
+                ;object(door) spawn draw 
+    
+                mov dl,30
+                mov dh,17
+                ;setcursor:
+                mov ah, 02h
+                mov bh, 00
+                int 10h
+                ;door:       
+                PRINT 177
+
+          draw_hero:
+            
+
+              mov dl, 15 ; column
+              mov dh, 21 ; row 
+
+              ;setcursor:
+              mov ah, 02h
+              mov bh, 00
+              int 10h
         
-                PRINT ':)'
+              PRINT ':)'
     
     
    
-              jmp init_var
+            jmp init_var
     
    
     

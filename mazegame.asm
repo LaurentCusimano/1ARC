@@ -2,8 +2,9 @@ org 100h
 
 include emu8086.inc 
 
-;build 07/02 with menu:
- 
+
+  ;that skip the menu for testing:
+  jmp start_maze_game
 Menu:
  
    call CLEAR_SCREEN
@@ -46,10 +47,9 @@ init_var:
 
 main:
     
-
+    ;test de position pour l'obtention des objets / ouverture des portes 
     testpos: 
-        ;test de position pour l'obtention des objets / ouverture des portes 
-        ;besoin de faire un "and" pour verifier la ligne ET la collonne (cette fonction n'est pas complete...
+     
         ;verifie pos pour key1 
         testposkey1:
         
@@ -60,7 +60,7 @@ main:
                 
             testcollumnkey1:
                 cmp dl,24
-                je objectpickup
+                je key1check
                 jmp testposdoor1 
         
         ;verifie pos pour porte 1
@@ -68,13 +68,39 @@ main:
             testlinedoor1:
                 cmp dh,17
                 je testcollumndoor1
-                jmp inside_loop
+                jmp testlinekey2
                 
             testcollumndoor1:
                 cmp dl,24
                 je haskey
-                jmp inside_loop
+                jmp testlinekey2
+                
+                
+                
+        ;verifie pos pour key2 
+        testposkey2:
         
+            testlinekey2:
+                cmp dh,20
+                je testcollumnkey2
+                jmp testposdoor2
+                
+            testcollumnkey2:
+                cmp dl,27
+                je key2pickup
+                jmp testposdoor2 
+        
+        ;verifie pos pour porte 1
+        testposdoor2:
+            testlinedoor2:
+                cmp dh,17
+                je testcollumndoor2
+                jmp inside_loop
+                
+            testcollumndoor2:
+                cmp dl,30
+                je haskey
+                jmp inside_loop       
         
         
         
@@ -161,9 +187,15 @@ main:
        int 10h
        ret
    objectpickup:
-   
-        cmp sp,1
-        je key1pickup
+        key1check:
+            cmp sp,1
+            je key1pickup
+            jmp inside_loop
+        key2check:
+            cmp sp,2
+            je key2pickup
+            jmp inside_loop
+         
         
         jmp inside_loop
         key1pickup:
@@ -175,7 +207,7 @@ main:
             int 10h
           
             ;message pour prevenir de l'obtention de l'objet  
-            PRINT 'You found a key' 
+            PRINT 'You found redkey' 
             ;stock cette info dans une variable:
             mov bp,1
             ;met a jour "si" pour pouvoir ressayer d'ouvrir la porte associer:
@@ -188,20 +220,51 @@ main:
             mov bh, 00
             int 10h 
             mov sp,2
+            jmp inside_loop
+            
+         key2pickup:
+            mov dl,62
+            mov dh,6
+            ;setcursor:
+            mov ah, 02h
+            mov bh, 00
+            int 10h
+          
+            ;message pour prevenir de l'obtention de l'objet  
+            PRINT 'You found bluekey' 
+            ;stock cette info dans une variable:
+            mov bp,2
+            ;met a jour "si" pour pouvoir ressayer d'ouvrir la porte associer:
+            mov si,1
+            ;remet le cursor a sa position d'origine:
+            mov dl,27;pas la position d'origine pour eviter d'effacer le mur:
+            mov dh,20
+            ;setcursor:
+            mov ah, 02h
+            mov bh, 00
+            int 10h 
+            mov sp,3
             jmp inside_loop 
    haskey:
         
         cmp si,0
-        je testkey 
+        je redkeytest 
         
+        cmp si,1
+        je bluekeytest
         
+        mov si ,99  ;sert a eviter les repetitions
         
         jmp inside_loop
         testkey:
-            cmp bp,1
-            je opendoor
+        
+            redkeytest:
+                cmp bp,1
+                je opendoor1
+            bluekeytest:
+                cmp bp,2
+                je opendoor2
             
-            mov si,1
             
         display_nokeymessage:
         
@@ -214,7 +277,7 @@ main:
             mov bh, 00
             int 10h 
           
-            PRINT 'you have no key'
+            PRINT 'wrong key or nokey'
           
           
             ;remet le cursor a sa position d'origine:
@@ -225,7 +288,7 @@ main:
             mov bh, 00
             int 10h
             jmp inside_loop      
-   opendoor:
+   opendoor1:
           call clear_oldmessage
           
           mov dl,62
@@ -243,22 +306,52 @@ main:
           mov bh, 00
           int 10h
           
-          PRINT 'a door'
+          PRINT 'red door'
           
           ;avance "si":
-          mov si,2
+          mov si,1
           ;remet le cursor a sa position d'origine:
           mov dl,25  ;pas la position d'origine pour eviter d'effacer la porte:
           mov dh,17
           ;setcursor:
           mov ah, 02h
           mov bh, 00
+          int 10h 
+          jmp inside_loop
+          
+     opendoor2:
+          call clear_oldmessage
+          
+          mov dl,62
+          mov dh,6
+          ;setcursor:
+          mov ah, 02h
+          mov bh, 00
+          int 10h 
+          
+          PRINT 'you have open'
+          mov dl,62
+          mov dh,7
+          ;setcursor:
+          mov ah, 02h
+          mov bh, 00
           int 10h
           
+          PRINT 'blue door'
+          
+          ;avance "si":
+          mov si,2
+          ;remet le cursor a sa position d'origine:
+          mov dl,28  ;pas la position d'origine pour eviter d'effacer la porte:
+          mov dh,17
+          ;setcursor:
+          mov ah, 02h
+          mov bh, 00
+          int 10h     
           
    ;commande a ajouter dans la fonction de la derniere porte (pour gagner):
           jmp win
-          jmp inside_loop
+          
     
   
   
