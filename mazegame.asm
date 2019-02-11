@@ -199,6 +199,7 @@ main:
         
         jmp inside_loop
         key1pickup:
+            call clear_oldmessage
             mov dl,62
             mov dh,6
             ;setcursor:
@@ -207,7 +208,16 @@ main:
             int 10h
           
             ;message pour prevenir de l'obtention de l'objet  
-            PRINT 'You found redkey' 
+            PRINT 'You have found'
+            mov dl,62
+            mov dh,7
+            ;setcursor:
+            mov ah, 02h
+            mov bh, 00
+            int 10h
+          
+            PRINT ' a redkey'
+             
             ;stock cette info dans une variable:
             mov bp,1
             ;met a jour "si" pour pouvoir ressayer d'ouvrir la porte associer:
@@ -223,6 +233,7 @@ main:
             jmp inside_loop
             
          key2pickup:
+            call clear_oldmessage
             mov dl,62
             mov dh,6
             ;setcursor:
@@ -231,7 +242,15 @@ main:
             int 10h
           
             ;message pour prevenir de l'obtention de l'objet  
-            PRINT 'You found bluekey' 
+            PRINT 'You have found'
+            mov dl,62
+            mov dh,7
+            ;setcursor:
+            mov ah, 02h
+            mov bh, 00
+            int 10h
+          
+            PRINT ' a bluekey' 
             ;stock cette info dans une variable:
             mov bp,2
             ;met a jour "si" pour pouvoir ressayer d'ouvrir la porte associer:
@@ -277,7 +296,15 @@ main:
             mov bh, 00
             int 10h 
           
-            PRINT 'wrong key or nokey'
+            PRINT 'wrong key'
+            mov dl,62
+            mov dh,7
+            ;setcursor:
+            mov ah, 02h
+            mov bh, 00
+            int 10h
+          
+            PRINT ' or nokey'
           
           
             ;remet le cursor a sa position d'origine:
@@ -426,7 +453,7 @@ main:
         mov bh, 00
         int 10h       
         PRINT '               '
-        sub dh,1
+        add dh,1
         mov ah, 02h
         mov bh, 00
         int 10h       
