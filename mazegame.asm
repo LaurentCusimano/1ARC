@@ -61,19 +61,6 @@ main:
        
     
     inside_loop:
-   
-
-        
-        redrawthings:
-        ;certain object peuvent etre effacer accidentellement par le joueur il seront alors lister ici et redessinner
-        ;principalement des portes/desmur
-        
-           
-            
-            
-        
-    
-    
     
     
      ;test les key pressed:
@@ -103,14 +90,21 @@ main:
  
 
     Right:
-        call clear_player
-        ;move player to his new location
+        ;move cursor to new location
         add dl, 1
         call SetCursor
+        ;test colid  
+        cmp ax,73
+        je testos 
+        call clear_player
+        ;print player to his new location
         PRINT ':)'
         jmp main
         ret
-
+            
+    ;a suppr
+    testos:
+        PRINT 'ANAL'        
     Left:
       call clear_player
       ;move player to his new location
@@ -305,7 +299,8 @@ main:
            
                                                     
         
-   
+     
+    
     
   
    clear_oldmessage proc near
@@ -326,6 +321,9 @@ main:
     clear_oldmessage endp
      
      
+   
+   
+   
    
    clear_player proc near
     ;delete last player position 
