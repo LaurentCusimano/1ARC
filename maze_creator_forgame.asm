@@ -2,7 +2,7 @@
    
         
     
- 
+    jmp draw_redzone
    draw_maze_contour:
         mov dl,1
         mov dh,0
