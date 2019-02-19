@@ -3,7 +3,7 @@ org 100h
 include emu8086.inc 
 
 
-  ;BUILD 11/02:
+  
   
 Menu:
  
