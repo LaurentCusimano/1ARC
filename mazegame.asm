@@ -72,9 +72,17 @@ main:
                 
             testcollumndoor1:
                 cmp dl,24
-                je haskey
+                je redkeytest
                 jmp testlinekey2
                 
+            
+           
+     
+           redkeytest:
+                call check_eventdoor
+                cmp bp,1
+                je opendoor1
+                jmp display_nokeymessage    
                 
                 
         ;verifie pos pour key2 
@@ -99,8 +107,15 @@ main:
                 
             testcollumndoor2:
                 cmp dl,30
-                je haskey
-                jmp inside_loop       
+                je bluekeytest
+                jmp inside_loop
+                
+                
+            bluekeytest:
+                call check_eventdoor
+                cmp bp,2
+                je opendoor2
+                jmp display_nokeymessage       
         
         
         
@@ -181,7 +196,8 @@ main:
       jmp main
       ret
 
-   SetCursor:
+   SetCursor: 
+       mov si,0
        mov ah, 02h
        mov bh, 00
        int 10h
@@ -254,7 +270,7 @@ main:
             ;stock cette info dans une variable:
             mov bp,2
             ;met a jour "si" pour pouvoir ressayer d'ouvrir la porte associer:
-            mov si,1
+            mov si,0
             ;remet le cursor a sa position d'origine:
             mov dl,27;pas la position d'origine pour eviter d'effacer le mur:
             mov dh,20
@@ -264,29 +280,8 @@ main:
             int 10h 
             mov sp,3
             jmp inside_loop 
-   haskey:
-        
-        cmp si,0
-        je redkeytest 
-        
-        cmp si,1
-        je bluekeytest
-        
-        
-        
-        jmp inside_loop
-        testkey:
-        
-            redkeytest:
-                cmp bp,1
-                je opendoor1
-                jmp display_nokeymessage 
-            bluekeytest:
-                cmp bp,2
-                je opendoor2
-                jmp display_nokeymessage
-            
-            
+ 
+                 
         display_nokeymessage:
         
             call clear_oldmessage
@@ -445,7 +440,13 @@ main:
                                                     
         
      
-    
+   check_eventdoor proc near
+        cmp si,99
+        je inside_loop
+        ret
+       
+               
+    check_eventdoor endp 
     
   
    clear_oldmessage proc near
