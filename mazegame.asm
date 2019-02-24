@@ -37,7 +37,7 @@ start_maze_game:
     call CLEAR_SCREEN
     include "maze_creator_forgame.asm" 
     ;end of maze_creator_forgame = "jmp init_var"
-    
+          
 init_var:    
     mov sp,1 ;eviter duplication d'evenement key
     mov bp,0 ;variable d'ouverture de porte / si la bonne key
@@ -134,7 +134,7 @@ main:
     mov ah, 0h
     int 16h                                              
     
-    
+                      
     cmp al, 115
     je Down 
 
