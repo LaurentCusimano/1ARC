@@ -68,12 +68,12 @@ main:
             testlinedoor1:
                 cmp dh,17
                 je testcollumndoor1
-                jmp testlinekey2
+                jmp canposkey2
                 
             testcollumndoor1:
                 cmp dl,24
                 je redkeytest
-                jmp testlinekey2
+                jmp canposkey2
                 
             
            
@@ -83,7 +83,11 @@ main:
                 call check_eventdoor
                 jmp opendoor1   
                 
-                
+        ;verifie si key2 est apparu:
+        canposkey2:
+            cmp bp,1
+            je testlinekey2
+            jmp testlinedoor2           
         ;verifie pos pour key2 
         testposkey2:
         
@@ -333,6 +337,18 @@ main:
           
           ;avance "si" a 1 pour pouvoir tester la porte bleu:
           mov si,1
+          
+          ;draw blue key:
+            draw_bluekey:
+                mov dl,28
+                mov dh,20
+                ;setcursor:
+                mov ah, 02h
+                mov bh, 00
+                int 10h
+                ;key:       
+                PRINT 216
+            
           ;remet le cursor a sa position d'origine:
           mov dl,25  ;pas la position d'origine pour eviter d'effacer la porte:
           mov dh,17
