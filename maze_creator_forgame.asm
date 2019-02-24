@@ -70,7 +70,7 @@
             mov ah, 02h
             mov bh, 00
             int 10h       
-            PRINT 'I'
+            PRINT 186
             cmp dh, 16
             je draw_redwall2  
             
@@ -81,7 +81,7 @@
             mov ah, 02h
             mov bh, 00
             int 10h       
-            PRINT 'I'
+            PRINT 205
             cmp dl, 26
             je draw_redwall3  
             
@@ -92,7 +92,7 @@
             mov ah, 02h
             mov bh, 00
             int 10h       
-            PRINT 'I'
+            PRINT 186
             cmp dh, 21
             je cursor_internalredwall1  
             

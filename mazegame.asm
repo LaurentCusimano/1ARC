@@ -79,10 +79,9 @@ main:
            
      
            redkeytest:
+                mov si,1
                 call check_eventdoor
-                cmp bp,1
-                je opendoor1
-                jmp display_nokeymessage    
+                jmp opendoor1   
                 
                 
         ;verifie pos pour key2 
@@ -112,10 +111,10 @@ main:
                 
                 
             bluekeytest:
+                mov si,2
                 call check_eventdoor
-                cmp bp,2
-                je opendoor2
-                jmp display_nokeymessage       
+                jmp opendoor2
+                
         
         
         
@@ -441,8 +440,32 @@ main:
         
      
    check_eventdoor proc near
-        cmp si,99
-        je inside_loop
+        ;if key==door:
+        cmp si,1
+        je has_redkey
+        
+        cmp si,2
+        je has_bluekey 
+        
+        jmp end_check_eventdoor
+        
+        has_redkey:
+
+            cmp bp,1
+            je opendoor1
+            jmp display_nokeymessage 
+            
+            
+        has_bluekey:
+            
+            cmp bp,2
+            je opendoor2
+            jmp display_nokeymessage
+        
+        
+        
+        
+        end_check_eventdoor:
         ret
        
                
