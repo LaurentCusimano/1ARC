@@ -41,11 +41,12 @@ start_maze_game:
 init_var:    
     mov sp,1 ;eviter duplication d'evenement key
     mov bp,0 ;variable d'ouverture de porte / si la bonne key
-    mov si,0 ;eviter duplication d'evenement door 
+    mov si,1 ;eviter duplication d'evenement door 
 
     jmp inside_loop
 
-main:
+main:          
+            
     
     ;test de position pour l'obtention des objets / ouverture des portes 
     testpos: 
@@ -79,9 +80,8 @@ main:
            
      
            redkeytest:
-                mov si,1
                 call check_eventdoor
-                jmp opendoor1   
+                  
                 
         ;verifie si key2 est apparu:
         canposkey2:
@@ -200,7 +200,7 @@ main:
       ret
 
    SetCursor: 
-       mov si,0
+       ;mov si,0
        mov ah, 02h
        mov bh, 00
        int 10h
@@ -240,7 +240,8 @@ main:
             ;stock cette info dans une variable:
             mov bp,1
             ;met a jour "si" pour pouvoir ressayer d'ouvrir la porte associer:
-            mov si,0
+            mov si,1
+            call UpdateInv ;pour mettre a jour l'inventaire:
             ;remet le cursor a sa position d'origine:
             mov dl,24;pas la position d'origine pour eviter d'effacer le mur:
             mov dh,20
@@ -309,9 +310,9 @@ main:
           
             ;remet le cursor a sa position d'origine:
             mov dl,25 ;pas la position d'origine pour eviter d'effacer la porte:
-            mov dh,17
-            ;setcursor:
+            mov dh,17                                         
             mov ah, 02h
+            ;setcursor:
             mov bh, 00
             int 10h
             jmp inside_loop      
@@ -508,7 +509,26 @@ main:
      
    
    
-   
+   UpdateInv proc near
+     testhavekey1:
+             cmp bp,1
+             je Draw_on_key1
+             jmp end_UpdateInv
+             Draw_on_key1:
+             ;ajoute de la couleur a la clef debloquer
+             mov dl,65
+             mov dh,4
+             ;setcursor:
+             mov ah, 02h
+             mov bh, 00
+             int 10h
+                    
+             PRINT '1'
+             
+             end_UpdateInv:    
+             ret
+        
+    UpdateInv endp
    
    clear_player proc near
     ;delete last player position 
