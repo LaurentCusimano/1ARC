@@ -1,15 +1,16 @@
+name "MazeGame"
+
 org 100h
 
 include emu8086.inc 
 
 
-  CURSOROFF;comme son noms l'indique desactive la vue du cursor (marche avec "emu8086.inc")
-  
+  CURSOROFF;comme son noms l'indique desactive la vue du cursor (marche avec "emu8086.inc")   
 Menu:
  
    call CLEAR_SCREEN
   ;affiche le menu:
-      
+      call set_background_color
       mov ah,09h
       mov dh,0
       mov dx, offset game_menu_str
@@ -35,6 +36,7 @@ wait_keypress:
 start_maze_game: 
 
     call CLEAR_SCREEN
+    call set_background_color
     include "maze_creator_forgame.asm" 
     ;end of maze_creator_forgame = "jmp init_var"
           
@@ -394,6 +396,7 @@ main:
   
    give_up:
         call CLEAR_SCREEN
+        call set_background_color
         mov dl,22
         mov dh,10 
         mov ah, 02h
@@ -413,6 +416,7 @@ main:
    
    win:
         call CLEAR_SCREEN
+        call set_background_color
         mov dl,22
         mov dh,10 
         mov ah, 02h
@@ -534,7 +538,22 @@ main:
         PRINT '  '       
         ret
         
-    clear_player endp  
+    clear_player endp 
+   
+   set_background_color proc near
+    mov dx, 0 ; Set cursor to top left-most corner of screen
+    mov bh, 0
+    mov ah, 0x2
+    int 0x10
+    mov cx, 2024 ; print 2000 chars
+    mov bh, 0
+    mov bl, 0x39 ; color
+    mov al, 0x20 ; blank char
+    mov ah, 0x9
+    int 0x10       
+        ret
+        
+    set_background_color endp
    
    
    
