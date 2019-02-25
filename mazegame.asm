@@ -39,7 +39,7 @@ start_maze_game:
     ;end of maze_creator_forgame = "jmp init_var"
           
 init_var:    
-    mov sp,1 ;eviter duplication d'evenement key
+    mov di,1 ;eviter duplication d'evenement key
     mov bp,0 ;variable d'ouverture de porte / si la bonne key
     mov si,1 ;eviter duplication d'evenement door 
 
@@ -129,7 +129,6 @@ main:
     
     inside_loop:
     
-    
      ;test les key pressed:
     mov ah, 0h
     int 16h                                              
@@ -207,11 +206,11 @@ main:
        ret
    objectpickup:
         key1check:
-            cmp sp,1
+            cmp di,1
             je key1pickup
             jmp inside_loop
         key2check:
-            cmp sp,2
+            cmp di,2
             je key2pickup
             jmp inside_loop
          
@@ -249,7 +248,7 @@ main:
             mov ah, 02h
             mov bh, 00
             int 10h 
-            mov sp,2
+            mov di,2
             jmp inside_loop
             
          key2pickup:
@@ -282,7 +281,7 @@ main:
             mov ah, 02h
             mov bh, 00
             int 10h 
-            mov sp,3
+            mov di,3
             jmp inside_loop 
  
                  
@@ -572,8 +571,7 @@ dw '$',0ah,0dh
        
        
        DEFINE_CLEAR_SCREEN
-       DEFINE_PRINT_NUM 
-       DEFINE_PRINT_NUM_UNS 
+       
        
          
        END
