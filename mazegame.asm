@@ -3,7 +3,7 @@ org 100h
 include emu8086.inc 
 
 
-  
+  CURSOROFF;comme son noms l'indique desactive la vue du cursor (marche avec "emu8086.inc")
   
 Menu:
  
@@ -572,8 +572,8 @@ dw '$',0ah,0dh
        
        
        DEFINE_CLEAR_SCREEN
-       
-       
+       DEFINE_PRINT_NUM 
+       DEFINE_PRINT_NUM_UNS 
        
          
        END
