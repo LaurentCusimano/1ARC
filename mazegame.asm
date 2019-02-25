@@ -21,11 +21,11 @@ wait_keypress:
     int 16h                                              
     
     
-    cmp al, 112 ;if "p":
+    cmp al, 13 ;if "enter":
     je start_maze_game 
 
     
-    cmp al, 113 ;if "q":
+    cmp al, 27 ;if "ecs":
     je give_up
 
     loop wait_keypress
@@ -133,23 +133,23 @@ main:
     mov ah, 0h
     int 16h                                              
     
-                      
-    cmp al, 115
+    ;controls with ZQSD                  
+    cmp al, 115  ;if "s"
     je Down 
 
     
-    cmp al, 122
+    cmp al, 122  ;if "z"
     je Up
 
     
-    cmp al, 113
+    cmp al, 113   ;if "q"
     je Left
 
     
-    cmp al, 100
+    cmp al, 100   ;if "d"
     je Right
 
-
+  
     
     jmp main
             
@@ -160,9 +160,6 @@ main:
         ;move cursor to new location
         add dl, 1
         call SetCursor
-        ;test colid do not work:  
-        cmp dx,73
-        je testos 
         ;print player to his new location
         PRINT ':)'
         jmp main
@@ -336,7 +333,7 @@ main:
           PRINT 'red door'
           
           ;avance "si" a 1 pour pouvoir tester la porte bleu:
-          mov si,1
+          mov si,2
           
           ;draw blue key:
             draw_bluekey:
@@ -379,7 +376,7 @@ main:
           PRINT 'blue door'
           
           ;avance "si":
-          mov si,99
+          mov si,3
           ;remet le cursor a sa position d'origine:
           mov dl,28  ;pas la position d'origine pour eviter d'effacer la porte:
           mov dh,17
@@ -429,7 +426,7 @@ main:
         mov bh, 00
         int 10h
         
-        PRINT 'press p key to go back on the menu'
+        PRINT 'press ENTER key to go back on the menu'
         
         add dh,1
         add dl,16 
@@ -446,7 +443,7 @@ main:
             int 16h                                              
     
     
-            cmp al, 112 ;if "p":
+            cmp al, 13 ;if "enter":
             je Menu 
 
             jmp theEND
@@ -561,7 +558,7 @@ dw '                                              ',0ah,0dh
 dw '                                              ',0ah,0dh
 dw '                                              ',0ah,0dh
 dw '            |---------------------------||---------------------------|  ',0ah,0dh
-dw '            | ^   Press "p" to play   ^ || ^   Press "q" to quit   ^ | ',0ah,0dh
+dw '            | ^ Press "enter" to play ^ || ^   Press "ecs" to quit ^ | ',0ah,0dh
 dw '            |___________________________||___________________________|',0ah,0dh
 
 dw '$',0ah,0dh
