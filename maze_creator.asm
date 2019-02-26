@@ -7,7 +7,7 @@ include emu8086.inc
    
         
     
-    jmp draw_redzone
+    jmp draw_inv
    draw_maze_contour:
         mov dl,1
         mov dh,0
@@ -64,7 +64,105 @@ include emu8086.inc
         
         
      
-     
+      draw_inv:
+        mov dl,63
+        mov dh,-1
+        draw_leftinv:
+        
+            add dh,1
+            ;setcursor:
+            mov ah, 02h
+            mov bh, 00
+            int 10h
+            ;wall:       
+            PRINT 'I' 
+            cmp dh,5
+            je draw_downinv
+            loop draw_leftinv
+    
+        draw_downinv:
+            add dl,1
+            ;setcursor:
+            mov ah, 02h
+            mov bh, 00
+            int 10h
+            ;wall:       
+            PRINT '-' 
+            cmp dl,75
+            je draw_rightinv
+           loop draw_downinv
+        
+        draw_rightinv:
+            sub dh,1
+            ;setcursor:
+            mov ah, 02h
+            mov bh, 00
+            int 10h
+            ;wall:       
+            PRINT 'I' 
+            cmp dh,0
+            je draw_textinv
+           loop draw_rightinv
+           
+          draw_textinv:
+                mov dl,65
+                mov dh,2
+                ;setcursor:
+                mov ah, 02h
+                mov bh, 00
+                int 10h
+                ;key:       
+                PRINT 'Inventory'
+            
+           
+          draw_keyinv:
+            
+                mov dl,65
+                mov dh,4
+                ;setcursor:
+                mov ah, 02h
+                mov bh, 00
+                int 10h
+                ;key:       
+                PRINT 216
+                
+                add dl,2
+                ;setcursor:
+                mov ah, 02h
+                mov bh, 00
+                int 10h
+                ;key:       
+                PRINT 216
+                
+                add dl,2
+                ;setcursor:
+                mov ah, 02h
+                mov bh, 00
+                int 10h
+                ;key:       
+                PRINT 216
+                
+                add dl,2
+                ;setcursor:
+                mov ah, 02h
+                mov bh, 00
+                int 10h
+                ;key:       
+                PRINT 216
+                
+                add dl,2
+                ;setcursor:
+                mov ah, 02h
+                mov bh, 00
+                int 10h
+                ;key:       
+                PRINT 216
+                
+                
+                
+                
+                
+                
      draw_redzone:
         mov dl,14
         mov dh,22;en realiter 21 mais 22 pour afficher le premier mur
@@ -176,136 +274,66 @@ include emu8086.inc
      draw_object_redzone:
         ;object(1stkey RED) spawn draw 
             draw_redkey:
-                mov dl,25
-                mov dh,20
-                ;setcursor:
-                mov ah, 02h
-                mov bh, 00
-                int 10h
-                ;key:       
-                PRINT 216
+            ;cursor pos:
+            mov dl,25 
+            mov dh,20
+            mov bh, 0
+            mov ah, 0x2
+            int 0x10
+            mov cx, 1 ; nb char
+            mov bh, 0
+            mov bl, 0x40 ; color
+            mov al, 0x20 ; blank char
+            mov ah, 0x9
+            int 0x10 
+            mov ah, 02h
+            mov bh, 00
+            int 10h
+            PRINT 216
+
+             
     
             draw_reddoor:
                 ;object(door) spawn draw 
-    
-                mov dl,26
+                ;cursor pos:
+                mov dl,26 
                 mov dh,17
-                ;setcursor:
+                mov bh, 0
+                mov ah, 0x2
+                int 0x10
+                mov cx, 1 ; nb char
+                mov bh, 0
+                mov bl, 0x40 ; color
+                mov al, 0x20 ; blank char
+                mov ah, 0x9
+                int 0x10 
                 mov ah, 02h
                 mov bh, 00
-                int 10h
-                ;door:       
+                int 10h 
                 PRINT 177
 
        draw_object_bluezone:
    
             draw_bluedoor:
                 ;object(door) spawn draw 
-    
-                mov dl,30
+                ;cursor pos:
+                mov dl,30 
                 mov dh,17
-                ;setcursor:
+                mov bh, 0
+                mov ah, 0x2
+                int 0x10
+                mov cx, 1 ; nb char
+                mov bh, 0
+                mov bl, 0x10 ; color
+                mov al, 0x20 ; blank char
+                mov ah, 0x9
+                int 0x10 
                 mov ah, 02h
                 mov bh, 00
-                int 10h
-                ;door:       
+                int 10h 
                 PRINT 177
-
-        
-        draw_inv:
-        mov dl,63
-        mov dh,-1
-        draw_leftinv:
-        
-            add dh,1
-            ;setcursor:
-            mov ah, 02h
-            mov bh, 00
-            int 10h
-            ;wall:       
-            PRINT 'I' 
-            cmp dh,5
-            je draw_downinv
-            loop draw_leftinv
-    
-        draw_downinv:
-            add dl,1
-            ;setcursor:
-            mov ah, 02h
-            mov bh, 00
-            int 10h
-            ;wall:       
-            PRINT '-' 
-            cmp dl,75
-            je draw_rightinv
-           loop draw_downinv
-        
-        draw_rightinv:
-            sub dh,1
-            ;setcursor:
-            mov ah, 02h
-            mov bh, 00
-            int 10h
-            ;wall:       
-            PRINT 'I' 
-            cmp dh,0
-            je draw_textinv
-           loop draw_rightinv
-           
-          draw_textinv:
-                mov dl,65
-                mov dh,2
-                ;setcursor:
-                mov ah, 02h
-                mov bh, 00
-                int 10h
-                ;key:       
-                PRINT 'Inventory'
-            
-           
-          draw_keyinv:
-            
-                mov dl,65
-                mov dh,4
-                ;setcursor:
-                mov ah, 02h
-                mov bh, 00
-                int 10h
-                ;key:       
-                PRINT 216
-                
-                add dl,2
-                ;setcursor:
-                mov ah, 02h
-                mov bh, 00
-                int 10h
-                ;key:       
-                PRINT 216
-                
-                add dl,2
-                ;setcursor:
-                mov ah, 02h
-                mov bh, 00
-                int 10h
-                ;key:       
-                PRINT 216
-                
-                add dl,2
-                ;setcursor:
-                mov ah, 02h
-                mov bh, 00
-                int 10h
-                ;key:       
-                PRINT 216
-                
-                add dl,2
-                ;setcursor:
-                mov ah, 02h
-                mov bh, 00
-                int 10h
-                ;key:       
-                PRINT 216
-                  
+             
+                                       
           draw_hero:
             
 

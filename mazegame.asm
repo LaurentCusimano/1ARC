@@ -82,7 +82,15 @@ main:
            
      
            redkeytest:
-                call check_eventdoor
+                cmp si,1
+                je has_redkey
+                jmp inside_loop
+                
+                   has_redkey:
+
+                        cmp bp,1
+                        je opendoor1
+                        jmp display_nokeymessage 
                   
                 
         ;verifie si key2 est apparu:
@@ -117,9 +125,17 @@ main:
                 
                 
             bluekeytest:
-                mov si,2
-                call check_eventdoor
-                jmp opendoor2
+                cmp si,2
+                je has_bluekey
+                jmp inside_loop
+                
+                has_bluekey:
+            
+                    cmp bp,2
+                    je opendoor2            
+                    jmp display_nokeymessage
+        
+                
                 
         
         
@@ -198,7 +214,6 @@ main:
       ret
 
    SetCursor: 
-       ;mov si,0
        mov ah, 02h
        mov bh, 00
        int 10h
@@ -272,7 +287,8 @@ main:
             ;stock cette info dans une variable:
             mov bp,2
             ;met a jour "si" pour pouvoir ressayer d'ouvrir la porte associer:
-            mov si,0
+            mov si,2 
+            call UpdateInv
             ;remet le cursor a sa position d'origine:
             mov dl,27;pas la position d'origine pour eviter d'effacer le mur:
             mov dh,20
@@ -341,11 +357,18 @@ main:
             draw_bluekey:
                 mov dl,28
                 mov dh,20
-                ;setcursor:
+                mov bh, 0
+                mov ah, 0x2
+                int 0x10
+                mov cx, 1 ; nb char
+                mov bh, 0
+                mov bl, 0x10 ; color
+                mov al, 0x20 ; blank char
+                mov ah, 0x9
+                int 0x10 
                 mov ah, 02h
                 mov bh, 00
-                int 10h
-                ;key:       
+                int 10h       
                 PRINT 216
             
           ;remet le cursor a sa position d'origine:
@@ -455,38 +478,7 @@ main:
            
                                                     
         
-     
-   check_eventdoor proc near
-        ;if key==door:
-        cmp si,1
-        je has_redkey
-        
-        cmp si,2
-        je has_bluekey 
-        
-        jmp end_check_eventdoor
-        
-        has_redkey:
-
-            cmp bp,1
-            je opendoor1
-            jmp display_nokeymessage 
-            
-            
-        has_bluekey:
-            
-            cmp bp,2
-            je opendoor2
-            jmp display_nokeymessage
-        
-        
-        
-        
-        end_check_eventdoor:
-        ret
-       
-               
-    check_eventdoor endp 
+   
     
   
    clear_oldmessage proc near
@@ -513,18 +505,49 @@ main:
      testhavekey1:
              cmp bp,1
              je Draw_on_key1
-             jmp end_UpdateInv
+             jmp testhavekey2
              Draw_on_key1:
              ;ajoute de la couleur a la clef debloquer
              mov dl,65
              mov dh,4
-             ;setcursor:
+             mov bh, 0
+             mov ah, 0x2
+             int 0x10
+             mov cx, 1 ; nb char
+             mov bh, 0
+             mov bl, 0x40 ; color
+             mov al, 0x20 ; blank char
+             mov ah, 0x9
+             int 0x10 
              mov ah, 02h
              mov bh, 00
-             int 10h
-                    
-             PRINT '1'
+             int 10h       
+             PRINT 216
+             jmp end_UpdateInv
+     
+     testhavekey2:
+             cmp bp,2
+             je Draw_on_key2
+             jmp end_UpdateInv
+             Draw_on_key2:
+             ;ajoute de la couleur a la clef debloquer
+             mov dl,67
+             mov dh,4
+             mov bh, 0
+             mov ah, 0x2
+             int 0x10
+             mov cx, 1 ; nb char
+             mov bh, 0
+             mov bl, 0x10 ; color
+             mov al, 0x20 ; blank char
+             mov ah, 0x9
+             int 0x10 
+             mov ah, 02h
+             mov bh, 00
+             int 10h       
+             PRINT 216        
              
+              
              end_UpdateInv:    
              ret
         
@@ -532,9 +555,20 @@ main:
    
    clear_player proc near
     ;delete last player position 
-        mov ah, 02h
-        mov bh, 00
-        int 10h       
+        
+            mov bh, 0
+            mov ah, 0x2
+            int 0x10
+            mov cx, 2 ; nb char
+            mov bh, 0
+            mov bl, 0x39 ; color
+            mov al, 0x20 ; blank char
+            mov ah, 0x9
+            int 0x10 
+            mov ah, 02h
+            mov bh, 00
+            int 10h
+                  
         PRINT '  '       
         ret
         
