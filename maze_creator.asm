@@ -7,10 +7,19 @@ include emu8086.inc
    
         
     
-    jmp draw_inv
+    
+    ;jmp draw_inv
    draw_maze_contour:
         mov dl,1
-        mov dh,0
+        mov dh,1
+        draw_topleft_coner:
+        ;setcursor:
+            mov ah, 02h
+            mov bh, 00
+            int 10h
+            ;wall:       
+            PRINT 201
+        
         draw_topmaze:
         
             add dl,1
@@ -19,10 +28,20 @@ include emu8086.inc
             mov bh, 00
             int 10h
             ;wall:       
-            PRINT 'I' 
+            PRINT 205 
             cmp dl,60
             je draw_downmaze
             loop draw_topmaze
+        
+        draw_topright_coner:
+            ;setcursor:
+            add dh,1
+            mov ah, 02h
+            mov bh, 00
+            int 10h
+            ;wall:       
+            PRINT 187
+        
     
         draw_downmaze:
             add dh,1
@@ -31,10 +50,19 @@ include emu8086.inc
             mov bh, 00
             int 10h
             ;wall:       
-            PRINT 'I' 
+            PRINT 186 
             cmp dh,22
             je draw_bottommaze
            loop draw_downmaze
+           
+        draw_bottomright_coner:
+            ;setcursor:
+            sub dl,1
+            mov ah, 02h
+            mov bh, 00
+            int 10h
+            ;wall:       
+            PRINT 187
         
         draw_bottommaze:
             sub dl,1
@@ -43,7 +71,7 @@ include emu8086.inc
             mov bh, 00
             int 10h
             ;wall:       
-            PRINT 'I' 
+            PRINT 205 
             cmp dl,2
             je draw_upmaze
            loop draw_bottommaze 
@@ -55,13 +83,13 @@ include emu8086.inc
             mov bh, 00
             int 10h
             ;wall:       
-            PRINT 'I' 
+            PRINT 186 
             cmp dh,0
             je draw_redzone
            loop draw_upmaze 
            
            
-        
+          jmp draw_hero
         
      
       draw_inv:
@@ -115,50 +143,7 @@ include emu8086.inc
                 PRINT 'Inventory'
             
            
-          draw_keyinv:
-            
-                mov dl,65
-                mov dh,4
-                ;setcursor:
-                mov ah, 02h
-                mov bh, 00
-                int 10h
-                ;key:       
-                PRINT 216
-                
-                add dl,2
-                ;setcursor:
-                mov ah, 02h
-                mov bh, 00
-                int 10h
-                ;key:       
-                PRINT 216
-                
-                add dl,2
-                ;setcursor:
-                mov ah, 02h
-                mov bh, 00
-                int 10h
-                ;key:       
-                PRINT 216
-                
-                add dl,2
-                ;setcursor:
-                mov ah, 02h
-                mov bh, 00
-                int 10h
-                ;key:       
-                PRINT 216
-                
-                add dl,2
-                ;setcursor:
-                mov ah, 02h
-                mov bh, 00
-                int 10h
-                ;key:       
-                PRINT 216
-                
-                
+          
                 
                 
                 
@@ -350,12 +335,6 @@ include emu8086.inc
     
    
          
-   
-    
-    
-     
-                    
-    
     
     
     
