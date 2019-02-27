@@ -15,10 +15,37 @@ Menu:
       mov dh,0
       mov dx, offset game_menu_str
       int 21h
+      
+;starting of the anim:
+mov dh,14
+mov dl,30
+play_menu_anim:
+mov bp,1;use bp to know which animation to play:
+cmp dl,40
+je inverted_menu_anim 
+
+add dl,1
+mov ah, 02h
+mov bh, 00
+int 10h
+PRINT ':)'
+jmp wait_keypress
+inverted_menu_anim:
+mov bp,2
+cmp dl,30
+je play_menu_anim 
+
+sub dl,1
+mov ah, 02h
+mov bh, 00
+int 10h
+PRINT '(:'
+
+
   
 wait_keypress:
      ;test les key pressed:
-    mov ah, 0h
+    mov ah, 1h
     int 16h                                              
     
     
@@ -28,8 +55,12 @@ wait_keypress:
     
     cmp al, 27 ;if "ecs":
     je give_up
-
-    loop wait_keypress
+    call clear_player
+    cmp bp,1
+    je play_menu_anim
+    cmp bp,2
+    je inverted_menu_anim
+    
 
 
 
@@ -561,7 +592,7 @@ main:
             int 0x10
             mov cx, 2 ; nb char
             mov bh, 0
-            mov bl, 0x39 ; color
+            mov bl, 0x19 ; color
             mov al, 0x20 ; blank char
             mov ah, 0x9
             int 0x10 
@@ -581,7 +612,7 @@ main:
     int 0x10
     mov cx, 2024 ; print 2000 chars
     mov bh, 0
-    mov bl, 0x39 ; color
+    mov bl, 0x19 ; color
     mov al, 0x20 ; blank char
     mov ah, 0x9
     int 0x10       
