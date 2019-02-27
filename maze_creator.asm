@@ -8,7 +8,7 @@ include emu8086.inc
         
     
     
-    ;jmp draw_inv
+    jmp draw_rules
    draw_maze_contour:
         mov dl,1
         mov dh,1
@@ -89,7 +89,7 @@ include emu8086.inc
            loop draw_upmaze 
            
            
-          jmp draw_hero
+          
         
      
       draw_inv:
@@ -334,8 +334,110 @@ include emu8086.inc
     
     
    
-         
-    
+          draw_rules:
+          
+            mov dl,63
+            mov dh,18
+            ;setcursor:
+              mov ah, 02h
+              mov bh, 00
+              int 10h
+              
+              PRINT ':) -> YOU'
+            
+            
+            
+              add dh,1
+              add dl,1
+              ;setcursor:
+              mov ah, 02h
+              mov bh, 00
+              int 10h
+              
+              PRINT 216
+              
+              add dl,2
+              ;setcursor:
+              mov ah, 02h
+              mov bh, 00
+              int 10h
+              
+              PRINT '-> A KEY'
+            
+            
+              add dh,1
+              sub dl,2
+              ;setcursor:
+              mov ah, 02h
+              mov bh, 00
+              int 10h
+              
+              PRINT 177
+              
+              add dl,2
+              ;setcursor:
+              mov ah, 02h
+              mov bh, 00
+              int 10h
+              
+              PRINT '-> A DOOR'
+            
+            
+            add dh,1
+            sub dl,5
+            ;setcursor:
+             mov ah, 02h
+             mov bh, 00
+             int 10h
+             PRINT 'REDkey open REDdoor'
+            
+            
+            add dh,2 
+            add dl,4
+            ;setcursor:
+              mov ah, 02h
+              mov bh, 00
+              int 10h
+              mov cx, 1 ; nb char
+            mov bh, 0
+            mov bl, 0x40 ; color
+            mov al, 0x20 ; blank char
+            mov ah, 0x9
+            int 0x10 
+            mov ah, 02h
+            mov bh, 00
+            int 10h
+            PRINT 216    
+                
+             add dl,2
+             ;setcursor:
+              mov ah, 02h
+              mov bh, 00
+              int 10h
+              PRINT '---->'
+              
+              add dl,6
+             
+            
+            ;setcursor:
+              mov ah, 02h
+              mov bh, 00
+              int 10h
+                mov cx, 1 ; nb char
+                mov bh, 0
+                mov bl, 0x40 ; color
+                mov al, 0x20 ; blank char
+                mov ah, 0x9
+                int 0x10 
+                mov ah, 02h
+                mov bh, 00
+                int 10h 
+                PRINT 177
+              
+             
+              
+              
+             
     
     
     
