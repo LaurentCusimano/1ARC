@@ -207,7 +207,10 @@ main:
     Right:
         call clear_player
         ;move cursor to new location
-        add dl, 1
+        add dl, 2
+        call SetCursor
+        call TestColid
+        sub dl,1
         call SetCursor
         ;print player to his new location
         PRINT ':)'
@@ -216,12 +219,14 @@ main:
             
     ;a suppr test for collid:
     testos:
-        PRINT 'yees'        
+        PRINT 'yees'
+        jmp inside_loop        
     Left:
       call clear_player
       ;move player to his new location
       sub dl, 1
       call SetCursor
+      call TestColid
       PRINT '(:'
       jmp main
       ret
@@ -231,6 +236,7 @@ main:
      ;move player to his new location
      sub dh, 1
      call SetCursor
+     call TestColid
      PRINT ':)'
      jmp main
      ret
@@ -240,14 +246,27 @@ main:
       ;move player to his new location
       add dh, 1
       call SetCursor
+      call TestColid
       PRINT ':)'
       jmp main
       ret
 
-   SetCursor: 
+   SetCursor:
        mov ah, 02h
        mov bh, 00
        int 10h
+       ret
+   TestColid:
+       mov ah, 08h
+       int 10h
+       ;mur horizontal
+       cmp al,186 
+       je testos
+       
+       ;mur vertical
+       cmp al,205 
+       je testos       
+       
        ret
    objectpickup:
         key1check:
@@ -652,7 +671,7 @@ dw '$',0ah,0dh
        
        
        DEFINE_CLEAR_SCREEN
-       
-       
+       DEFINE_PRINT_NUM 
+       DEFINE_PRINT_NUM_UNS 
          
        END
