@@ -75,7 +75,7 @@ init_var:
     mov di,1 ;eviter duplication d'evenement key
     mov bp,0 ;variable d'ouverture de porte / si la bonne key
     mov si,1 ;eviter duplication d'evenement door 
-
+    ColliderDetected DB 'n'
     jmp inside_loop
 
 main:          
@@ -177,6 +177,8 @@ main:
        
     
     inside_loop:
+    ;clear_collidervar:
+    mov ColliderDetected,'n' 
     
      ;test les key pressed:
     mov ah, 0h
@@ -205,14 +207,17 @@ main:
  
 
     Right:
-        call clear_player
         ;move cursor to new location
         add dl, 2
         call SetCursor
         call TestColid
-        sub dl,1
+        sub dl,2
         call SetCursor
-        ;print player to his new location
+        cmp ColliderDetected,'y'
+        je main
+        call clear_player
+        add dl,1
+        call SetCursor
         PRINT ':)'
         jmp main
         ret
@@ -222,31 +227,50 @@ main:
         PRINT 'yees'
         jmp inside_loop        
     Left:
-      call clear_player
       ;move player to his new location
       sub dl, 1
       call SetCursor
       call TestColid
+      add dl,1
+      call SetCursor
+      PRINT '(:'
+      cmp ColliderDetected,'y'
+      je main
+      call clear_player
+      sub dl,1
+      call SetCursor
       PRINT '(:'
       jmp main
       ret
 
    Up:
-     call clear_player
      ;move player to his new location
-     sub dh, 1
-     call SetCursor
-     call TestColid
-     PRINT ':)'
-     jmp main
-     ret
+      sub dh, 1
+      call SetCursor
+      call TestColid
+      add dh,1
+      call SetCursor
+      cmp ColliderDetected,'y'
+      je main
+      call clear_player
+      sub dh,1
+      call SetCursor
+      PRINT ':)'
+      jmp main
+      ret
 
    Down:
-      call clear_player
       ;move player to his new location
       add dh, 1
       call SetCursor
       call TestColid
+      sub dh,1
+      call SetCursor
+      cmp ColliderDetected,'y'
+      je main
+      call clear_player
+      add dh,1
+      call SetCursor
       PRINT ':)'
       jmp main
       ret
@@ -261,13 +285,26 @@ main:
        int 10h
        ;mur horizontal
        cmp al,186 
-       je testos
+       je CollidYes
        
        ;mur vertical
        cmp al,205 
-       je testos       
+       je CollidYes
+       
+       ;door
+       cmp al,177 
+       je CollidYes
+       
+       ;key
+       cmp al,216 
+       je CollidYes       
        
        ret
+       
+    CollidYes:
+        mov ColliderDetected,'y'
+        ret
+   
    objectpickup:
         key1check:
             cmp di,1
