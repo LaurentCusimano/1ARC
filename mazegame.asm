@@ -73,55 +73,29 @@ start_maze_game:
           
 init_var:    
     mov di,1 ;eviter duplication d'evenement key
-    mov bp,0 ;variable d'ouverture de porte / si la bonne key
-    mov si,1 ;eviter duplication d'evenement door 
-    ColliderDetected DB 'n'
+    mov bp,0 ;variable d'ouverture de porte / si la bonne key 
+    ColliderDetected DB 'n';passe a 'y' si une collision est detecte
+    Event_door Dw 1 ;eviter duplication d'evenement door
     jmp inside_loop
 
-main:          
-            
-    
-    ;test de position pour l'obtention des objets / ouverture des portes 
+main: 
+  ;test de position pour l'obtention des objets / ouverture des portes 
     testpos: 
-     
-        ;verifie pos pour key1 
-        testposkey1:
-        
-            testlinekey1:
-                cmp dh,20
-                je testcollumnkey1
-                jmp testposdoor1
-                
-            testcollumnkey1:
-                cmp dl,24
-                je key1check
-                jmp testposdoor1 
-        
-        ;verifie pos pour porte 1
-        testposdoor1:
-            testlinedoor1:
-                cmp dh,17
-                je testcollumndoor1
-                jmp canposkey2
-                
-            testcollumndoor1:
-                cmp dl,24
-                je redkeytest
-                jmp canposkey2
                 
             
-           
+          jmp canposkey2  
      
            redkeytest:
-                cmp si,1
+                cmp Event_door,1
                 je has_redkey
-                jmp inside_loop
+                jmp CollidYes
                 
                    has_redkey:
 
                         cmp bp,1
                         je opendoor1
-                        jmp display_nokeymessage 
+                        jmp display_nokeymessage
+                        ret 
                   
                 
         ;verifie si key2 est apparu:
@@ -156,7 +130,7 @@ main:
                 
                 
             bluekeytest:
-                cmp si,2
+                cmp Event_door,2
                 je has_bluekey
                 jmp inside_loop
                 
@@ -166,8 +140,10 @@ main:
                     je opendoor2            
                     jmp display_nokeymessage
         
-                
-                
+                         
+            
+    
+  
         
         
         
@@ -222,10 +198,7 @@ main:
         jmp main
         ret
             
-    ;a suppr test for collid:
-    testos:
-        PRINT 'yees'
-        jmp inside_loop        
+         
     Left:
       ;move player to his new location
       sub dl, 1
@@ -293,30 +266,34 @@ main:
        
        ;door
        cmp al,177 
-       je CollidYes
+       je redkeytest
        
        ;key
        cmp al,216 
-       je CollidYes       
+       je objectpickup       
        
+       cmp ah,40
+       je testos
        ret
-       
+     testos:
+     PRINT 'YEEES'
+     ret  
     CollidYes:
         mov ColliderDetected,'y'
         ret
-   
+     
    objectpickup:
         key1check:
             cmp di,1
             je key1pickup
-            jmp inside_loop
+           
         key2check:
             cmp di,2
             je key2pickup
-            jmp inside_loop
+            
          
         
-        jmp inside_loop
+        ret
         key1pickup:
             call clear_oldmessage
             mov dl,62
@@ -339,18 +316,18 @@ main:
              
             ;stock cette info dans une variable:
             mov bp,1
-            ;met a jour "si" pour pouvoir ressayer d'ouvrir la porte associer:
-            mov si,1
+            ;met a jour "Event_door" pour pouvoir ressayer d'ouvrir la porte associer:
+            mov Event_door,1
             call UpdateInv ;pour mettre a jour l'inventaire:
             ;remet le cursor a sa position d'origine:
-            mov dl,24;pas la position d'origine pour eviter d'effacer le mur:
+            mov dl,25;pas la position d'origine pour eviter d'effacer le mur:
             mov dh,20
             ;setcursor:
             mov ah, 02h
             mov bh, 00
             int 10h 
             mov di,2
-            jmp inside_loop
+            ret
             
          key2pickup:
             call clear_oldmessage
@@ -373,8 +350,8 @@ main:
             PRINT ' a bluekey' 
             ;stock cette info dans une variable:
             mov bp,2
-            ;met a jour "si" pour pouvoir ressayer d'ouvrir la porte associer:
-            mov si,2 
+            ;met a jour "Event_door" pour pouvoir ressayer d'ouvrir la porte associer:
+            mov Event_door,2 
             call UpdateInv
             ;remet le cursor a sa position d'origine:
             mov dl,27;pas la position d'origine pour eviter d'effacer le mur:
@@ -390,7 +367,7 @@ main:
         display_nokeymessage:
         
             call clear_oldmessage
-            mov si,99
+            mov Event_door,99
             mov dl,62
             mov dh,6
             ;setcursor:
@@ -416,8 +393,11 @@ main:
             ;setcursor:
             mov bh, 00
             int 10h
-            jmp inside_loop      
+            
+            ret
+                  
    opendoor1:
+          call clear_player
           call clear_oldmessage
           
           mov dl,62
@@ -437,8 +417,8 @@ main:
           
           PRINT 'red door'
           
-          ;avance "si" a 1 pour pouvoir tester la porte bleu:
-          mov si,2
+          ;avance "Event_door" a 1 pour pouvoir tester la porte bleu:
+          mov Event_door,2
           
           ;draw blue key:
             draw_bluekey:
@@ -459,12 +439,13 @@ main:
                 PRINT 216
             
           ;remet le cursor a sa position d'origine:
-          mov dl,25  ;pas la position d'origine pour eviter d'effacer la porte:
+          mov dl,24  
           mov dh,17
           ;setcursor:
           mov ah, 02h
           mov bh, 00
-          int 10h 
+          int 10h
+          ;PRINT ':)' 
           jmp inside_loop
           
      opendoor2:
@@ -487,8 +468,8 @@ main:
           
           PRINT 'blue door'
           
-          ;avance "si":
-          mov si,3
+          ;avance "Event_door":
+          mov Event_door,3
           ;remet le cursor a sa position d'origine:
           mov dl,28  ;pas la position d'origine pour eviter d'effacer la porte:
           mov dh,17
