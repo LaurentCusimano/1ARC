@@ -68,7 +68,7 @@ start_maze_game:
 
     call CLEAR_SCREEN
     call set_background_color
-    include "maze_creator_forgame.asm" 
+    include "maze.asm" 
     ;end of maze_creator_forgame = "jmp init_var"
           
 init_var:    
