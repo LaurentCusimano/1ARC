@@ -71,11 +71,11 @@ start_maze_game:
     include "maze_test.asm" 
     ;end of maze_creator_forgame = "jmp init_var"
           
-init_var:    
-    mov di,1 ;eviter duplication d'evenement key
+init_var:
     mov bp,0 ;variable d'ouverture de porte / si la bonne key 
     ColliderDetected DB 'n';passe a 'y' si une collision est detecte
     Event_door Dw 1 ;eviter duplication d'evenement door
+    Event_key Dw 1 ;(peut ne plus etre necessaire);eviter duplication d'evenement key
     jmp inside_loop
 
 main: 
@@ -336,11 +336,11 @@ main:
      
    objectpickup:
         key1check:
-            cmp di,1
+            cmp Event_key,1
             je key1pickup
            
         key2check:
-            cmp di,2
+            cmp Event_key,2
             je key2pickup
             
          
@@ -378,7 +378,7 @@ main:
             mov ah, 02h
             mov bh, 00
             int 10h 
-            mov di,2
+            mov Event_key,2
             ret
             
          key2pickup:
@@ -412,7 +412,7 @@ main:
             mov ah, 02h
             mov bh, 00
             int 10h 
-            mov di,3
+            mov Event_key,3
             jmp inside_loop 
  
                  
