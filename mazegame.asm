@@ -248,6 +248,10 @@ main:
       sub dh, 1
       call SetCursor
       call TestColid
+      add dl,1
+      call SetCursor
+      call TestColid
+      sub dl,1      
       add dh,1
       call SetCursor
       cmp ColliderDetected,'y'
@@ -277,6 +281,10 @@ main:
       add dh, 1
       call SetCursor
       call TestColid
+      add dl,1
+      call SetCursor
+      call TestColid
+      sub dl,1  
       sub dh,1
       call SetCursor
       cmp ColliderDetected,'y'

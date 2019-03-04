@@ -193,7 +193,7 @@
             mov ah, 02h
             mov bh, 00
             int 10h       
-            PRINT 'I'
+            PRINT 186
             cmp dh, 19
             je cursor_internalredwall2  
             
@@ -215,7 +215,7 @@
             mov ah, 02h
             mov bh, 00
             int 10h       
-            PRINT 'I'
+            PRINT 186
             cmp dh, 20
             je cursor_internalredwall3  
             
@@ -236,7 +236,7 @@
             mov ah, 02h
             mov bh, 00
             int 10h       
-            PRINT 'I'
+            PRINT 186
             cmp dl, 24
             je draw_object_redzone  
             
@@ -310,7 +310,7 @@
                 PRINT 177
              
                                
-    
+             jmp draw_hero
     
    
           draw_rules:
