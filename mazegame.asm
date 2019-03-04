@@ -68,7 +68,7 @@ start_maze_game:
 
     call CLEAR_SCREEN
     call set_background_color
-    include "maze.asm" 
+    include "maze_test.asm" 
     ;end of maze_creator_forgame = "jmp init_var"
           
 init_var:    
@@ -194,6 +194,19 @@ main:
         call clear_player
         add dl,1
         call SetCursor
+        mov bh, 0
+            mov ah, 0x2
+            int 0x10
+            mov cx, 2 ; nb char
+            mov bh, 0
+            mov bl, 0x19 ; color
+            mov al, 0x20 ; blank char
+            mov ah, 0x9
+            int 0x10 
+            mov ah, 02h
+            mov bh, 00
+            int 10h
+                  
         PRINT ':)'
         jmp main
         ret
@@ -212,6 +225,19 @@ main:
       call clear_player
       sub dl,1
       call SetCursor
+      mov bh, 0
+            mov ah, 0x2
+            int 0x10
+            mov cx, 2 ; nb char
+            mov bh, 0
+            mov bl, 0x19 ; color
+            mov al, 0x20 ; blank char
+            mov ah, 0x9
+            int 0x10 
+            mov ah, 02h
+            mov bh, 00
+            int 10h
+                  
       PRINT '(:'
       jmp main
       ret
@@ -228,7 +254,20 @@ main:
       call clear_player
       sub dh,1
       call SetCursor
-      PRINT ':)'
+      mov bh, 0
+            mov ah, 0x2
+            int 0x10
+            mov cx, 2 ; nb char
+            mov bh, 0
+            mov bl, 0x19 ; color
+            mov al, 0x20 ; blank char
+            mov ah, 0x9
+            int 0x10 
+            mov ah, 02h
+            mov bh, 00
+            int 10h
+                  
+       PRINT ':)'
       jmp main
       ret
 
@@ -244,7 +283,20 @@ main:
       call clear_player
       add dh,1
       call SetCursor
-      PRINT ':)'
+      mov bh, 0
+            mov ah, 0x2
+            int 0x10
+            mov cx, 2 ; nb char
+            mov bh, 0
+            mov bl, 0x19 ; color
+            mov al, 0x20 ; blank char
+            mov ah, 0x9
+            int 0x10 
+            mov ah, 02h
+            mov bh, 00
+            int 10h
+                  
+        PRINT ':)'
       jmp main
       ret
 
