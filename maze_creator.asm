@@ -315,16 +315,21 @@ include emu8086.inc
             
             
             add dh,1
-            sub dl,5
+            sub dl,3
             ;setcursor:
              mov ah, 02h
              mov bh, 00
              int 10h
-             PRINT 'REDkey open REDdoor'
+             PRINT 'REDkey open'
             
+            add dh,1
+            ;setcursor:
+              mov ah, 02h
+              mov bh, 00
+              int 10h
+            PRINT 'REDdoor'
             
-            add dh,2 
-            add dl,4
+            add dh,1 
             ;setcursor:
               mov ah, 02h
               mov bh, 00
