@@ -20,7 +20,7 @@ Menu:
 mov dh,14
 mov dl,30
 play_menu_anim:
-mov bp,1;use bp to know which animation to play:
+mov AnimControl,1;use "AnimControl" to know which animation to play:
 cmp dl,40
 je inverted_menu_anim 
 
@@ -31,7 +31,7 @@ int 10h
 PRINT ':)'
 jmp wait_keypress
 inverted_menu_anim:
-mov bp,2
+mov AnimControl,2
 cmp dl,30
 je play_menu_anim 
 
@@ -56,9 +56,9 @@ wait_keypress:
     cmp al, 27 ;if "ecs":
     je give_up
     call clear_player
-    cmp bp,1
+    cmp AnimControl,1
     je play_menu_anim
-    cmp bp,2
+    cmp AnimControl,2
     je inverted_menu_anim
     
 
@@ -72,10 +72,11 @@ start_maze_game:
     ;end of maze_creator_forgame = "jmp init_var"
           
 init_var:
-    mov bp,0 ;variable d'ouverture de porte / si la bonne key 
     ColliderDetected DB 'n';passe a 'y' si une collision est detecte
     Event_door Dw 1 ;eviter duplication d'evenement door
     Event_key Dw 1 ;(peut ne plus etre necessaire);eviter duplication d'evenement key
+    whichKey Dw 0;variable d'ouverture de porte / si la bonne key
+    AnimControl Dw 0;variable utiliser pour l'annimation du menu
     jmp inside_loop
 
 main: 
@@ -92,7 +93,7 @@ main:
                 
                    has_redkey:
 
-                        cmp bp,1
+                        cmp whichKey,1
                         je opendoor1
                         jmp display_nokeymessage
                         ret 
@@ -100,7 +101,7 @@ main:
                 
         ;verifie si key2 est apparu:
         canposkey2:
-            cmp bp,1
+            cmp whichKey,1
             je testlinekey2
             jmp testlinedoor2           
         ;verifie pos pour key2 
@@ -136,7 +137,7 @@ main:
                 
                 has_bluekey:
             
-                    cmp bp,2
+                    cmp whichKey,2
                     je opendoor2            
                     jmp display_nokeymessage
         
@@ -367,7 +368,7 @@ main:
             PRINT ' a redkey'
              
             ;stock cette info dans une variable:
-            mov bp,1
+            mov whichKey,1
             ;met a jour "Event_door" pour pouvoir ressayer d'ouvrir la porte associer:
             mov Event_door,1
             call UpdateInv ;pour mettre a jour l'inventaire:
@@ -401,7 +402,7 @@ main:
           
             PRINT ' a bluekey' 
             ;stock cette info dans une variable:
-            mov bp,2
+            mov whichKey,2
             ;met a jour "Event_door" pour pouvoir ressayer d'ouvrir la porte associer:
             mov Event_door,2 
             call UpdateInv
@@ -623,7 +624,7 @@ main:
    
    UpdateInv proc near
      testhavekey1:
-             cmp bp,1
+             cmp whichKey,1
              je Draw_on_key1
              jmp testhavekey2
              Draw_on_key1:
@@ -646,7 +647,7 @@ main:
              jmp end_UpdateInv
      
      testhavekey2:
-             cmp bp,2
+             cmp whichKey,2
              je Draw_on_key2
              jmp end_UpdateInv
              Draw_on_key2:
