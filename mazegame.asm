@@ -68,7 +68,7 @@ start_maze_game:
 
     call CLEAR_SCREEN
     call set_background_color
-    include "maze_test.asm" 
+    include "maze.asm" 
     ;end of maze_creator_forgame = "jmp init_var"
           
 init_var:
@@ -317,13 +317,45 @@ main:
    TestColid:
        mov ah, 08h
        int 10h
+       
+       cmp al,206 
+       je CollidYes
+       
+       cmp al,188 
+       je CollidYes
+       
+       cmp al,203 
+       je CollidYes
+       
+       cmp al,187 
+       je CollidYes
+       
+       cmp al,200 
+       je CollidYes
+       
+       cmp al,201 
+       je CollidYes 
+       
+       cmp al,204 
+       je CollidYes
+       
+       cmp al,200 
+       je CollidYes
+       
+       cmp al,202 
+       je CollidYes
+       
+       cmp al,185  
+       je CollidYes
        ;mur horizontal
-       cmp al,186 
+       cmp al,205 
        je CollidYes
        
        ;mur vertical
-       cmp al,205 
-       je CollidYes
+       cmp al,186 
+       je CollidYes 
+       
+       
        
        ;door
        cmp al,177 
@@ -381,8 +413,8 @@ main:
             mov Event_door,1
             call UpdateInv ;pour mettre a jour l'inventaire:
             ;remet le cursor a sa position d'origine:
-            mov dl,25;pas la position d'origine pour eviter d'effacer le mur:
-            mov dh,20
+            mov dl,13;pas la position d'origine pour eviter d'effacer le mur:
+            mov dh,21
             ;setcursor:
             mov ah, 02h
             mov bh, 00
@@ -448,7 +480,7 @@ main:
           
           
             ;remet le cursor a sa position d'origine:
-            mov dl,25 ;pas la position d'origine pour eviter d'effacer la porte:
+            mov dl,13 ;pas la position d'origine pour eviter d'effacer la porte:
             mov dh,17                                         
             mov ah, 02h
             ;setcursor:
@@ -500,13 +532,12 @@ main:
                 PRINT 216
             
           ;remet le cursor a sa position d'origine:
-          mov dl,24  
+          mov dl,13  
           mov dh,17
           ;setcursor:
           mov ah, 02h
           mov bh, 00
-          int 10h
-          ;PRINT ':)' 
+          int 10h 
           jmp inside_loop
           
      opendoor2:

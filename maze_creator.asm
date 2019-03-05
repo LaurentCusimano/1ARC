@@ -217,8 +217,8 @@ include emu8086.inc
            
        draw_wall3_redzone:
      
-           mov dl,12
-           mov dh,17
+           mov dl,14
+           mov dh,16
            
            draw_wall3_redzone_p1:
            add dh,1
@@ -234,16 +234,90 @@ include emu8086.inc
           call SetCursor
           PRINT 202
           
+        draw_wall4_redzone:
+     
+           mov dl,9
+           mov dh,16
+           
+           draw_wall4_redzone_p1:
+           add dh,1
+           call SetCursor
+           PRINT 186
+           
+           cmp dh,19
+           je draw_wall4_redzone_p2
+           loop draw_wall4_redzone_p1
+           
+          draw_wall4_redzone_p2:
+          add dh,1
+          call SetCursor
+          PRINT 188
+          
+          sub dl,1
+          call SetCursor
+          PRINT 205
+          
+       draw_wall5_redzone:
+         mov dl,14
+         mov dh,17 
+         
+       draw_wall5_redzone_p1:
+         add dh,1
+         call SetCursor
+         
+         PRINT 185
+         
+         cmp dh,20
+         je draw_wall5_redzone_p2
+         loop draw_wall5_redzone_p1  
+         
+        draw_wall5_redzone_p2:
+        
+        sub dl,1
+        call SetCursor
+        
+        PRINT 202
+        
+        sub dh,1
+        call SetCursor
+        PRINT 206
+        
+        sub dh,1 
+        call SetCursor
+        PRINT 203
+        
+        sub dl,1
+        call SetCursor
+        PRINT 201 
+        
+        add dh,1
+        call SetCursor
+        PRINT 204
+        
+        add dh,1
+        call SetCursor
+        PRINT 200 
+        
+        
+        
+        
+         
+         
+         
+          
+       
+          
+          
         
      
-          jmp draw_hero
+          ;jmp draw_hero
         
      draw_object_redzone:
         ;object(1stkey RED) spawn draw 
             draw_redkey:
             ;cursor pos:
-            mov dl,25 
-            mov dh,20
+            mov dl,13 
+            mov dh,21
             mov bh, 0
             mov ah, 0x2
             int 0x10
@@ -263,7 +337,7 @@ include emu8086.inc
             draw_reddoor:
                 ;object(door) spawn draw 
                 ;cursor pos:
-                mov dl,26 
+                mov dl,14 
                 mov dh,17
                 mov bh, 0
                 mov ah, 0x2
@@ -301,18 +375,7 @@ include emu8086.inc
                 PRINT 177
              
                                        
-          draw_hero:
-            
-
-              mov dl, 2 ; column
-              mov dh, 21 ; row 
-
-              ;setcursor:
-              mov ah, 02h
-              mov bh, 00
-              int 10h
         
-              PRINT ':)'
     
     
    
@@ -422,7 +485,19 @@ include emu8086.inc
                 PRINT 177
               
              
-              
+                                         
+          draw_hero:
+            
+
+              mov dl, 2 ; column
+              mov dh, 21 ; row 
+
+              ;setcursor:
+              mov ah, 02h
+              mov bh, 00
+              int 10h
+        
+              PRINT ':)'  
               
      SetCursor proc near
      mov ah, 02h

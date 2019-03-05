@@ -1,8 +1,9 @@
+   
     
-    jmp draw_inv
+    ;jmp draw_rules
    draw_maze_contour:
         mov dl,1
-        mov dh,1
+        mov dh,0
         draw_topleft_coner:
         ;setcursor:
             mov ah, 02h
@@ -21,16 +22,15 @@
             ;wall:       
             PRINT 205 
             cmp dl,60
-            je draw_downmaze
+            je draw_topright_coner
             loop draw_topmaze
         
         draw_topright_coner:
+            add dl,1
             ;setcursor:
-            add dh,1
             mov ah, 02h
             mov bh, 00
-            int 10h
-            ;wall:       
+            int 10h                   
             PRINT 187
         
     
@@ -42,18 +42,18 @@
             int 10h
             ;wall:       
             PRINT 186 
-            cmp dh,22
-            je draw_bottommaze
+            cmp dh,21
+            je draw_bottomright_coner
            loop draw_downmaze
            
         draw_bottomright_coner:
             ;setcursor:
-            sub dl,1
+            add dh,1
             mov ah, 02h
             mov bh, 00
             int 10h
             ;wall:       
-            PRINT 187
+            PRINT 188
         
         draw_bottommaze:
             sub dl,1
@@ -64,8 +64,17 @@
             ;wall:       
             PRINT 205 
             cmp dl,2
-            je draw_upmaze
-           loop draw_bottommaze 
+            je draw_bottomleft_coner
+           loop draw_bottommaze
+           
+         draw_bottomleft_coner:
+            ;setcursor:
+            sub dl,1
+            mov ah, 02h
+            mov bh, 00
+            int 10h
+            ;wall:       
+            PRINT 200 
         
         draw_upmaze:
             sub dh,1
@@ -75,15 +84,16 @@
             int 10h
             ;wall:       
             PRINT 186 
-            cmp dh,0
-            je draw_redzone
+            cmp dh,1
+            je draw_inv
            loop draw_upmaze 
            
            
           
         
      
-      draw_inv:
+      draw_inv: 
+      jmp draw_redzone
         mov dl,63
         mov dh,-1
         draw_leftinv:
@@ -140,119 +150,166 @@
                 
                 
      draw_redzone:
-        mov dl,14
-        mov dh,22;en realiter 21 mais 22 pour afficher le premier mur
-        
-        
-        draw_redwall1:
-            sub dh,1
-            mov ah, 02h
-            mov bh, 00
-            int 10h       
-            PRINT 186
-            cmp dh, 16
-            je draw_redwall2  
-            
-            loop draw_redwall1 
-            
-         draw_redwall2:
-            add dl,1
-            mov ah, 02h
-            mov bh, 00
-            int 10h       
-            PRINT 205
-            cmp dl, 26
-            je draw_redwall3  
-            
-            loop draw_redwall2
-            
-         draw_redwall3:
-            add dh,1
-            mov ah, 02h
-            mov bh, 00
-            int 10h       
-            PRINT 186
-            cmp dh, 21
-            je cursor_internalredwall1  
-            
-            loop draw_redwall3
-            
-         cursor_internalredwall1: 
-         ;mise en place du curseur
-         mov dl,17
-         mov dh,22
-         mov ah, 02h
-         mov bh, 00
-         int 10h
+     
+     draw_wall1_redzone:
+     
+           mov dl,4
+           mov dh,22
+           call SetCursor
+           PRINT 202
            
+           draw_wall1_redzone_p2:
+           
+          sub dh,1
+          call SetCursor
+          PRINT 186
+          
+          cmp dh,19
+          je draw_wall1_redzone_p3
+          loop draw_wall1_redzone_p2 
             
-         draw_internalredwall1:
+          draw_wall1_redzone_p3:
+           sub dh,1
+           call SetCursor
+          PRINT 201
+          
+          add dl,1
+          call SetCursor
+          PRINT 205
+          
+          
+      draw_wall2_redzone:
+     
+           mov dl,1
+           mov dh,16
+           call SetCursor
+           PRINT 204
+           
+           draw_wall2_redzone_p2:
+           
+          add dl,1
+          call SetCursor
+          PRINT 205
+          
+          cmp dl,13
+          je draw_wall2_redzone_p3
+          loop draw_wall2_redzone_p2 
             
-            
-            sub dh,1
-            mov ah, 02h
-            mov bh, 00
-            int 10h       
-            PRINT 'I'
-            cmp dh, 19
-            je cursor_internalredwall2  
-            
-            loop draw_internalredwall1
-            
-         cursor_internalredwall2:   
-            ;mise en place du curseur   
-            mov dl,21
-            mov dh,16
-            mov ah, 02h
-            mov bh, 00
-            int 10h
-             
-            
-         draw_internalredwall2:
-            
-            
-            add dh,1
-            mov ah, 02h
-            mov bh, 00
-            int 10h       
-            PRINT 'I'
-            cmp dh, 20
-            je cursor_internalredwall3  
-            
-            loop draw_internalredwall2
-            
-         cursor_internalredwall3:   
-            ;mise en place du curseur   
-            mov dl,26
-            mov dh,19
-            mov ah, 02h
-            mov bh, 00
-            int 10h 
-            
-         draw_internalredwall3:
-            
-            
-            sub dl,1
-            mov ah, 02h
-            mov bh, 00
-            int 10h       
-            PRINT 'I'
-            cmp dl, 24
-            je draw_object_redzone  
-            
-            loop draw_internalredwall3
+          draw_wall2_redzone_p3:
+           add dl,1
+           call SetCursor
+          PRINT 203
+          
+          draw_wall2_redzone_p4:
+           mov dl,9
+           mov dh,16
+           call SetCursor
+           PRINT 203
+           
+           
+       draw_wall3_redzone:
+     
+           mov dl,14
+           mov dh,16
+           
+           draw_wall3_redzone_p1:
+           add dh,1
+           call SetCursor
+           PRINT 186
+           
+           cmp dh,21
+           je draw_wall3_redzone_p2
+           loop draw_wall3_redzone_p1
+           
+          draw_wall3_redzone_p2:
+          add dh,1
+          call SetCursor
+          PRINT 202
+          
+        draw_wall4_redzone:
+     
+           mov dl,9
+           mov dh,16
+           
+           draw_wall4_redzone_p1:
+           add dh,1
+           call SetCursor
+           PRINT 186
+           
+           cmp dh,19
+           je draw_wall4_redzone_p2
+           loop draw_wall4_redzone_p1
+           
+          draw_wall4_redzone_p2:
+          add dh,1
+          call SetCursor
+          PRINT 188
+          
+          sub dl,1
+          call SetCursor
+          PRINT 205
+          
+       draw_wall5_redzone:
+         mov dl,14
+         mov dh,17 
          
+       draw_wall5_redzone_p1:
+         add dh,1
+         call SetCursor
+         
+         PRINT 185
+         
+         cmp dh,20
+         je draw_wall5_redzone_p2
+         loop draw_wall5_redzone_p1  
+         
+        draw_wall5_redzone_p2:
+        
+        sub dl,1
+        call SetCursor
+        
+        PRINT 202
+        
+        sub dh,1
+        call SetCursor
+        PRINT 206
+        
+        sub dh,1 
+        call SetCursor
+        PRINT 203
+        
+        sub dl,1
+        call SetCursor
+        PRINT 201 
+        
+        add dh,1
+        call SetCursor
+        PRINT 204
+        
+        add dh,1
+        call SetCursor
+        PRINT 200 
+        
+        
+        
+        
+         
+         
+         
+          
+       
+          
+          
         
      
-     
-     
+          ;jmp draw_hero
         
      draw_object_redzone:
         ;object(1stkey RED) spawn draw 
             draw_redkey:
             ;cursor pos:
-            mov dl,25 
-            mov dh,20
+            mov dl,13 
+            mov dh,21
             mov bh, 0
             mov ah, 0x2
             int 0x10
@@ -272,7 +329,7 @@
             draw_reddoor:
                 ;object(door) spawn draw 
                 ;cursor pos:
-                mov dl,26 
+                mov dl,14 
                 mov dh,17
                 mov bh, 0
                 mov ah, 0x2
@@ -309,7 +366,7 @@
                 int 10h 
                 PRINT 177
              
-                               
+          
     
     
    
@@ -363,16 +420,21 @@
             
             
             add dh,1
-            sub dl,5
+            sub dl,3
             ;setcursor:
              mov ah, 02h
              mov bh, 00
              int 10h
-             PRINT 'REDkey open REDdoor'
+             PRINT 'REDkey open'
             
+            add dh,1
+            ;setcursor:
+              mov ah, 02h
+              mov bh, 00
+              int 10h
+            PRINT 'REDdoor'
             
-            add dh,2 
-            add dl,4
+            add dh,1 
             ;setcursor:
               mov ah, 02h
               mov bh, 00
@@ -413,10 +475,12 @@
                 int 10h 
                 PRINT 177
               
-             draw_hero:
+             
+                                         
+          draw_hero:
             
 
-              mov dl, 15 ; column
+              mov dl, 2 ; column
               mov dh, 21 ; row 
 
               ;setcursor:
@@ -424,8 +488,7 @@
               mov bh, 00
               int 10h
         
-              PRINT ':)'
-              
+              PRINT ':)'  
               
      
             jmp init_var
