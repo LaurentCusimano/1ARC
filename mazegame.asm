@@ -602,14 +602,14 @@ main:
             cmp al, 13 ;if "enter":
             je Menu 
 
-            jmp theEND
+            jmp theEnd
 
            
                                                     
         
    
     
-  
+   theEnd:
    clear_oldmessage proc near
         mov dl,62
         mov dh,6 
@@ -746,11 +746,11 @@ dw '            |___________________________||___________________________|',0ah,
 dw '$',0ah,0dh
        
        
-       theEnd: 
+        
        
        
        DEFINE_CLEAR_SCREEN
        DEFINE_PRINT_NUM 
        DEFINE_PRINT_NUM_UNS 
-         
+       
        END

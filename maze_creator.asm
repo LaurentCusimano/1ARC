@@ -99,8 +99,9 @@ include emu8086.inc
            
           
         
-     jmp draw_redzone
-      draw_inv:
+     
+      draw_inv: 
+      jmp draw_redzone
         mov dl,63
         mov dh,-1
         draw_leftinv:
@@ -176,13 +177,63 @@ include emu8086.inc
           loop draw_wall1_redzone_p2 
             
           draw_wall1_redzone_p3:
-          
+           sub dh,1
+           call SetCursor
           PRINT 201
           
           add dl,1
           call SetCursor
           PRINT 205
+          
+          
+      draw_wall2_redzone:
+     
+           mov dl,1
+           mov dh,16
+           call SetCursor
+           PRINT 204
            
+           draw_wall2_redzone_p2:
+           
+          add dl,1
+          call SetCursor
+          PRINT 205
+          
+          cmp dl,13
+          je draw_wall2_redzone_p3
+          loop draw_wall2_redzone_p2 
+            
+          draw_wall2_redzone_p3:
+           add dl,1
+           call SetCursor
+          PRINT 203
+          
+          draw_wall2_redzone_p4:
+           mov dl,9
+           mov dh,16
+           call SetCursor
+           PRINT 203
+           
+           
+       draw_wall3_redzone:
+     
+           mov dl,12
+           mov dh,17
+           
+           draw_wall3_redzone_p1:
+           add dh,1
+           call SetCursor
+           PRINT 186
+           
+           cmp dh,21
+           je draw_wall3_redzone_p2
+           loop draw_wall3_redzone_p1
+           
+          draw_wall3_redzone_p2:
+          add dh,1
+          call SetCursor
+          PRINT 202
+          
         
      
           jmp draw_hero
