@@ -532,7 +532,7 @@ main:
                 PRINT 216
             
           ;remet le cursor a sa position d'origine:
-          mov dl,13  
+          mov dl,12  
           mov dh,17
           ;setcursor:
           mov ah, 02h
