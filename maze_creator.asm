@@ -300,7 +300,149 @@ include emu8086.inc
         
         
         
-        
+       draw_purplezone:
+       
+       ;le wall 1 est tout le contour de la zone
+       draw_wall1_purplezone_p1:
+       
+       mov dl,15
+       mov dh,16
+       call SetCursor
+       
+       PRINT 202
+       
+       draw_wall1_purplezone_p2:
+       
+       sub dh,1   
+       
+       call SetCursor 
+       
+       PRINT 186
+       
+       cmp dh,8
+       je draw_wall1_purplezone_p3
+       loop draw_wall1_purplezone_p2
+       
+       draw_wall1_purplezone_p3:  
+       
+       sub dh,1
+       call SetCursor
+       PRINT 203
+       
+       draw_wall1_purplezone_p4:
+       
+       add dl,1
+       call SetCursor
+       PRINT 205
+       
+       cmp dl,23
+       je draw_wall1_purplezone_p5
+       loop draw_wall1_purplezone_p4 
+       
+       draw_wall1_purplezone_p5:
+       
+       add dl,1
+       call SetCursor
+       PRINT 185
+       
+       draw_wall1_purplezone_p6:
+       
+       add dh,1
+       call SetCursor
+       PRINT 186
+       
+       cmp dh,11
+       je draw_wall1_purplezone_p7
+       loop draw_wall1_purplezone_p6
+       
+       draw_wall1_purplezone_p7:
+       
+       add dh,1
+       call SetCursor 
+       PRINT 202 
+       
+       draw_wall1_purplezone_p8:
+       
+       sub dl,1
+       call SetCursor
+       PRINT 203
+       
+       draw_wall1_purplezone_p9:
+       add dh,1
+       call SetCursor
+       PRINT 186
+       cmp dh,21
+       je draw_wall1_purplezone_p10
+       loop draw_wall1_purplezone_p9
+       
+       draw_wall1_purplezone_p10:
+       add dh,1
+       call SetCursor 
+       PRINT 202 
+       
+       
+       
+       mov dl,15
+       mov dh,16
+       call SetCursor
+       draw_internalwall1_purplezone:
+       add dl,1
+       call SetCursor
+       PRINT 205
+       cmp dl,19
+       je draw_internalwall1_purplezone_p1
+       loop draw_internalwall1_purplezone
+       
+       draw_internalwall1_purplezone_p1:
+       
+       add dl,1
+       call SetCursor
+       PRINT 187
+       
+       draw_internalwall1_purplezone_p2:
+       
+       add dh,1
+       call SetCursor
+       PRINT 186
+       cmp dh,19
+       je draw_internalwall1_purplezone_p3
+       loop draw_internalwall1_purplezone_p2
+       
+       draw_internalwall1_purplezone_p3:
+       add dh,1
+       call SetCursor
+       PRINT 188
+       
+       draw_internalwall1_purplezone_p4:
+       
+       sub dl,1
+       call SetCursor
+       PRINT 205
+       cmp dl,17
+       je draw_internalwall1_purplezone_p5
+       loop draw_internalwall1_purplezone_p4
+       
+       draw_internalwall1_purplezone_p5:
+       
+       mov dh,16
+       mov dl,17
+       call SetCursor
+       PRINT 203
+       
+       draw_internalwall1_purplezone_p6:
+       add dh,1
+       call SetCursor
+       PRINT 186
+       cmp dh,18
+       je draw_internalwall2_purplezone
+       loop draw_internalwall1_purplezone_p6
+       
+       draw_internalwall2_purplezone:
+       
+       
+       
+       
+       
          
          
          
