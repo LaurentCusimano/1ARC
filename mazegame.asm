@@ -84,7 +84,7 @@ main:
     testpos: 
                 
             
-          jmp canposkey2  
+          jmp inside_loop  
      
            redkeytest:
                 cmp Event_door,1
@@ -99,36 +99,7 @@ main:
                         ret 
                   
                 
-        ;verifie si key2 est apparu:
-        canposkey2:
-            cmp whichKey,1
-            je testlinekey2
-            jmp testlinedoor2           
-        ;verifie pos pour key2 
-        testposkey2:
-        
-            testlinekey2:
-                cmp dh,20
-                je testcollumnkey2
-                jmp testposdoor2
-                
-            testcollumnkey2:
-                cmp dl,27
-                je key2pickup
-                jmp testposdoor2 
-        
-        ;verifie pos pour porte 1
-        testposdoor2:
-            testlinedoor2:
-                cmp dh,17
-                je testcollumndoor2
-                jmp inside_loop
-                
-            testcollumndoor2:
-                cmp dl,30
-                je bluekeytest
-                jmp inside_loop
-                
+       
                 
             bluekeytest:
                 cmp Event_door,2
@@ -142,7 +113,16 @@ main:
                     jmp display_nokeymessage
         
                          
+               yellowkeytest:
+                cmp Event_door,3
+                je has_yellowkey
+                jmp inside_loop
+                
+                has_yellowkey:
             
+                    cmp whichKey,3
+                    je opendoor2            
+                    jmp display_nokeymessage
     
   
         
@@ -383,7 +363,9 @@ main:
         key2check:
             cmp Event_key,2
             je key2pickup
-            
+        key3check:
+            cmp Event_key,3
+            je key3pickup    
          
         
         ret
@@ -440,24 +422,59 @@ main:
             mov bh, 00
             int 10h
           
-            PRINT ' a bluekey' 
+            PRINT ' a purplekey' 
             ;stock cette info dans une variable:
             mov whichKey,2
             ;met a jour "Event_door" pour pouvoir ressayer d'ouvrir la porte associer:
             mov Event_door,2 
             call UpdateInv
             ;remet le cursor a sa position d'origine:
-            mov dl,27;pas la position d'origine pour eviter d'effacer le mur:
-            mov dh,20
+            mov dl,16;pas la position d'origine pour eviter d'effacer le mur:
+            mov dh,12
             ;setcursor:
             mov ah, 02h
             mov bh, 00
             int 10h 
             mov Event_key,3
-            jmp inside_loop 
+            ret
  
-                 
+            
+         key3pickup:
+            call clear_oldmessage
+            mov dl,62
+            mov dh,6
+            ;setcursor:
+            mov ah, 02h
+            mov bh, 00
+            int 10h
+          
+            ;message pour prevenir de l'obtention de l'objet  
+            PRINT 'You have found'
+            mov dl,62
+            mov dh,7
+            ;setcursor:
+            mov ah, 02h
+            mov bh, 00
+            int 10h
+          
+            PRINT ' a yellowkey' 
+            ;stock cette info dans une variable:
+            mov whichKey,3
+            ;met a jour "Event_door" pour pouvoir ressayer d'ouvrir la porte associer:
+            mov Event_door,3 
+            call UpdateInv
+            ;remet le cursor a sa position d'origine:
+            mov dl,13;pas la position d'origine pour eviter d'effacer le mur:
+            mov dh,12
+            ;setcursor:
+            mov ah, 02h
+            mov bh, 00
+            int 10h 
+            mov Event_key,4
+            jmp inside_loop        
         display_nokeymessage:
+        
+            ret ; display_nokeymessage desactiver en attente de mise a jour:
         
             call clear_oldmessage
             mov Event_door,99
@@ -513,10 +530,10 @@ main:
           ;avance "Event_door" a 1 pour pouvoir tester la porte bleu:
           mov Event_door,2
           
-          ;draw blue key:
-            draw_bluekey:
-                mov dl,28
-                mov dh,20
+          ;draw purple key:
+            draw_purplekey:
+                mov dl,17
+                mov dh,12
                 mov bh, 0
                 mov ah, 0x2
                 int 0x10
@@ -558,17 +575,86 @@ main:
           mov bh, 00
           int 10h
           
-          PRINT 'blue door'
+          PRINT 'purple door'
           
           ;avance "Event_door":
           mov Event_door,3
+          ;draw yellow key:
+            draw_yellowkey:
+                mov dl,14
+                mov dh,12
+                mov bh, 0
+                mov ah, 0x2
+                int 0x10
+                mov cx, 1 ; nb char
+                mov bh, 0
+                mov bl, 0x70 ; color
+                mov al, 0x20 ; blank char
+                mov ah, 0x9
+                int 0x10 
+                mov ah, 02h
+                mov bh, 00
+                int 10h       
+                PRINT 216
           ;remet le cursor a sa position d'origine:
-          mov dl,28  ;pas la position d'origine pour eviter d'effacer la porte:
-          mov dh,17
+          mov dl,17  ;pas la position d'origine pour eviter d'effacer la porte:
+          mov dh,10
           ;setcursor:
           mov ah, 02h
           mov bh, 00
           int 10h     
+          jmp inside_loop
+          
+          
+        opendoor3:
+          call clear_oldmessage
+          
+          mov dl,62
+          mov dh,6
+          ;setcursor:
+          mov ah, 02h
+          mov bh, 00
+          int 10h 
+          
+          PRINT 'you have open'
+          mov dl,62
+          mov dh,7
+          ;setcursor:
+          mov ah, 02h
+          mov bh, 00
+          int 10h
+          
+          PRINT 'yellow door'
+          
+          ;avance "Event_door":
+          mov Event_door,4
+          ;draw orrange key:
+            draw_orangekey:
+                mov dl,38
+                mov dh,13
+                mov bh, 0
+                mov ah, 0x2
+                int 0x10
+                mov cx, 1 ; nb char
+                mov bh, 0
+                mov bl, 0x70 ; color
+                mov al, 0x20 ; blank char
+                mov ah, 0x9
+                int 0x10 
+                mov ah, 02h
+                mov bh, 00
+                int 10h       
+                PRINT 216
+          ;remet le cursor a sa position d'origine:
+          mov dl,22  ;pas la position d'origine pour eviter d'effacer la porte:
+          mov dh,6
+          ;setcursor:
+          mov ah, 02h
+          mov bh, 00
+          int 10h     
+          jmp inside_loop
+          
+          
           
    ;commande a ajouter dans la fonction de la derniere porte (pour gagner):
           jmp win
