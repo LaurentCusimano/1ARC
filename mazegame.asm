@@ -73,17 +73,28 @@ start_maze_game:
           
 init_var:
     ColliderDetected DB 'n';passe a 'y' si une collision est detecte
+    
     Event_door Dw 1 ;eviter duplication d'evenement door
+    mov Event_door,1 
     Event_key Dw 1 ;(peut ne plus etre necessaire);eviter duplication d'evenement key
+    mov Event_key,1
     whichKey Dw 0;variable d'ouverture de porte / si la bonne key
+    mov whichKey,0 
     AnimControl Dw 0;variable utiliser pour l'annimation du menu
+    mov AnimControl,0 
+    MovesCount Dw 0;store how many moves that you make in the game
+    mov MovesCount,0
+    
+    
+    
+    
+    
     jmp inside_loop
 
 main: 
-  ;test de position pour l'obtention des objets / ouverture des portes 
-    testpos: 
-                
-            
+  
+    
+    keytest:   
           jmp inside_loop  
      
            redkeytest:
@@ -188,7 +199,8 @@ main:
             mov bh, 00
             int 10h
                   
-        PRINT ':)'
+        PRINT ':)'                
+        add MovesCount,1          
         jmp main
         ret
             
@@ -220,6 +232,7 @@ main:
             int 10h
                   
       PRINT '(:'
+      add MovesCount,1
       jmp main
       ret
 
@@ -253,6 +266,7 @@ main:
             int 10h
                   
        PRINT ':)'
+       add MovesCount,1
       jmp main
       ret
 
@@ -286,6 +300,7 @@ main:
             int 10h
                   
         PRINT ':)'
+        add MovesCount,1
       jmp main
       ret
 
@@ -554,7 +569,8 @@ main:
           ;setcursor:
           mov ah, 02h
           mov bh, 00
-          int 10h 
+          int 10h
+          jmp win ; a retirer (pour test) 
           jmp inside_loop
           
      opendoor2:
@@ -652,7 +668,7 @@ main:
           mov ah, 02h
           mov bh, 00
           int 10h     
-          jmp inside_loop
+          
           
           
           
@@ -710,7 +726,22 @@ main:
         PRINT 'Or press any other key to quit the game'
         
         
-        
+                            
+            
+         mov dl,26
+         mov dh,15
+         call SetCursor
+         
+         PRINT 'you move '
+        MOV ax,MovesCount
+  
+
+       
+            call PRINT_NUM   
+            
+             PRINT 'times'
+            
+            
             ;test les key pressed:
             mov ah, 0h
             int 16h                                              
