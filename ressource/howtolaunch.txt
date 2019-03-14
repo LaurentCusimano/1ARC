@@ -1,0 +1,14 @@
+dl dosbox & emu8086
+
+compile "mazegame.asm" dans emu8086
+
+enregistre le fichier compilé au repo par defaut sois
+
+C:/emu8086/mybuild
+
+puis lance dosbox 
+
+tape : mount c C:\
+ puis : C:
+ensuite: cd emu8086/mybuild
+pour finir : mazegame.com

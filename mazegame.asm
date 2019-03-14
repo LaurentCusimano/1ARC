@@ -861,7 +861,7 @@ main:
              jmp end_UpdateInv
              Draw_on_key3:
              ;ajoute de la couleur a la clef debloquer
-             mov dl,67
+             mov dl,69
              mov dh,4
              mov bh, 0
              mov ah, 0x2
