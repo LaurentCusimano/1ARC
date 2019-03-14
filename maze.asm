@@ -97,7 +97,6 @@
         
      
       draw_inv: 
-      jmp draw_redzone
         mov dl,63
         mov dh,-1
         draw_leftinv:
@@ -529,7 +528,7 @@
        call SetCursor
        PRINT 205
        
-       cmp dl,18
+       cmp dl,19
        je draw_wall_yellowzone_p2
        loop draw_wall_yellowzone_p1
        

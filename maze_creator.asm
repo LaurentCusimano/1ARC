@@ -533,7 +533,7 @@ include emu8086.inc
        call SetCursor
        PRINT 205
        
-       cmp dl,18
+       cmp dl,19
        je draw_wall_yellowzone_p2
        loop draw_wall_yellowzone_p1
        

@@ -85,55 +85,51 @@ init_var:
     MovesCount Dw 0;store how many moves that you make in the game
     mov MovesCount,0
     
-    
-    
+    ;stock la derniere position du joueur
+    DhPlayer Db 1
+    DlPlayer Db 1
     
     
     jmp inside_loop
 
 main: 
   
-    
-    keytest:   
-          jmp inside_loop  
+     jmp inside_loop 
+    keytest:
+            nokeytest:
+            cmp whichKey,0
+            je display_nokeymessage
+            jmp redkeytest   
+          
      
            redkeytest:
-                cmp Event_door,1
-                je has_redkey
-                jmp CollidYes
                 
-                   has_redkey:
-
                         cmp whichKey,1
                         je opendoor1
-                        jmp display_nokeymessage
-                        ret 
+                        jmp bluekeytest
+                         
                   
                 
        
                 
             bluekeytest:
-                cmp Event_door,2
-                je has_bluekey
-                jmp inside_loop
                 
-                has_bluekey:
             
                     cmp whichKey,2
                     je opendoor2            
-                    jmp display_nokeymessage
+                    jmp yellowkeytest
         
                          
                yellowkeytest:
-                cmp Event_door,3
-                je has_yellowkey
-                jmp inside_loop
                 
-                has_yellowkey:
             
                     cmp whichKey,3
-                    je opendoor2            
-                    jmp display_nokeymessage
+                    je opendoor3            
+                    
+                    ret
+                    
+                    
+                
     
   
         
@@ -168,7 +164,22 @@ main:
     cmp al, 100   ;if "d"
     je Right
 
-  
+     ;controls with arrows                  
+    
+   cmp al, 50h  ;if downarrow
+    je Down 
+
+    
+    cmp al, 48h   ;if uparrow
+    je Up
+
+    
+    cmp al, 4Bh  ;if leftarrow
+    je Left
+
+    
+    cmp al, 4Dh  ;if rightarrow
+    je Right
     
     jmp main
             
@@ -354,7 +365,7 @@ main:
        
        ;door
        cmp al,177 
-       je redkeytest
+       je keytest
        
        ;key
        cmp al,216 
@@ -385,6 +396,7 @@ main:
         
         ret
         key1pickup:
+            call Save_PlayerLoc
             call clear_oldmessage
             mov dl,62
             mov dh,6
@@ -410,8 +422,7 @@ main:
             mov Event_door,1
             call UpdateInv ;pour mettre a jour l'inventaire:
             ;remet le cursor a sa position d'origine:
-            mov dl,13;pas la position d'origine pour eviter d'effacer le mur:
-            mov dh,21
+            call Load_PlayerLoc
             ;setcursor:
             mov ah, 02h
             mov bh, 00
@@ -420,6 +431,7 @@ main:
             ret
             
          key2pickup:
+            call Save_PlayerLoc
             call clear_oldmessage
             mov dl,62
             mov dh,6
@@ -444,8 +456,7 @@ main:
             mov Event_door,2 
             call UpdateInv
             ;remet le cursor a sa position d'origine:
-            mov dl,16;pas la position d'origine pour eviter d'effacer le mur:
-            mov dh,12
+            call Load_PlayerLoc
             ;setcursor:
             mov ah, 02h
             mov bh, 00
@@ -455,6 +466,7 @@ main:
  
             
          key3pickup:
+            call Save_PlayerLoc
             call clear_oldmessage
             mov dl,62
             mov dh,6
@@ -479,8 +491,7 @@ main:
             mov Event_door,3 
             call UpdateInv
             ;remet le cursor a sa position d'origine:
-            mov dl,13;pas la position d'origine pour eviter d'effacer le mur:
-            mov dh,12
+            call Load_PlayerLoc
             ;setcursor:
             mov ah, 02h
             mov bh, 00
@@ -489,8 +500,8 @@ main:
             jmp inside_loop        
         display_nokeymessage:
         
-            ret ; display_nokeymessage desactiver en attente de mise a jour:
-        
+            ;ret ; display_nokeymessage desactiver en attente de mise a jour:
+            call Save_PlayerLoc
             call clear_oldmessage
             mov Event_door,99
             mov dl,62
@@ -512,8 +523,7 @@ main:
           
           
             ;remet le cursor a sa position d'origine:
-            mov dl,13 ;pas la position d'origine pour eviter d'effacer la porte:
-            mov dh,17                                         
+            call Load_PlayerLoc                                        
             mov ah, 02h
             ;setcursor:
             mov bh, 00
@@ -522,6 +532,7 @@ main:
             ret
                   
    opendoor1:
+          call Save_PlayerLoc
           call clear_player
           call clear_oldmessage
           
@@ -543,7 +554,7 @@ main:
           PRINT 'red door'
           
           ;avance "Event_door" a 1 pour pouvoir tester la porte bleu:
-          mov Event_door,2
+          mov whichKey,0
           
           ;draw purple key:
             draw_purplekey:
@@ -564,16 +575,17 @@ main:
                 PRINT 216
             
           ;remet le cursor a sa position d'origine:
-          mov dl,12  
-          mov dh,17
+          call Load_PlayerLoc
           ;setcursor:
           mov ah, 02h
           mov bh, 00
           int 10h
-          jmp win ; a retirer (pour test) 
+          ret 
           jmp inside_loop
           
      opendoor2:
+          call Save_PlayerLoc
+          call clear_player
           call clear_oldmessage
           
           mov dl,62
@@ -594,7 +606,7 @@ main:
           PRINT 'purple door'
           
           ;avance "Event_door":
-          mov Event_door,3
+          mov whichKey,0
           ;draw yellow key:
             draw_yellowkey:
                 mov dl,14
@@ -613,16 +625,18 @@ main:
                 int 10h       
                 PRINT 216
           ;remet le cursor a sa position d'origine:
-          mov dl,17  ;pas la position d'origine pour eviter d'effacer la porte:
-          mov dh,10
+          call Load_PlayerLoc
           ;setcursor:
           mov ah, 02h
           mov bh, 00
-          int 10h     
+          int 10h
+          ret     
           jmp inside_loop
           
           
         opendoor3:
+          call Save_PlayerLoc
+          call clear_player
           call clear_oldmessage
           
           mov dl,62
@@ -643,7 +657,7 @@ main:
           PRINT 'yellow door'
           
           ;avance "Event_door":
-          mov Event_door,4
+          mov whichKey,0
           ;draw orrange key:
             draw_orangekey:
                 mov dl,38
@@ -662,8 +676,7 @@ main:
                 int 10h       
                 PRINT 216
           ;remet le cursor a sa position d'origine:
-          mov dl,22  ;pas la position d'origine pour eviter d'effacer la porte:
-          mov dh,6
+          call Load_PlayerLoc
           ;setcursor:
           mov ah, 02h
           mov bh, 00
@@ -675,7 +688,7 @@ main:
    ;commande a ajouter dans la fonction de la derniere porte (pour gagner):
           jmp win
           
-    
+          
   
   
   
@@ -775,7 +788,25 @@ main:
                
     clear_oldmessage endp
      
-     
+   Save_PlayerLoc proc near
+    
+     mov DhPlayer,dh
+     mov DlPlayer,dl
+       
+        ret
+       
+               
+    Save_PlayerLoc endp 
+   
+   Load_PlayerLoc proc near
+    
+     mov dh,DhPlayer
+     mov dl,DlPlayer
+       
+        ret
+       
+               
+    Load_PlayerLoc endp 
    
    
    UpdateInv proc near
@@ -805,7 +836,7 @@ main:
      testhavekey2:
              cmp whichKey,2
              je Draw_on_key2
-             jmp end_UpdateInv
+             jmp testhavekey3
              Draw_on_key2:
              ;ajoute de la couleur a la clef debloquer
              mov dl,67
@@ -823,8 +854,29 @@ main:
              mov bh, 00
              int 10h       
              PRINT 216        
-             
-              
+             jmp end_UpdateInv
+        testhavekey3:
+             cmp whichKey,3
+             je Draw_on_key3
+             jmp end_UpdateInv
+             Draw_on_key3:
+             ;ajoute de la couleur a la clef debloquer
+             mov dl,67
+             mov dh,4
+             mov bh, 0
+             mov ah, 0x2
+             int 0x10
+             mov cx, 1 ; nb char
+             mov bh, 0
+             mov bl, 0x70 ; color
+             mov al, 0x20 ; blank char
+             mov ah, 0x9
+             int 0x10 
+             mov ah, 02h
+             mov bh, 00
+             int 10h       
+             PRINT 216        
+                   
              end_UpdateInv:    
              ret
         
