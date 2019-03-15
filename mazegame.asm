@@ -497,7 +497,8 @@ main:
             mov bh, 00
             int 10h 
             mov Event_key,4
-            jmp inside_loop        
+            ret
+                    
         display_nokeymessage:
         
             ;ret ; display_nokeymessage desactiver en attente de mise a jour:
