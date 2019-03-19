@@ -534,7 +534,7 @@ main:
             mov bh, 00
             int 10h
             
-            ret
+            jmp inside_loop
                   
    opendoor1:
           call Save_PlayerLoc
@@ -775,7 +775,7 @@ main:
         
    
     
-   theEnd:
+   
    clear_oldmessage proc near
         mov dl,62
         mov dh,6 
