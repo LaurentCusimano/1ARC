@@ -89,6 +89,9 @@ init_var:
     DhPlayer Db 1
     DlPlayer Db 1
     
+    mov DhPlayer,21
+    mov DlPlayer,3
+    
     
     jmp inside_loop
 
