@@ -181,6 +181,10 @@ main:
     cmp al, 4Dh  ;if rightarrow
     je Right
     
+    ;other
+    cmp al, 27 ;if "ecs":
+    je give_up
+    
     jmp main
             
  
