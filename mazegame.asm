@@ -94,50 +94,9 @@ init_var:
 
 main: 
   
-     jmp inside_loop 
-    keytest:
-            nokeytest:
-            cmp whichKey,0
-            je display_nokeymessage
-            jmp redkeytest   
-          
-     
-           redkeytest:
-                
-                        cmp whichKey,1
-                        je opendoor1
-                        jmp bluekeytest
-                         
-                  
-                
-       
-                
-            bluekeytest:
-                
-            
-                    cmp whichKey,2
-                    je opendoor2            
-                    jmp yellowkeytest
-        
-                         
-               yellowkeytest:
-                
-            
-                    cmp whichKey,3
-                    je opendoor3            
-                    
-                    ret
-                    
-                    
-                
+      
     
-  
-        
-        
-        
-        
-        
-        
+     
        
     
     inside_loop:
@@ -385,6 +344,47 @@ main:
         mov ColliderDetected,'y'
         ret
      
+   
+   
+    keytest:
+            nokeytest:
+            cmp whichKey,0
+            je display_nokeymessage
+            jmp redkeytest   
+          
+     
+           redkeytest:
+                
+                        cmp whichKey,1
+                        je opendoor1
+                        jmp bluekeytest
+                         
+                  
+                
+       
+                
+            bluekeytest:
+                
+            
+                    cmp whichKey,2
+                    je opendoor2            
+                    jmp yellowkeytest
+        
+                         
+               yellowkeytest:
+                
+            
+                    cmp whichKey,3
+                    je opendoor3            
+                    
+                    ret
+                    
+                    
+   
+   
+   
+   
+   
    objectpickup:
         key1check:
             cmp Event_key,1
@@ -706,7 +706,7 @@ main:
         mov bh, 00
         int 10h       
         
-        PRINT 'You give up...:('
+        PRINT 'You gave up...:('
         ADD dh ,1
         mov ah, 02h
         mov bh, 00
@@ -952,7 +952,7 @@ dw '$',0ah,0dh
        
        
         
-       
+       theEnd:
        
        DEFINE_CLEAR_SCREEN
        DEFINE_PRINT_NUM 
