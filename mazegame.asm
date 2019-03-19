@@ -68,7 +68,7 @@ start_maze_game:
 
     call CLEAR_SCREEN
     call set_background_color
-    include "maze.asm" 
+    include "maze_test.asm" 
     ;end of maze_creator_forgame = "jmp init_var"
           
 init_var:
@@ -123,22 +123,7 @@ main:
     cmp al, 100   ;if "d"
     je Right
 
-     ;controls with arrows                  
-    
-   cmp al, 274;if downarrow
-    je Down 
 
-               
-    cmp al, 273   ;if uparrow
-    je Up
-
-    
-    cmp al, 276  ;if leftarrow
-    je Left
-
-    
-    cmp al, 275  ;if rightarrow
-    je Right
     
     ;other
     cmp al, 27 ;if "ecs":
