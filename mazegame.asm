@@ -68,7 +68,7 @@ start_maze_game:
 
     call CLEAR_SCREEN
     call set_background_color
-    include "maze_test.asm" 
+    include "maze.asm" 
     ;end of maze_creator_forgame = "jmp init_var"
           
 init_var:
@@ -490,6 +490,7 @@ main:
                     
         display_nokeymessage:
         
+            call CollidYes
             ;ret ; display_nokeymessage desactiver en attente de mise a jour:
             call Save_PlayerLoc
             call clear_oldmessage
@@ -519,7 +520,7 @@ main:
             mov bh, 00
             int 10h
             
-            jmp inside_loop
+            ret
                   
    opendoor1:
           call Save_PlayerLoc
