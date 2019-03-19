@@ -538,7 +538,7 @@ main:
                   
    opendoor1:
           call Save_PlayerLoc
-          call clear_player
+          ;call clear_player
           call clear_oldmessage
           
           mov dl,62
