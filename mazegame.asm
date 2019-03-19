@@ -125,19 +125,19 @@ main:
 
      ;controls with arrows                  
     
-   cmp al, 50h  ;if downarrow
+   cmp al, 274;if downarrow
     je Down 
 
-    
-    cmp al, 48h   ;if uparrow
+               
+    cmp al, 273   ;if uparrow
     je Up
 
     
-    cmp al, 4Bh  ;if leftarrow
+    cmp al, 276  ;if leftarrow
     je Left
 
     
-    cmp al, 4Dh  ;if rightarrow
+    cmp al, 275  ;if rightarrow
     je Right
     
     ;other
