@@ -8,7 +8,7 @@ include emu8086.inc
         
     
     
-    jmp draw_OrangeANDGreenzone
+    ;jmp draw_OrangeANDGreenzone
    draw_maze_contour:
         mov dl,1
         mov dh,0
@@ -506,7 +506,107 @@ include emu8086.inc
         call SetCursor
         PRINT 205  
          
+        draw_wall5_OrangeANDGreenzone_p15:
+        
+        mov dl,41
+        mov dh,16
+        call SetCursor
+        PRINT 205
+        draw_wall5_OrangeANDGreenzone_p16:
+        sub dl,1
+        call SetCursor
+        PRINT 205
+        cmp dl,38
+        je draw_wall5_OrangeANDGreenzone_p17
+        loop draw_wall5_OrangeANDGreenzone_p16
+        
+        draw_wall5_OrangeANDGreenzone_p17:
+         sub dl,1
+        call SetCursor
+        PRINT 201
+        
+        add dh,1
+        call SetCursor
+        PRINT 186
+        
+        
+        add dh,1
+        call SetCursor
+        PRINT 202
+        
+        draw_wall5_OrangeANDGreenzone_p18:
+         sub dl,1
+        call SetCursor
+        PRINT 205
+        cmp dl,31
+        je draw_wall5_OrangeANDGreenzone_p19
+        loop draw_wall5_OrangeANDGreenzone_p18
+        
+        draw_wall5_OrangeANDGreenzone_p19:
+        
+         sub dl,1
+        call SetCursor
+        PRINT 201
+        
+         add dh,1
+        call SetCursor
+        PRINT 186  
+        
+        add dh,1
+        call SetCursor
+        PRINT 202
+        
+         sub dl,1
+        call SetCursor
+        PRINT 205 
+        
+        sub dl,1
+        call SetCursor
+        PRINT 205
+        
+        sub dl,1
+        call SetCursor
+        PRINT 205
+        
+        mov dl,30
+         call SetCursor  
          
+        draw_wall5_OrangeANDGreenzone_p20:
+        add dl,1
+        call SetCursor
+        PRINT 205
+        cmp dl,35
+        je draw_wall5_OrangeANDGreenzone_p21
+        loop draw_wall5_OrangeANDGreenzone_p20
+        
+        draw_wall5_OrangeANDGreenzone_p21:
+        mov dl,38
+        mov dh,18
+        call SetCursor
+        PRINT 205
+          
+        draw_wall5_OrangeANDGreenzone_p22:
+         
+       add dl,1
+       call SetCursor
+        PRINT 205
+        cmp dl,42
+        je draw_wall5_OrangeANDGreenzone_p23
+        loop draw_wall5_OrangeANDGreenzone_p22 
+        
+        
+        draw_wall5_OrangeANDGreenzone_p23:
+        add dl,1
+       call SetCursor
+        PRINT 187
+         
+         add dh,1
+       call SetCursor
+        PRINT 186 
+        
+        add dh,1
+       call SetCursor
+        PRINT 186
                 
           draw_hero:
             
