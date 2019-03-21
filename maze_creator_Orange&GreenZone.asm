@@ -1116,7 +1116,47 @@ include emu8086.inc
           call SetCursor
           PRINT 205
           
-         
+         draw_object_OrangeANDGreenzone:
+   
+            draw_Orangedoor:
+                ;object(door) spawn draw 
+                ;cursor pos:
+                mov dl,51 
+                mov dh,19
+                mov bh, 0
+                mov ah, 0x2
+                int 0x10
+                mov cx, 1 ; nb char
+                mov bh, 0
+                mov bl, 0x80 ; color
+                mov al, 0x20 ; blank char
+                mov ah, 0x9
+                int 0x10 
+                mov ah, 02h
+                mov bh, 00
+                int 10h 
+                PRINT 177
+                
+                
+            draw_Greendoor:
+                ;object(door) spawn draw 
+                ;cursor pos:
+                mov dl,60 
+                mov dh,2
+                mov bh, 0
+                mov ah, 0x2
+                int 0x10
+                mov cx, 1 ; nb char
+                mov bh, 0
+                mov bl, 0x60 ; color
+                mov al, 0x20 ; blank char
+                mov ah, 0x9
+                int 0x10 
+                mov ah, 02h
+                mov bh, 00
+                int 10h 
+                PRINT 177 
+                
                       
           
           drawhero:
