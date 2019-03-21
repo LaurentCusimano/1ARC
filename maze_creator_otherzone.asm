@@ -100,56 +100,7 @@ include emu8086.inc
           
         
      
-      draw_inv: 
-      jmp draw_redzone
-        mov dl,63
-        mov dh,-1
-        draw_leftinv:
-        
-            add dh,1
-            ;setcursor:
-            mov ah, 02h
-            mov bh, 00
-            int 10h
-            ;wall:       
-            PRINT 'I' 
-            cmp dh,5
-            je draw_downinv
-            loop draw_leftinv
     
-        draw_downinv:
-            add dl,1
-            ;setcursor:
-            mov ah, 02h
-            mov bh, 00
-            int 10h
-            ;wall:       
-            PRINT '-' 
-            cmp dl,75
-            je draw_rightinv
-           loop draw_downinv
-        
-        draw_rightinv:
-            sub dh,1
-            ;setcursor:
-            mov ah, 02h
-            mov bh, 00
-            int 10h
-            ;wall:       
-            PRINT 'I' 
-            cmp dh,0
-            je draw_textinv
-           loop draw_rightinv
-           
-          draw_textinv:
-                mov dl,65
-                mov dh,2
-                ;setcursor:
-                mov ah, 02h
-                mov bh, 00
-                int 10h
-                ;key:       
-                PRINT 'Inventory'
             
            
           
@@ -157,7 +108,7 @@ include emu8086.inc
                 
                 
                 
-     draw_redzone:
+    draw_redzone:
      
      draw_wall1_redzone:
      
@@ -209,7 +160,7 @@ include emu8086.inc
           PRINT 203
           
           draw_wall2_redzone_p4:
-           mov dl,9
+           mov dl,8
            mov dh,16
            call SetCursor
            PRINT 203
@@ -236,7 +187,7 @@ include emu8086.inc
           
         draw_wall4_redzone:
      
-           mov dl,9
+           mov dl,8
            mov dh,16
            
            draw_wall4_redzone_p1:
@@ -678,13 +629,13 @@ include emu8086.inc
          
           
        draw_internalwall3_yellowzone: 
-       mov dl,3
+       mov dl,1
        mov dh,5
        call SetCursor
        PRINT 204
        
        
-       mov dl,3
+       mov dl,2
        mov dh,5
        call SetCursor
        PRINT 205
@@ -772,7 +723,9 @@ include emu8086.inc
        PRINT 205
        cmp dl,12
        je draw_OrangeANDGreenzone
-       loop draw_internalwall4_yellowzone_p1 
+       loop draw_internalwall4_yellowzone_p1
+       
+        
        
        
        draw_OrangeANDGreenzone:

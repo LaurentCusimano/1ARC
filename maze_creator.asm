@@ -8,26 +8,18 @@ include emu8086.inc
         
     
     
-    ;jmp draw_rules
+    
    draw_maze_contour:
         mov dl,1
         mov dh,0
         draw_topleft_coner:
-        ;setcursor:
-            mov ah, 02h
-            mov bh, 00
-            int 10h
-            ;wall:       
+        call SetCursor       
             PRINT 201
         
         draw_topmaze:
         
             add dl,1
-            ;setcursor:
-            mov ah, 02h
-            mov bh, 00
-            int 10h
-            ;wall:       
+            call SetCursor       
             PRINT 205 
             cmp dl,60
             je draw_topright_coner
@@ -35,62 +27,37 @@ include emu8086.inc
         
         draw_topright_coner:
             add dl,1
-            ;setcursor:
-            mov ah, 02h
-            mov bh, 00
-            int 10h                   
+            call SetCursor                  
             PRINT 187
         
     
         draw_downmaze:
             add dh,1
-            ;setcursor:
-            mov ah, 02h
-            mov bh, 00
-            int 10h
-            ;wall:       
+            call SetCursor       
             PRINT 186 
             cmp dh,21
             je draw_bottomright_coner
            loop draw_downmaze
            
         draw_bottomright_coner:
-            ;setcursor:
-            add dh,1
-            mov ah, 02h
-            mov bh, 00
-            int 10h
-            ;wall:       
+            call SetCursor      
             PRINT 188
         
         draw_bottommaze:
             sub dl,1
-            ;setcursor:
-            mov ah, 02h
-            mov bh, 00
-            int 10h
-            ;wall:       
+            call SetCursor       
             PRINT 205 
             cmp dl,2
             je draw_bottomleft_coner
            loop draw_bottommaze
            
          draw_bottomleft_coner:
-            ;setcursor:
-            sub dl,1
-            mov ah, 02h
-            mov bh, 00
-            int 10h
-            ;wall:       
+            call SetCursor       
             PRINT 200 
         
         draw_upmaze:
             sub dh,1
-            ;setcursor:
-            mov ah, 02h
-            mov bh, 00
-            int 10h
-            ;wall:       
+            call SetCursor       
             PRINT 186 
             cmp dh,1
             je draw_inv
@@ -98,20 +65,14 @@ include emu8086.inc
            
            
           
-        
-     
       draw_inv: 
-      jmp draw_redzone
+      
         mov dl,63
         mov dh,-1
         draw_leftinv:
         
             add dh,1
-            ;setcursor:
-            mov ah, 02h
-            mov bh, 00
-            int 10h
-            ;wall:       
+            call SetCursor       
             PRINT 'I' 
             cmp dh,5
             je draw_downinv
@@ -119,11 +80,7 @@ include emu8086.inc
     
         draw_downinv:
             add dl,1
-            ;setcursor:
-            mov ah, 02h
-            mov bh, 00
-            int 10h
-            ;wall:       
+            call SetCursor      
             PRINT '-' 
             cmp dl,75
             je draw_rightinv
@@ -131,11 +88,7 @@ include emu8086.inc
         
         draw_rightinv:
             sub dh,1
-            ;setcursor:
-            mov ah, 02h
-            mov bh, 00
-            int 10h
-            ;wall:       
+            call SetCursor       
             PRINT 'I' 
             cmp dh,0
             je draw_textinv
@@ -144,20 +97,14 @@ include emu8086.inc
           draw_textinv:
                 mov dl,65
                 mov dh,2
-                ;setcursor:
-                mov ah, 02h
-                mov bh, 00
-                int 10h
-                ;key:       
+                call SetCursor       
                 PRINT 'Inventory'
             
            
-          
-                
-                
-                
-                
-     draw_redzone:
+     
+        
+
+         draw_redzone:
      
      draw_wall1_redzone:
      
@@ -209,7 +156,7 @@ include emu8086.inc
           PRINT 203
           
           draw_wall2_redzone_p4:
-           mov dl,9
+           mov dl,8
            mov dh,16
            call SetCursor
            PRINT 203
@@ -236,7 +183,7 @@ include emu8086.inc
           
         draw_wall4_redzone:
      
-           mov dl,9
+           mov dl,8
            mov dh,16
            
            draw_wall4_redzone_p1:
@@ -678,13 +625,13 @@ include emu8086.inc
          
           
        draw_internalwall3_yellowzone: 
-       mov dl,3
+       mov dl,1
        mov dh,5
        call SetCursor
        PRINT 204
        
        
-       mov dl,3
+       mov dl,2
        mov dh,5
        call SetCursor
        PRINT 205
@@ -772,7 +719,8 @@ include emu8086.inc
        PRINT 205
        cmp dl,12
        je draw_OrangeANDGreenzone
-       loop draw_internalwall4_yellowzone_p1 
+       loop draw_internalwall4_yellowzone_p1
+       
        
        
        draw_OrangeANDGreenzone:
@@ -1022,9 +970,7 @@ include emu8086.inc
          call SetCursor 
          PRINT 205
          
-         sub dl,1
-         call SetCursor 
-         PRINT 205
+         
          
          sub dl,1
          call SetCursor 
@@ -1627,9 +1573,7 @@ include emu8086.inc
          call SetCursor
          PRINT 186 
          
-         sub dh,1
-         call SetCursor
-         PRINT 186
+         
          
          sub dh,1
          call SetCursor
@@ -1793,17 +1737,23 @@ include emu8086.inc
           call SetCursor
           PRINT 205
           
-         
-        
-       
-       
-       
-       
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
           
-          
-        
-     
-          ;jmp draw_hero
         
      draw_object_redzone:
         ;object(1stkey RED) spawn draw 
@@ -1889,16 +1839,52 @@ include emu8086.inc
                 int 10h 
                 PRINT 177
     
-    
+          draw_object_OrangeANDGreenzone:
+   
+            draw_Orangedoor:
+                ;object(door) spawn draw 
+                ;cursor pos:
+                mov dl,51 
+                mov dh,19
+                mov bh, 0
+                mov ah, 0x2
+                int 0x10
+                mov cx, 1 ; nb char
+                mov bh, 0
+                mov bl, 0x80 ; color
+                mov al, 0x20 ; blank char
+                mov ah, 0x9
+                int 0x10 
+                mov ah, 02h
+                mov bh, 00
+                int 10h 
+                PRINT 177
+                
+                
+            draw_Greendoor:
+                ;object(door) spawn draw 
+                ;cursor pos:
+                mov dl,60 
+                mov dh,2
+                mov bh, 0
+                mov ah, 0x2
+                int 0x10
+                mov cx, 1 ; nb char
+                mov bh, 0
+                mov bl, 0x60 ; color
+                mov al, 0x20 ; blank char
+                mov ah, 0x9
+                int 0x10 
+                mov ah, 02h
+                mov bh, 00
+                int 10h 
+                PRINT 177
    
           draw_rules:
           
             mov dl,63
             mov dh,18
-            ;setcursor:
-              mov ah, 02h
-              mov bh, 00
-              int 10h
+            call SetCursor
               
               PRINT ':) -> YOU'
             
@@ -1906,60 +1892,39 @@ include emu8086.inc
             
               add dh,1
               add dl,1
-              ;setcursor:
-              mov ah, 02h
-              mov bh, 00
-              int 10h
+              call SetCursor
               
               PRINT 216
               
               add dl,2
-              ;setcursor:
-              mov ah, 02h
-              mov bh, 00
-              int 10h
+              call SetCursor
               
               PRINT '-> A KEY'
             
             
               add dh,1
               sub dl,2
-              ;setcursor:
-              mov ah, 02h
-              mov bh, 00
-              int 10h
+              call SetCursor
               
               PRINT 177
               
               add dl,2
-              ;setcursor:
-              mov ah, 02h
-              mov bh, 00
-              int 10h
+              call SetCursor
               
               PRINT '-> A DOOR'
             
             
             add dh,1
             sub dl,3
-            ;setcursor:
-             mov ah, 02h
-             mov bh, 00
-             int 10h
+            call SetCursor
              PRINT 'REDkey open'
             
             add dh,1
-            ;setcursor:
-              mov ah, 02h
-              mov bh, 00
-              int 10h
+            call SetCursor
             PRINT 'REDdoor'
             
             add dh,1 
-            ;setcursor:
-              mov ah, 02h
-              mov bh, 00
-              int 10h
+            call SetCursor
               mov cx, 1 ; nb char
             mov bh, 0
             mov bl, 0x40 ; color
@@ -1972,19 +1937,13 @@ include emu8086.inc
             PRINT 216    
                 
              add dl,2
-             ;setcursor:
-              mov ah, 02h
-              mov bh, 00
-              int 10h
+             call SetCursor
               PRINT '---->'
               
               add dl,6
              
             
-            ;setcursor:
-              mov ah, 02h
-              mov bh, 00
-              int 10h
+            call SetCursor
                 mov cx, 1 ; nb char
                 mov bh, 0
                 mov bl, 0x40 ; color
@@ -2004,10 +1963,7 @@ include emu8086.inc
               mov dl, 2 ; column
               mov dh, 21 ; row 
 
-              ;setcursor:
-              mov ah, 02h
-              mov bh, 00
-              int 10h
+              call SetCursor
         
               PRINT ':)'  
               

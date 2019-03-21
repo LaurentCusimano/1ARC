@@ -345,9 +345,7 @@ include emu8086.inc
          call SetCursor 
          PRINT 205
          
-         sub dl,1
-         call SetCursor 
-         PRINT 205
+         
          
          sub dl,1
          call SetCursor 
@@ -950,9 +948,7 @@ include emu8086.inc
          call SetCursor
          PRINT 186 
          
-         sub dh,1
-         call SetCursor
-         PRINT 186
+         
          
          sub dh,1
          call SetCursor
