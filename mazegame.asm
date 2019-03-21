@@ -74,6 +74,12 @@ start_maze_game:
 init_var:
     ColliderDetected DB 'n';passe a 'y' si une collision est detecte
     
+    IsGreen DB 'n';passe a 'y' si la clef verte est rammasse
+    
+    AlreadyWin DB 'y';passe a 'y' si le joueur a deja gagner une partie
+    
+    EE_eggs Dw 0 ;nombre d'oeuf rammasser
+    
     Event_door Dw 1 ;eviter duplication d'evenement door
     mov Event_door,1 
     Event_key Dw 1 ;(peut ne plus etre necessaire);eviter duplication d'evenement key
@@ -91,6 +97,23 @@ init_var:
     
     mov DhPlayer,21
     mov DlPlayer,3
+    
+    
+    
+    cmp AlreadyWin,'y'
+    je draw_EEguy
+    jmp inside_loop
+    
+    draw_EEguy: 
+    
+    mov dl,19
+    mov dh,17
+    call SetCursor
+    PRINT 001 
+    
+    
+    
+    
     
     
     jmp inside_loop
@@ -312,11 +335,17 @@ main:
        cmp al,186 
        je CollidYes 
        
-       
+       ;EEguy
+       cmp al,011 
+       je EasterEgg_Activate
        
        ;door
        cmp al,177 
        je keytest
+       
+        eggs:
+        cmp al,248
+        je eggs_collected 
        
        ;key
        cmp al,216 
@@ -331,8 +360,68 @@ main:
     CollidYes:
         mov ColliderDetected,'y'
         ret
+    
+     eggs_collected:
      
-   
+     
+    
+      add EE_eggs,1 
+      
+      
+      call Save_PlayerLoc
+            call clear_oldmessage
+            mov dl,62
+            mov dh,6
+            ;setcursor:
+            mov ah, 02h
+            mov bh, 00
+            int 10h
+          
+            ;message pour prevenir de l'obtention de l'objet  
+            PRINT 'You found'
+            mov dl,62
+            mov dh,7
+            ;setcursor:
+            mov ah, 02h
+            mov bh, 00
+            int 10h
+          
+            PRINT 'an eggs :D'
+             
+            
+            call Load_PlayerLoc
+      
+      
+      
+      cmp EE_eggs,13
+      je win_EE
+      ret
+    EasterEgg_Activate:
+     call CollidYes
+     call Save_PlayerLoc
+            call clear_oldmessage
+            mov dl,62
+            mov dh,6
+            ;setcursor:
+            mov ah, 02h
+            mov bh, 00
+            int 10h
+          
+            ;message pour prevenir de l'obtention de l'objet  
+            PRINT 'Hello can u'
+            mov dl,62
+            mov dh,7
+            ;setcursor:
+            mov ah, 02h
+            mov bh, 00
+            int 10h
+          
+            PRINT 'Find my eggs?:P'
+             
+            include "EE.asm"
+            call Load_PlayerLoc
+            ret
+     
    
     keytest:
             nokeytest:
@@ -368,7 +457,27 @@ main:
                     ret
                     
                     
-   
+              OrangeAndGreenkeytest:
+                
+            
+                    cmp whichKey,4
+                    je GreenOrOrange
+                    
+                    cmp whichKey,5
+                    je GreenOrOrange 
+                    jmp havenokey           
+                    
+                    GreenOrOrange:
+                    
+                    cmp IsGreen,'y'
+                    je opendoor5
+                    
+                    jmp opendoor4 
+                    
+                    
+                    
+                    havenokey:
+                    ret
    
    
    
@@ -489,6 +598,76 @@ main:
             mov bh, 00
             int 10h 
             mov Event_key,4
+            ret
+            
+            
+            key4pickup:
+            call Save_PlayerLoc
+            call clear_oldmessage
+            mov dl,62
+            mov dh,6
+            ;setcursor:
+            mov ah, 02h
+            mov bh, 00
+            int 10h
+          
+            ;message pour prevenir de l'obtention de l'objet  
+            PRINT 'You have found'
+            mov dl,62
+            mov dh,7
+            ;setcursor:
+            mov ah, 02h
+            mov bh, 00
+            int 10h
+          
+            PRINT ' a Orangekey' 
+            ;stock cette info dans une variable:
+            mov whichKey,4
+            ;met a jour "Event_door" pour pouvoir ressayer d'ouvrir la porte associer:
+            mov Event_door,4 
+            call UpdateInv
+            ;remet le cursor a sa position d'origine:
+            call Load_PlayerLoc
+            ;setcursor:
+            mov ah, 02h
+            mov bh, 00
+            int 10h 
+            mov Event_key,5
+            ret 
+            
+            key5pickup:
+            call Save_PlayerLoc
+            call clear_oldmessage
+            mov dl,62
+            mov dh,6
+            ;setcursor:
+            mov ah, 02h
+            mov bh, 00
+            int 10h
+          
+            ;message pour prevenir de l'obtention de l'objet  
+            PRINT 'You have found'
+            mov dl,62
+            mov dh,7
+            ;setcursor:
+            mov ah, 02h
+            mov bh, 00
+            int 10h
+          
+            PRINT ' a Greenkey' 
+            ;stock cette info dans une variable:
+            mov whichKey,5
+            mov IsGreen,'y' ; indique que la green key a été rammaser
+            ;met a jour "Event_door" pour pouvoir ressayer d'ouvrir la porte associer:
+            mov Event_door,5 
+            call UpdateInv
+            ;remet le cursor a sa position d'origine:
+            call Load_PlayerLoc
+            ;setcursor:
+            mov ah, 02h
+            mov bh, 00
+            int 10h 
+            mov Event_key,6
             ret
                     
         display_nokeymessage:
@@ -675,11 +854,81 @@ main:
           mov ah, 02h
           mov bh, 00
           int 10h     
+          ret
           
+          opendoor4:
+          call Save_PlayerLoc
+          call clear_player
+          call clear_oldmessage
           
+          mov dl,62
+          mov dh,6
+          ;setcursor:
+          mov ah, 02h
+          mov bh, 00
+          int 10h 
           
+          PRINT 'you have open'
+          mov dl,62
+          mov dh,7
+          ;setcursor:
+          mov ah, 02h
+          mov bh, 00
+          int 10h
           
-   ;commande a ajouter dans la fonction de la derniere porte (pour gagner):
+          PRINT 'Orange door'
+          
+          ;avance "Event_door":
+          mov whichKey,0
+          ;draw orrange key:
+            draw_Greenkey:
+                mov dl,60
+                mov dh,16
+                mov bh, 0
+                mov ah, 0x2
+                int 0x10
+                mov cx, 1 ; nb char
+                mov bh, 0
+                mov bl, 0x70 ; color
+                mov al, 0x20 ; blank char
+                mov ah, 0x9
+                int 0x10 
+                mov ah, 02h
+                mov bh, 00
+                int 10h       
+                PRINT 216
+          ;remet le cursor a sa position d'origine:
+          call Load_PlayerLoc
+          ;setcursor:
+          mov ah, 02h
+          mov bh, 00
+          int 10h     
+          ret
+          
+          opendoor5:
+          call Save_PlayerLoc
+          call clear_player
+          call clear_oldmessage
+          
+          mov dl,62
+          mov dh,6
+          ;setcursor:
+          mov ah, 02h
+          mov bh, 00
+          int 10h 
+          
+          PRINT 'you have open'
+          mov dl,62
+          mov dh,7
+          ;setcursor:
+          mov ah, 02h
+          mov bh, 00
+          int 10h
+          
+          PRINT 'Green door'
+         
+                    
+          ;commande a ajouter dans la fonction de la derniere porte (pour gagner):
           jmp win
           
           
@@ -760,7 +1009,59 @@ main:
             jmp theEnd
 
            
-                                                    
+    win_EE: 
+    
+    call CLEAR_SCREEN
+        call set_background_color
+        mov dl,22
+        mov dh,10 
+        mov ah, 02h
+        mov bh, 00
+        int 10h       
+        
+        PRINT 'You find all the eggs :D awesome!'
+        ADD dh ,1
+        sub dl,8
+        mov ah, 02h
+        mov bh, 00
+        int 10h
+        
+        PRINT 'press ENTER key to go back on the menu'
+        
+        add dh,1
+        add dl,16 
+        mov ah, 02h
+        mov bh, 00 
+        int 10h
+        
+        PRINT 'Or press any other key to quit the game'
+        
+        
+                            
+            
+         mov dl,26
+         mov dh,15
+         call SetCursor
+         
+         PRINT 'you move '
+        MOV ax,MovesCount
+  
+
+       
+            call PRINT_NUM   
+            
+             PRINT 'times'
+            
+            
+            ;test les key pressed:
+            mov ah, 0h
+            int 16h                                              
+    
+    
+            cmp al, 13 ;if "enter":
+            je Menu 
+
+            jmp theEnd                                               
         
    
     
@@ -852,10 +1153,54 @@ main:
         testhavekey3:
              cmp whichKey,3
              je Draw_on_key3
-             jmp end_UpdateInv
+             jmp testhavekey4
              Draw_on_key3:
              ;ajoute de la couleur a la clef debloquer
              mov dl,69
+             mov dh,4
+             mov bh, 0
+             mov ah, 0x2
+             int 0x10
+             mov cx, 1 ; nb char
+             mov bh, 0
+             mov bl, 0x70 ; color
+             mov al, 0x20 ; blank char
+             mov ah, 0x9
+             int 0x10 
+             mov ah, 02h
+             mov bh, 00
+             int 10h       
+             PRINT 216
+             
+           testhavekey4:
+             cmp whichKey,4
+             je Draw_on_key4
+             jmp testhavekey5
+             Draw_on_key4:
+             ;ajoute de la couleur a la clef debloquer
+             mov dl,71
+             mov dh,4
+             mov bh, 0
+             mov ah, 0x2
+             int 0x10
+             mov cx, 1 ; nb char
+             mov bh, 0
+             mov bl, 0x70 ; color
+             mov al, 0x20 ; blank char
+             mov ah, 0x9
+             int 0x10 
+             mov ah, 02h
+             mov bh, 00
+             int 10h       
+             PRINT 216
+             
+           testhavekey5:
+             cmp whichKey,5
+             je Draw_on_key5
+             jmp end_UpdateInv
+             Draw_on_key5:
+             ;ajoute de la couleur a la clef debloquer
+             mov dl,73
              mov dh,4
              mov bh, 0
              mov ah, 0x2
@@ -878,7 +1223,7 @@ main:
    
    clear_player proc near
     ;delete last player position 
-        
+            jmp skipcolor
             mov bh, 0
             mov ah, 0x2
             int 0x10
@@ -891,13 +1236,14 @@ main:
             mov ah, 02h
             mov bh, 00
             int 10h
-                  
+        skipcolor:          
         PRINT '  '       
         ret
         
     clear_player endp 
    
    set_background_color proc near
+    ret
     mov dx, 0 ; Set cursor to top left-most corner of screen
     mov bh, 0
     mov ah, 0x2

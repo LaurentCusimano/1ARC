@@ -93,7 +93,7 @@ include emu8086.inc
             ;wall:       
             PRINT 186 
             cmp dh,1
-            je draw_inv
+            je draw_redzone
            loop draw_upmaze 
            
            
