@@ -76,7 +76,7 @@ init_var:
     
     IsGreen DB 'n';passe a 'y' si la clef verte est rammasse
     
-    AlreadyWin DB 'y';passe a 'y' si le joueur a deja gagner une partie
+    AlreadyWin DB 'n';passe a 'y' si le joueur a deja gagner une partie
     
     EE_eggs Dw 0 ;nombre d'oeuf rammasser
     
@@ -110,11 +110,6 @@ init_var:
     mov dh,17
     call SetCursor
     PRINT 001 
-    
-    
-    
-    
-    
     
     jmp inside_loop
 
