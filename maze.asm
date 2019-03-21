@@ -30,6 +30,7 @@
            loop draw_downmaze
            
         draw_bottomright_coner:
+            add dh,1
             call SetCursor      
             PRINT 188
         
@@ -42,6 +43,7 @@
            loop draw_bottommaze
            
          draw_bottomleft_coner:
+            sub dl,1
             call SetCursor       
             PRINT 200 
         

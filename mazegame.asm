@@ -1223,7 +1223,7 @@ main:
    
    clear_player proc near
     ;delete last player position 
-            jmp skipcolor
+            
             mov bh, 0
             mov ah, 0x2
             int 0x10
@@ -1236,14 +1236,14 @@ main:
             mov ah, 02h
             mov bh, 00
             int 10h
-        skipcolor:          
+                  
         PRINT '  '       
         ret
         
     clear_player endp 
    
    set_background_color proc near
-    ret
+    
     mov dx, 0 ; Set cursor to top left-most corner of screen
     mov bh, 0
     mov ah, 0x2
