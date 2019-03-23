@@ -1,14 +1,4 @@
-org 100h
-
-include emu8086.inc 
-          
- 
-          
-   
-        
-    
-    
-    
+           
    draw_maze_contour:
         mov dl,1
         mov dh,0
@@ -1967,16 +1957,17 @@ include emu8086.inc
 
               call SetCursor
         
-              PRINT ':)'  
-              
-     SetCursor proc near
-     mov ah, 02h
-     mov bh, 00
-     int 10h
-     ret
-     SetCursor endp        
+              PRINT ':)'
+           
+   
+        
     
     
     
-    ret 
+            jmp init_var
+    
+   
+    
+    
+     
                   

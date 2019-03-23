@@ -338,7 +338,7 @@ main:
        cmp al,177 
        je keytest
        
-        eggs:
+        ;eggs
         cmp al,248
         je eggs_collected 
        

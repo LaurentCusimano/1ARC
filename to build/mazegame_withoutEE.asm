@@ -76,10 +76,7 @@ init_var:
     
     IsGreen DB 'n';passe a 'y' si la clef verte est rammasse
     
-    AlreadyWin DB 'n';passe a 'y' si le joueur a deja gagner une partie
-    
-    EE_eggs Dw 0 ;nombre d'oeuf rammasser
-    
+     
     Event_door Dw 1 ;eviter duplication d'evenement door
     mov Event_door,1 
     Event_key Dw 1 ;(peut ne plus etre necessaire);eviter duplication d'evenement key
@@ -98,18 +95,7 @@ init_var:
     mov DhPlayer,21
     mov DlPlayer,3
     
-    
-    
-    cmp AlreadyWin,'y'
-    je draw_EEguy
-    jmp inside_loop
-    
-    draw_EEguy: 
-    
-    mov dl,19
-    mov dh,17
-    call SetCursor
-    PRINT 001 
+       
     
     jmp inside_loop
 
@@ -330,17 +316,13 @@ main:
        cmp al,186 
        je CollidYes 
        
-       ;EEguy
-       cmp al,011 
-       je EasterEgg_Activate
+       
        
        ;door
        cmp al,177 
        je keytest
        
-        eggs:
-        cmp al,248
-        je eggs_collected 
+         
        
        ;key
        cmp al,216 
@@ -356,67 +338,7 @@ main:
         mov ColliderDetected,'y'
         ret
     
-     eggs_collected:
-     
-     
     
-      add EE_eggs,1 
-      
-      
-      call Save_PlayerLoc
-            call clear_oldmessage
-            mov dl,62
-            mov dh,6
-            ;setcursor:
-            mov ah, 02h
-            mov bh, 00
-            int 10h
-          
-            ;message pour prevenir de l'obtention de l'objet  
-            PRINT 'You found'
-            mov dl,62
-            mov dh,7
-            ;setcursor:
-            mov ah, 02h
-            mov bh, 00
-            int 10h
-          
-            PRINT 'an eggs :D'
-             
-            
-            call Load_PlayerLoc
-      
-      
-      
-      cmp EE_eggs,13
-      je win_EE
-      ret
-    EasterEgg_Activate:
-     call CollidYes
-     call Save_PlayerLoc
-            call clear_oldmessage
-            mov dl,62
-            mov dh,6
-            ;setcursor:
-            mov ah, 02h
-            mov bh, 00
-            int 10h
-          
-            ;message pour prevenir de l'obtention de l'objet  
-            PRINT 'Hello can u'
-            mov dl,62
-            mov dh,7
-            ;setcursor:
-            mov ah, 02h
-            mov bh, 00
-            int 10h
-          
-            PRINT 'Find my eggs?:P'
-             
-            include "EE.asm"
-            call Load_PlayerLoc
-            ret
-     
    
     keytest:
             nokeytest:
@@ -1004,59 +926,7 @@ main:
             jmp theEnd
 
            
-    win_EE: 
-    
-    call CLEAR_SCREEN
-        call set_background_color
-        mov dl,22
-        mov dh,10 
-        mov ah, 02h
-        mov bh, 00
-        int 10h       
-        
-        PRINT 'You find all the eggs :D awesome!'
-        ADD dh ,1
-        sub dl,8
-        mov ah, 02h
-        mov bh, 00
-        int 10h
-        
-        PRINT 'press ENTER key to go back on the menu'
-        
-        add dh,1
-        add dl,16 
-        mov ah, 02h
-        mov bh, 00 
-        int 10h
-        
-        PRINT 'Or press any other key to quit the game'
-        
-        
-                            
-            
-         mov dl,26
-         mov dh,15
-         call SetCursor
-         
-         PRINT 'you move '
-        MOV ax,MovesCount
-  
-
-       
-            call PRINT_NUM   
-            
-             PRINT 'times'
-            
-            
-            ;test les key pressed:
-            mov ah, 0h
-            int 16h                                              
-    
-    
-            cmp al, 13 ;if "enter":
-            je Menu 
-
-            jmp theEnd                                               
+                                                 
         
    
     
