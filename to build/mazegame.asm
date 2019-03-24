@@ -68,8 +68,12 @@ start_maze_game:
 
     call CLEAR_SCREEN
     call set_background_color
-    include "maze.asm" 
-    ;end of maze_creator_forgame = "jmp init_var"
+    include "maze_part1.asm" 
+    
+    maze_part2:
+     include "maze_part2.asm"
+   
+   
           
 init_var:
     ColliderDetected DB 'n';passe a 'y' si une collision est detecte
@@ -338,7 +342,7 @@ main:
        cmp al,177 
        je keytest
        
-        ;eggs
+        eggs:
         cmp al,248
         je eggs_collected 
        
