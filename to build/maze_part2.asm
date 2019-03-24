@@ -874,14 +874,11 @@ draw_OrangeANDGreenzone:
          
          
          draw_wall10_OrangeANDGreenzone:
-          mov dh,9
+          mov dh,10
           mov dl,27
           call SetCursor
-         PRINT 186
-         
-          add dh,1
-          call SetCursor
          PRINT 200
+         
          
           add dl,1
           call SetCursor
