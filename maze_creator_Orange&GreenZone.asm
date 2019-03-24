@@ -858,18 +858,19 @@ include emu8086.inc
         
         sub dl,1
         call SetCursor
-        PRINT 200
-        
-        
-        sub dh,1 
-        call SetCursor
-        PRINT 187
+        PRINT 205
         
         
         sub dl,1 
         call SetCursor
-        PRINT 202
+        PRINT 200
         
+        sub dh,1
+        call SetCursor
+        PRINT 185
+        
+        
+               
         sub dl,1 
         call SetCursor
         PRINT 202

@@ -745,7 +745,7 @@ draw_OrangeANDGreenzone:
          
          
          
-        draw_wall7_OrangeANDGreenzone_p6:
+         draw_wall7_OrangeANDGreenzone_p6:
         
         mov dl,32
         mov dh,8
@@ -758,18 +758,19 @@ draw_OrangeANDGreenzone:
         
         sub dl,1
         call SetCursor
-        PRINT 200
-        
-        
-        sub dh,1 
-        call SetCursor
-        PRINT 187
+        PRINT 205
         
         
         sub dl,1 
         call SetCursor
-        PRINT 202
+        PRINT 200
         
+        sub dh,1
+        call SetCursor
+        PRINT 185
+        
+        
+               
         sub dl,1 
         call SetCursor
         PRINT 202
@@ -803,6 +804,8 @@ draw_OrangeANDGreenzone:
         sub dl,1 
         call SetCursor
         PRINT 201
+        
+         
         
          
          
