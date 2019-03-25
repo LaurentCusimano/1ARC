@@ -68,10 +68,10 @@ start_maze_game:
 
     call CLEAR_SCREEN
     call set_background_color
-    include "maze_part1.asm" 
     
-    maze_part2:
-     include "maze_part2.asm"
+    include "maze_test.asm" 
+    
+  
    
    
           
@@ -80,7 +80,7 @@ init_var:
     
     IsGreen DB 'n';passe a 'y' si la clef verte est rammasse
     
-    AlreadyWin DB 'n';passe a 'y' si le joueur a deja gagner une partie
+    AlreadyWin DB 'y';passe a 'y' si le joueur a deja gagner une partie
     
     EE_eggs Dw 0 ;nombre d'oeuf rammasser
     
@@ -113,8 +113,10 @@ init_var:
     mov dl,19
     mov dh,17
     call SetCursor
-    PRINT 001 
+    PRINT 001  
     
+    
+    call Load_PlayerLoc
     jmp inside_loop
 
 main: 
@@ -148,7 +150,22 @@ main:
     cmp al, 100   ;if "d"
     je Right
 
+      ;controls with arrows                  
+    
+   cmp ah, 50h  ;if downarrow
+    je Down 
 
+    
+    cmp ah, 48h   ;if uparrow
+    je Up
+
+    
+    cmp ah, 4Bh  ;if leftarrow
+    je Left
+
+    
+    cmp ah, 4Dh  ;if rightarrow
+    je Right
     
     ;other
     cmp al, 27 ;if "ecs":
@@ -335,7 +352,7 @@ main:
        je CollidYes 
        
        ;EEguy
-       cmp al,011 
+       cmp al,001 
        je EasterEgg_Activate
        
        ;door
@@ -453,7 +470,7 @@ main:
                     cmp whichKey,3
                     je opendoor3            
                     
-                    ret
+                    jmp OrangeAndGreenkeytest
                     
                     
               OrangeAndGreenkeytest:
@@ -468,13 +485,18 @@ main:
                     
                     GreenOrOrange:
                     
+                    cmp dl,60
+                    je isthatgreen
+                    jmp opendoor4
+                    
+                    isthatgreen:
                     cmp IsGreen,'y'
                     je opendoor5
                     
-                    jmp opendoor4 
                     
                     
                     
+                    jmp display_nokeymessage
                     havenokey:
                     ret
    
@@ -491,7 +513,17 @@ main:
             je key2pickup
         key3check:
             cmp Event_key,3
-            je key3pickup    
+            je key3pickup
+            
+        key4check:
+            cmp Event_key,4
+            je key4pickup
+            
+            
+            
+        key5check:
+            cmp Event_key,5
+            je key5pickup    
          
         
         ret
@@ -737,7 +769,7 @@ main:
                 int 0x10
                 mov cx, 1 ; nb char
                 mov bh, 0
-                mov bl, 0x10 ; color
+                mov bl, 0x50 ; color
                 mov al, 0x20 ; blank char
                 mov ah, 0x9
                 int 0x10 
@@ -788,7 +820,7 @@ main:
                 int 0x10
                 mov cx, 1 ; nb char
                 mov bh, 0
-                mov bl, 0x70 ; color
+                mov bl, 0x60 ; color
                 mov al, 0x20 ; blank char
                 mov ah, 0x9
                 int 0x10 
@@ -839,7 +871,7 @@ main:
                 int 0x10
                 mov cx, 1 ; nb char
                 mov bh, 0
-                mov bl, 0x70 ; color
+                mov bl, 0x30 ; color
                 mov al, 0x20 ; blank char
                 mov ah, 0x9
                 int 0x10 
@@ -888,7 +920,7 @@ main:
                 int 0x10
                 mov cx, 1 ; nb char
                 mov bh, 0
-                mov bl, 0x70 ; color
+                mov bl, 0x20 ; color
                 mov al, 0x20 ; blank char
                 mov ah, 0x9
                 int 0x10 
@@ -1140,7 +1172,7 @@ main:
              int 0x10
              mov cx, 1 ; nb char
              mov bh, 0
-             mov bl, 0x10 ; color
+             mov bl, 0x50 ; color
              mov al, 0x20 ; blank char
              mov ah, 0x9
              int 0x10 
@@ -1162,7 +1194,7 @@ main:
              int 0x10
              mov cx, 1 ; nb char
              mov bh, 0
-             mov bl, 0x70 ; color
+             mov bl, 0x60 ; color
              mov al, 0x20 ; blank char
              mov ah, 0x9
              int 0x10 
@@ -1184,7 +1216,7 @@ main:
              int 0x10
              mov cx, 1 ; nb char
              mov bh, 0
-             mov bl, 0x70 ; color
+             mov bl, 0x30 ; color
              mov al, 0x20 ; blank char
              mov ah, 0x9
              int 0x10 
@@ -1206,7 +1238,7 @@ main:
              int 0x10
              mov cx, 1 ; nb char
              mov bh, 0
-             mov bl, 0x70 ; color
+             mov bl, 0x20 ; color
              mov al, 0x20 ; blank char
              mov ah, 0x9
              int 0x10 
