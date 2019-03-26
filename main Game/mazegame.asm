@@ -69,9 +69,11 @@ start_maze_game:
     call CLEAR_SCREEN
     call set_background_color
     
-    include "maze_test.asm" 
-    
-  
+    ;include "maze_test.asm" 
+    include "maze_part1.asm" 
+     maze_part2:
+     
+     include "maze_part2.asm" 
    
    
           
