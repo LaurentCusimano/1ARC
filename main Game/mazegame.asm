@@ -969,6 +969,10 @@ main:
    give_up:
         call CLEAR_SCREEN
         call set_background_color
+        mov ah,09h
+        mov dh,0
+        mov dx, offset Give_up_str
+        int 21h
         mov dl,22
         mov dh,10 
         mov ah, 02h
@@ -989,6 +993,10 @@ main:
    win:
         call CLEAR_SCREEN
         call set_background_color
+        mov ah,09h
+        mov dh,0
+        mov dx, offset win_str
+        int 21h
         mov dl,22
         mov dh,10 
         mov ah, 02h
@@ -1044,6 +1052,10 @@ main:
     
     call CLEAR_SCREEN
         call set_background_color
+        mov ah,09h
+        mov dh,0
+        mov dx, offset win_EE_str
+        int 21h
         mov dl,22
         mov dh,10 
         mov ah, 02h
@@ -1313,6 +1325,88 @@ dw '                                              ',0ah,0dh
 dw '            |---------------------------||---------------------------|  ',0ah,0dh
 dw '            | ^ Press "enter" to play ^ || ^   Press "ecs" to quit ^ | ',0ah,0dh
 dw '            |___________________________||___________________________|',0ah,0dh
+
+dw '$',0ah,0dh 
+
+win_str dw '  ',0ah,0dh
+
+dw '      _____  _____  __          _______          ',0ah,0dh
+dw '     / ____|/ ____| \ \        / /  __ \         ',0ah,0dh
+dw '    | |  __| |  __   \ \  /\  / /| |__) |        ',0ah,0dh
+dw '    | | |_ | | |_ |   \ \/  \/ / |  ___/         ',0ah,0dh
+dw '    | |__| | |__| |    \  /\  /  | |             ',0ah,0dh
+dw '     \_____|\_____|     \/  \/   |_|             ',0ah,0dh
+dw '                                              ',0ah,0dh
+dw '                                              ',0ah,0dh
+dw '                                              ',0ah,0dh
+dw '                                              ',0ah,0dh
+dw '                                              ',0ah,0dh
+dw '                                              ',0ah,0dh
+dw '                                              ',0ah,0dh
+dw '                                              ',0ah,0dh                                      
+dw '                                              ',0ah,0dh
+dw '                                              ',0ah,0dh
+dw '                                              ',0ah,0dh
+dw '                                              ',0ah,0dh
+dw '                                              ',0ah,0dh
+dw '                                              ',0ah,0dh
+dw '           \(^o^)/\(^o^)/\(^o^)/\(^o^)/\(^o^)/\(^o^)/\(^o^)/\(^o^)/',0ah,0dh
+dw '                                              ',0ah,0dh
+dw '                                              ',0ah,0dh
+
+dw '$',0ah,0dh
+         
+   win_EE_str dw '  ',0ah,0dh
+   
+dw '      _____  _____  __          _______          ',0ah,0dh
+dw '     / ____|/ ____| \ \        / /  __ \         ',0ah,0dh
+dw '    | |  __| |  __   \ \  /\  / /| |__) |    	.-"-. ',0ah,0dh
+dw '    | | |_ | | |_ |   \ \/  \/ / |  ___/       ./=^=^=\. ',0ah,0dh
+dw '    | |__| | |__| |    \  /\  /  | |          /=^=^=^=^=\ ',0ah,0dh
+dw '     \_____|\_____|     \/  \/   |_|          :^= HAPPY =^; ',0ah,0dh
+dw '                                             |^ EASTER! ^|',0ah,0dh
+dw '                                              :^=^=^=^=^=^:',0ah,0dh
+dw '                                              \=^=^=^=^=/',0ah,0dh
+dw '                                               `.=^=^=.`',0ah,0dh
+dw '                                                 `~~~` ',0ah,0dh
+dw '                                              ',0ah,0dh
+dw '                                              ',0ah,0dh
+dw '                                              ',0ah,0dh
+dw '                                              ',0ah,0dh                                      
+dw '                                              ',0ah,0dh
+dw '                                              ',0ah,0dh
+dw '                                              ',0ah,0dh
+dw '                                              ',0ah,0dh
+dw '                                              ',0ah,0dh
+dw '                                              ',0ah,0dh
+dw '           \(^o^)/\(^o^)/\(^o^)/\(^o^)/\(^o^)/\(^o^)/\(^o^)/\(^o^)/',0ah,0dh
+dw '                                              ',0ah,0dh
+dw '                                              ',0ah,0dh
+
+dw '$',0ah,0dh
+
+  
+   Give_up_str dw '  ',0ah,0dh
+dw '                                              ',0ah,0dh
+dw '                                              ',0ah,0dh
+dw '                                              ',0ah,0dh       
+dw '                                              ',0ah,0dh       
+dw '                                              ',0ah,0dh
+dw '             (-_-) (-_-) (-_-) (-_-) (-_-) (-_-) (-_-) (-_-)',0ah,0dh
+dw '                                              ',0ah,0dh
+dw '                                              ',0ah,0dh
+dw '                                              ',0ah,0dh
+dw '                                              ',0ah,0dh
+dw '                                              ',0ah,0dh                                      
+dw '                                              ',0ah,0dh
+dw '                                              ',0ah,0dh
+dw '                                              ',0ah,0dh
+dw '                                              ',0ah,0dh
+dw '                                              ',0ah,0dh
+dw '                                              ',0ah,0dh
+dw '                                              ',0ah,0dh
+dw '                                              ',0ah,0dh
+dw '                                              ',0ah,0dh
 
 dw '$',0ah,0dh
        
