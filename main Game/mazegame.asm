@@ -83,9 +83,7 @@ init_var:
     AlreadyWin DB 'y';passe a 'y' si le joueur a deja gagner une partie
     
     EE_eggs Dw 0 ;nombre d'oeuf rammasser
-    
-    Event_door Dw 1 ;eviter duplication d'evenement door
-    mov Event_door,1 
+   
     Event_key Dw 1 ;(peut ne plus etre necessaire);eviter duplication d'evenement key
     mov Event_key,1
     whichKey Dw 0;variable d'ouverture de porte / si la bonne key
@@ -388,19 +386,13 @@ main:
             call clear_oldmessage
             mov dl,62
             mov dh,6
-            ;setcursor:
-            mov ah, 02h
-            mov bh, 00
-            int 10h
+            call SetCursor
           
             ;message pour prevenir de l'obtention de l'objet  
             PRINT 'You found'
             mov dl,62
             mov dh,7
-            ;setcursor:
-            mov ah, 02h
-            mov bh, 00
-            int 10h
+            call SetCursor
           
             PRINT 'an eggs :D'
              
@@ -418,19 +410,13 @@ main:
             call clear_oldmessage
             mov dl,62
             mov dh,6
-            ;setcursor:
-            mov ah, 02h
-            mov bh, 00
-            int 10h
+            call SetCursor
           
             ;message pour prevenir de l'obtention de l'objet  
             PRINT 'Hello can u'
             mov dl,62
             mov dh,7
-            ;setcursor:
-            mov ah, 02h
-            mov bh, 00
-            int 10h
+            call SetCursor
           
             PRINT 'Find my eggs?:P'
              
@@ -532,33 +518,22 @@ main:
             call clear_oldmessage
             mov dl,62
             mov dh,6
-            ;setcursor:
-            mov ah, 02h
-            mov bh, 00
-            int 10h
+            call SetCursor
           
             ;message pour prevenir de l'obtention de l'objet  
             PRINT 'You have found'
             mov dl,62
             mov dh,7
-            ;setcursor:
-            mov ah, 02h
-            mov bh, 00
-            int 10h
+            call SetCursor
           
             PRINT ' a redkey'
              
             ;stock cette info dans une variable:
             mov whichKey,1
-            ;met a jour "Event_door" pour pouvoir ressayer d'ouvrir la porte associer:
-            mov Event_door,1
             call UpdateInv ;pour mettre a jour l'inventaire:
             ;remet le cursor a sa position d'origine:
             call Load_PlayerLoc
-            ;setcursor:
-            mov ah, 02h
-            mov bh, 00
-            int 10h 
+            call SetCursor 
             mov Event_key,2
             ret
             
@@ -567,32 +542,21 @@ main:
             call clear_oldmessage
             mov dl,62
             mov dh,6
-            ;setcursor:
-            mov ah, 02h
-            mov bh, 00
-            int 10h
+            call SetCursor
           
             ;message pour prevenir de l'obtention de l'objet  
             PRINT 'You have found'
             mov dl,62
             mov dh,7
-            ;setcursor:
-            mov ah, 02h
-            mov bh, 00
-            int 10h
+            call SetCursor
           
-            PRINT ' a purplekey' 
+            PRINT ' a pinkkey' 
             ;stock cette info dans une variable:
             mov whichKey,2
-            ;met a jour "Event_door" pour pouvoir ressayer d'ouvrir la porte associer:
-            mov Event_door,2 
             call UpdateInv
             ;remet le cursor a sa position d'origine:
             call Load_PlayerLoc
-            ;setcursor:
-            mov ah, 02h
-            mov bh, 00
-            int 10h 
+            call SetCursor 
             mov Event_key,3
             ret
  
@@ -602,32 +566,21 @@ main:
             call clear_oldmessage
             mov dl,62
             mov dh,6
-            ;setcursor:
-            mov ah, 02h
-            mov bh, 00
-            int 10h
+            call SetCursor
           
             ;message pour prevenir de l'obtention de l'objet  
             PRINT 'You have found'
             mov dl,62
             mov dh,7
-            ;setcursor:
-            mov ah, 02h
-            mov bh, 00
-            int 10h
+            call SetCursor
           
-            PRINT ' a yellowkey' 
+            PRINT ' a bluekey' 
             ;stock cette info dans une variable:
             mov whichKey,3
-            ;met a jour "Event_door" pour pouvoir ressayer d'ouvrir la porte associer:
-            mov Event_door,3 
             call UpdateInv
             ;remet le cursor a sa position d'origine:
             call Load_PlayerLoc
-            ;setcursor:
-            mov ah, 02h
-            mov bh, 00
-            int 10h 
+            call SetCursor 
             mov Event_key,4
             ret
             
@@ -637,32 +590,21 @@ main:
             call clear_oldmessage
             mov dl,62
             mov dh,6
-            ;setcursor:
-            mov ah, 02h
-            mov bh, 00
-            int 10h
+            call SetCursor
           
             ;message pour prevenir de l'obtention de l'objet  
             PRINT 'You have found'
             mov dl,62
             mov dh,7
-            ;setcursor:
-            mov ah, 02h
-            mov bh, 00
-            int 10h
+            call SetCursor
           
             PRINT ' a Orangekey' 
             ;stock cette info dans une variable:
             mov whichKey,4
-            ;met a jour "Event_door" pour pouvoir ressayer d'ouvrir la porte associer:
-            mov Event_door,4 
             call UpdateInv
             ;remet le cursor a sa position d'origine:
             call Load_PlayerLoc
-            ;setcursor:
-            mov ah, 02h
-            mov bh, 00
-            int 10h 
+            call SetCursor 
             mov Event_key,5
             ret 
             
@@ -671,33 +613,22 @@ main:
             call clear_oldmessage
             mov dl,62
             mov dh,6
-            ;setcursor:
-            mov ah, 02h
-            mov bh, 00
-            int 10h
+            call SetCursor
           
             ;message pour prevenir de l'obtention de l'objet  
             PRINT 'You have found'
             mov dl,62
             mov dh,7
-            ;setcursor:
-            mov ah, 02h
-            mov bh, 00
-            int 10h
+            call SetCursor
           
             PRINT ' a Greenkey' 
             ;stock cette info dans une variable:
             mov whichKey,5
             mov IsGreen,'y' ; indique que la green key a été rammaser
-            ;met a jour "Event_door" pour pouvoir ressayer d'ouvrir la porte associer:
-            mov Event_door,5 
             call UpdateInv
             ;remet le cursor a sa position d'origine:
             call Load_PlayerLoc
-            ;setcursor:
-            mov ah, 02h
-            mov bh, 00
-            int 10h 
+            call SetCursor 
             mov Event_key,6
             ret
                     
@@ -707,21 +638,14 @@ main:
             ;ret ; display_nokeymessage desactiver en attente de mise a jour:
             call Save_PlayerLoc
             call clear_oldmessage
-            mov Event_door,99
             mov dl,62
             mov dh,6
-            ;setcursor:
-            mov ah, 02h
-            mov bh, 00
-            int 10h 
+            call SetCursor
           
             PRINT 'wrong key'
             mov dl,62
             mov dh,7
-            ;setcursor:
-            mov ah, 02h
-            mov bh, 00
-            int 10h
+            call SetCursor
           
             PRINT ' or nokey'
           
@@ -729,9 +653,7 @@ main:
             ;remet le cursor a sa position d'origine:
             call Load_PlayerLoc                                        
             mov ah, 02h
-            ;setcursor:
-            mov bh, 00
-            int 10h
+            call SetCursor
             
             ret
                   
@@ -742,22 +664,16 @@ main:
           
           mov dl,62
           mov dh,6
-          ;setcursor:
-          mov ah, 02h
-          mov bh, 00
-          int 10h 
+          call SetCursor 
           
           PRINT 'you have open'
           mov dl,62
           mov dh,7
-          ;setcursor:
-          mov ah, 02h
-          mov bh, 00
-          int 10h
+          call SetCursor
           
           PRINT 'red door'
           
-          ;avance "Event_door" a 1 pour pouvoir tester la porte bleu:
+         
           mov whichKey,0
           
           ;draw purple key:
@@ -780,10 +696,7 @@ main:
             
           ;remet le cursor a sa position d'origine:
           call Load_PlayerLoc
-          ;setcursor:
-          mov ah, 02h
-          mov bh, 00
-          int 10h
+          call SetCursor
           ret 
           jmp inside_loop
           
@@ -794,78 +707,21 @@ main:
           
           mov dl,62
           mov dh,6
-          ;setcursor:
-          mov ah, 02h
-          mov bh, 00
-          int 10h 
+          call SetCursor 
           
           PRINT 'you have open'
           mov dl,62
           mov dh,7
-          ;setcursor:
-          mov ah, 02h
-          mov bh, 00
-          int 10h
+          call SetCursor
           
-          PRINT 'purple door'
+          PRINT 'pink door'
           
-          ;avance "Event_door":
+         
           mov whichKey,0
           ;draw yellow key:
-            draw_yellowkey:
+            draw_bluekey:
                 mov dl,14
                 mov dh,12
-                mov bh, 0
-                mov ah, 0x2
-                int 0x10
-                mov cx, 1 ; nb char
-                mov bh, 0
-                mov bl, 0x60 ; color
-                mov al, 0x20 ; blank char
-                mov ah, 0x9
-                int 0x10 
-                mov ah, 02h
-                mov bh, 00
-                int 10h       
-                PRINT 216
-          ;remet le cursor a sa position d'origine:
-          call Load_PlayerLoc
-          ;setcursor:
-          mov ah, 02h
-          mov bh, 00
-          int 10h
-          ret     
-          jmp inside_loop
-          
-          
-        opendoor3:
-          call Save_PlayerLoc
-          call clear_player
-          call clear_oldmessage
-          
-          mov dl,62
-          mov dh,6
-          ;setcursor:
-          mov ah, 02h
-          mov bh, 00
-          int 10h 
-          
-          PRINT 'you have open'
-          mov dl,62
-          mov dh,7
-          ;setcursor:
-          mov ah, 02h
-          mov bh, 00
-          int 10h
-          
-          PRINT 'yellow door'
-          
-          ;avance "Event_door":
-          mov whichKey,0
-          ;draw orrange key:
-            draw_orangekey:
-                mov dl,38
-                mov dh,13
                 mov bh, 0
                 mov ah, 0x2
                 int 0x10
@@ -881,10 +737,49 @@ main:
                 PRINT 216
           ;remet le cursor a sa position d'origine:
           call Load_PlayerLoc
-          ;setcursor:
-          mov ah, 02h
-          mov bh, 00
-          int 10h     
+          call SetCursor
+          ret     
+          jmp inside_loop
+          
+          
+        opendoor3:
+          call Save_PlayerLoc
+          call clear_player
+          call clear_oldmessage
+          
+          mov dl,62
+          mov dh,6
+          call SetCursor 
+          
+          PRINT 'you have open'
+          mov dl,62
+          mov dh,7
+          call SetCursor
+          
+          PRINT 'blue door'
+          
+          
+          mov whichKey,0
+          ;draw orrange key:
+            draw_orangekey:
+                mov dl,38
+                mov dh,13
+                mov bh, 0
+                mov ah, 0x2
+                int 0x10
+                mov cx, 1 ; nb char
+                mov bh, 0
+                mov bl, 0x60 ; color
+                mov al, 0x20 ; blank char
+                mov ah, 0x9
+                int 0x10 
+                mov ah, 02h
+                mov bh, 00
+                int 10h       
+                PRINT 216
+          ;remet le cursor a sa position d'origine:
+          call Load_PlayerLoc
+          call SetCursor     
           ret
           
           opendoor4:
@@ -894,22 +789,16 @@ main:
           
           mov dl,62
           mov dh,6
-          ;setcursor:
-          mov ah, 02h
-          mov bh, 00
-          int 10h 
+          call SetCursor 
           
           PRINT 'you have open'
           mov dl,62
           mov dh,7
-          ;setcursor:
-          mov ah, 02h
-          mov bh, 00
-          int 10h
+          call SetCursor
           
           PRINT 'Orange door'
           
-          ;avance "Event_door":
+          
           mov whichKey,0
           ;draw orrange key:
             draw_Greenkey:
@@ -930,10 +819,7 @@ main:
                 PRINT 216
           ;remet le cursor a sa position d'origine:
           call Load_PlayerLoc
-          ;setcursor:
-          mov ah, 02h
-          mov bh, 00
-          int 10h     
+          call SetCursor     
           ret
           
           opendoor5:
@@ -943,18 +829,12 @@ main:
           
           mov dl,62
           mov dh,6
-          ;setcursor:
-          mov ah, 02h
-          mov bh, 00
-          int 10h 
+          call SetCursor 
           
           PRINT 'you have open'
           mov dl,62
           mov dh,7
-          ;setcursor:
-          mov ah, 02h
-          mov bh, 00
-          int 10h
+          call SetCursor
           
           PRINT 'Green door'
          
@@ -1206,7 +1086,7 @@ main:
              int 0x10
              mov cx, 1 ; nb char
              mov bh, 0
-             mov bl, 0x60 ; color
+             mov bl, 0x30 ; color
              mov al, 0x20 ; blank char
              mov ah, 0x9
              int 0x10 
@@ -1228,7 +1108,7 @@ main:
              int 0x10
              mov cx, 1 ; nb char
              mov bh, 0
-             mov bl, 0x30 ; color
+             mov bl, 0x60 ; color
              mov al, 0x20 ; blank char
              mov ah, 0x9
              int 0x10 
