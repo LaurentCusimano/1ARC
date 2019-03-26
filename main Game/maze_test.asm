@@ -181,7 +181,15 @@
                 int 10h 
                 PRINT 177       
             
-   
+           draw_hero:
+            
+
+              mov dl, 2 ; column
+              mov dh, 21 ; row 
+
+              call SetCursor
+        
+              PRINT ':)'
           
               
              

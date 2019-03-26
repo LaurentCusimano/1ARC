@@ -99,8 +99,8 @@ init_var:
     DhPlayer Db 1
     DlPlayer Db 1
     
-    mov DhPlayer,21
-    mov DlPlayer,3
+    mov dl, 2 ; column
+    mov dh, 21 ; row
     
     
     
@@ -109,7 +109,7 @@ init_var:
     jmp inside_loop
     
     draw_EEguy: 
-    
+    call Save_PlayerLoc
     mov dl,19
     mov dh,17
     call SetCursor
@@ -396,7 +396,7 @@ main:
             mov dh,7
             call SetCursor
           
-            PRINT 'an eggs :D'
+            PRINT 'an egg :D'
              
             
             call Load_PlayerLoc
