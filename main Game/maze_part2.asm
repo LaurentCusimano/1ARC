@@ -1230,7 +1230,11 @@ draw_OrangeANDGreenzone:
                 int 10h 
                 PRINT 177
               
-             
+            draw_EEguy: 
+            mov dl,19
+            mov dh,17
+            call SetCursor
+            PRINT 001 
                                          
           draw_hero:
             

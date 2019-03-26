@@ -82,8 +82,7 @@ init_var:
     
     IsGreen DB 'n';passe a 'y' si la clef verte est rammasse
     
-    AlreadyWin DB 'y';passe a 'y' si le joueur a deja gagner une partie
-    
+        
     EE_eggs Dw 0 ;nombre d'oeuf rammasser
    
     Event_key Dw 1 ;(peut ne plus etre necessaire);eviter duplication d'evenement key
@@ -103,20 +102,6 @@ init_var:
     mov dh, 21 ; row
     
     
-    
-    cmp AlreadyWin,'y'
-    je draw_EEguy
-    jmp inside_loop
-    
-    draw_EEguy: 
-    call Save_PlayerLoc
-    mov dl,19
-    mov dh,17
-    call SetCursor
-    PRINT 001  
-    
-    
-    call Load_PlayerLoc
     jmp inside_loop
 
 main: 
