@@ -1083,7 +1083,7 @@ draw_OrangeANDGreenzone:
                 int 0x10
                 mov cx, 1 ; nb char
                 mov bh, 0
-                mov bl, 0x10 ; color
+                mov bl, 0x50 ; color
                 mov al, 0x20 ; blank char
                 mov ah, 0x9
                 int 0x10 
@@ -1105,7 +1105,7 @@ draw_OrangeANDGreenzone:
                 int 0x10
                 mov cx, 1 ; nb char
                 mov bh, 0
-                mov bl, 0x70 ; color
+                mov bl, 0x30 ; color
                 mov al, 0x20 ; blank char
                 mov ah, 0x9
                 int 0x10 
@@ -1126,7 +1126,7 @@ draw_OrangeANDGreenzone:
                 int 0x10
                 mov cx, 1 ; nb char
                 mov bh, 0
-                mov bl, 0x80 ; color
+                mov bl, 0x60 ; color
                 mov al, 0x20 ; blank char
                 mov ah, 0x9
                 int 0x10 
@@ -1146,14 +1146,14 @@ draw_OrangeANDGreenzone:
                 int 0x10
                 mov cx, 1 ; nb char
                 mov bh, 0
-                mov bl, 0x60 ; color
+                mov bl, 0x20 ; color
                 mov al, 0x20 ; blank char
                 mov ah, 0x9
                 int 0x10 
                 mov ah, 02h
                 mov bh, 00
                 int 10h 
-                PRINT 177
+                PRINT 177 
    
           draw_rules:
           

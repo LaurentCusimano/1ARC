@@ -131,7 +131,7 @@
                 int 0x10
                 mov cx, 1 ; nb char
                 mov bh, 0
-                mov bl, 0x60 ; color
+                mov bl, 0x30 ; color
                 mov al, 0x20 ; blank char
                 mov ah, 0x9
                 int 0x10 
@@ -152,7 +152,7 @@
                 int 0x10
                 mov cx, 1 ; nb char
                 mov bh, 0
-                mov bl, 0x30 ; color
+                mov bl, 0x60 ; color
                 mov al, 0x20 ; blank char
                 mov ah, 0x9
                 int 0x10 

@@ -834,7 +834,7 @@ main:
           PRINT 'you have open'
           mov dl,62
           mov dh,7
-          call SetCursor
+          call SetCursor 
           
           PRINT 'Green door'
          
