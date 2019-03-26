@@ -15,37 +15,12 @@ Menu:
       mov dh,0
       mov dx, offset game_menu_str
       int 21h
-      
-;starting of the anim:
-mov dh,14
-mov dl,30
-play_menu_anim:
-mov AnimControl,1;use "AnimControl" to know which animation to play:
-cmp dl,40
-je inverted_menu_anim 
-
-add dl,1
-mov ah, 02h
-mov bh, 00
-int 10h
-PRINT ':)'
-jmp wait_keypress
-inverted_menu_anim:
-mov AnimControl,2
-cmp dl,30
-je play_menu_anim 
-
-sub dl,1
-mov ah, 02h
-mov bh, 00
-int 10h
-PRINT '(:'
 
 
   
 wait_keypress:
      ;test les key pressed:
-    mov ah, 1h
+    mov ah, 0h
     int 16h                                              
     
     
@@ -55,12 +30,8 @@ wait_keypress:
     
     cmp al, 27 ;if "ecs":
     je give_up
-    call clear_player
-    cmp AnimControl,1
-    je play_menu_anim
-    cmp AnimControl,2
-    je inverted_menu_anim
-    
+     
+    jmp wait_keypress
 
 
 
@@ -89,8 +60,6 @@ init_var:
     mov Event_key,1
     whichKey Dw 0;variable d'ouverture de porte / si la bonne key
     mov whichKey,0 
-    AnimControl Dw 0;variable utiliser pour l'annimation du menu
-    mov AnimControl,0 
     MovesCount Dw 0;store how many moves that you make in the game
     mov MovesCount,0
     
@@ -803,7 +772,27 @@ main:
                 mov ah, 02h
                 mov bh, 00
                 int 10h       
-                PRINT 216
+                PRINT 216  
+                
+           draw_fixwall:
+                mov dl,52
+                mov dh,19
+                mov bh, 0
+                mov ah, 0x2
+                int 0x10
+                mov cx, 1 ; nb char
+                mov bh, 0
+                mov bl, 0x19 ; color
+                mov al, 0x20 ; blank char
+                mov ah, 0x9
+                int 0x10 
+                mov ah, 02h
+                mov bh, 00
+                int 10h       
+                PRINT 186
+                
+                
+                
           ;remet le cursor a sa position d'origine:
           call Load_PlayerLoc
           call SetCursor     
@@ -877,15 +866,9 @@ main:
         mov bh, 00
         int 10h
         
-        PRINT 'press ENTER key to go back on the menu'
         
-        add dh,1
-        add dl,16 
-        mov ah, 02h
-        mov bh, 00 
-        int 10h
         
-        PRINT 'Or press any other key to quit the game'
+        PRINT 'press any key to quit the game'
         
         
                             
@@ -909,8 +892,6 @@ main:
             int 16h                                              
     
     
-            cmp al, 13 ;if "enter":
-            je Menu 
 
             jmp theEnd
 
@@ -929,22 +910,16 @@ main:
         mov bh, 00
         int 10h       
         
-        PRINT 'You find all the eggs :D awesome!'
+        PRINT 'You found all the eggs :D awesome!'
         ADD dh ,1
         sub dl,8
         mov ah, 02h
         mov bh, 00
         int 10h
         
-        PRINT 'press ENTER key to go back on the menu'
         
-        add dh,1
-        add dl,16 
-        mov ah, 02h
-        mov bh, 00 
-        int 10h
         
-        PRINT 'Or press any other key to quit the game'
+        PRINT 'Press any key to quit the game'
         
         
                             
@@ -968,8 +943,6 @@ main:
             int 16h                                              
     
     
-            cmp al, 13 ;if "enter":
-            je Menu 
 
             jmp theEnd                                               
         

@@ -1,5 +1,5 @@
 
-mov dl,8
+mov dl,7
 mov dh,4
 call SetCursor
 PRINT 248 
@@ -34,12 +34,12 @@ mov dh,2
 call SetCursor
 PRINT 248
 
-mov dl,37
+mov dl,38
 mov dh,17
 call SetCursor
 PRINT 248
 
-mov dl,38
+mov dl,39
 mov dh,21
 call SetCursor
 PRINT 248
