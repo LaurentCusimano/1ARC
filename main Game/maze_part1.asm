@@ -65,11 +65,18 @@
         
             add dh,1
             call SetCursor       
-            PRINT 'I' 
+            PRINT 186 
             cmp dh,5
-            je draw_downinv
+            je draw_downinv_p1
             loop draw_leftinv
-    
+        
+        
+        draw_downinv_p1:
+        add dh,1
+        call SetCursor       
+        PRINT '-'
+        
+        
         draw_downinv:
             add dl,1
             call SetCursor      
@@ -81,7 +88,7 @@
         draw_rightinv:
             sub dh,1
             call SetCursor       
-            PRINT 'I' 
+            PRINT 186 
             cmp dh,0
             je draw_textinv
            loop draw_rightinv
