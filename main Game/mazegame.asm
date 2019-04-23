@@ -39,7 +39,6 @@ start_maze_game:
 
     call CLEAR_SCREEN
     call set_background_color
-    
     ;draw the maze in 2 step:
     include "maze_part1.asm" 
      maze_part2:
@@ -323,7 +322,9 @@ main:
        
        ;key
        cmp al,216 
-       je objectpickup       
+       je objectpickup 
+       
+       ret      
        
        
     CollidYes:

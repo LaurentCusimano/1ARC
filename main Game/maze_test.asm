@@ -1,27 +1,27 @@
  
-      draw_inv:
+      draw_inv: 
+      
         mov dl,63
         mov dh,-1
         draw_leftinv:
         
             add dh,1
-            ;setcursor:
-            mov ah, 02h
-            mov bh, 00
-            int 10h
-            ;wall:       
-            PRINT 'I' 
-            cmp dh,5
-            je draw_downinv
+            call SetCursor       
+            PRINT 186 
+            cmp dh,4
+            je draw_downinv_p1
             loop draw_leftinv
-    
+        
+        
+        draw_downinv_p1:
+        add dh,1
+        call SetCursor       
+        PRINT '-'
+        
+        
         draw_downinv:
             add dl,1
-            ;setcursor:
-            mov ah, 02h
-            mov bh, 00
-            int 10h
-            ;wall:       
+            call SetCursor      
             PRINT '-' 
             cmp dl,75
             je draw_rightinv
@@ -29,12 +29,8 @@
         
         draw_rightinv:
             sub dh,1
-            ;setcursor:
-            mov ah, 02h
-            mov bh, 00
-            int 10h
-            ;wall:       
-            PRINT 'I' 
+            call SetCursor       
+            PRINT 186 
             cmp dh,0
             je draw_textinv
            loop draw_rightinv
@@ -42,11 +38,7 @@
           draw_textinv:
                 mov dl,65
                 mov dh,2
-                ;setcursor:
-                mov ah, 02h
-                mov bh, 00
-                int 10h
-                ;key:       
+                call SetCursor       
                 PRINT 'Inventory'
             
            
@@ -194,7 +186,17 @@
               
              
               
-              
+            call SetCursor
+                mov cx, 1 ; nb char
+                mov bh, 0
+                mov bl, 0x40 ; color
+                mov al, 0x20 ; blank char
+                mov ah, 0x9
+                int 0x10 
+                mov ah, 02h
+                mov bh, 00
+                int 10h 
+                PRINT 177  
      
             jmp init_var
     

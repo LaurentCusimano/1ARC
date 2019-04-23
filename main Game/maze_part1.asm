@@ -66,7 +66,7 @@
             add dh,1
             call SetCursor       
             PRINT 186 
-            cmp dh,5
+            cmp dh,4
             je draw_downinv_p1
             loop draw_leftinv
         
