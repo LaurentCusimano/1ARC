@@ -5,11 +5,11 @@ org 100h
 include emu8086.inc 
 
 
-  CURSOROFF;comme son noms l'indique desactive la vue du cursor (marche avec "emu8086.inc")   
+  CURSOROFF;Hide the cursor (works with "emu8086.inc")   
 Menu:
  
    call CLEAR_SCREEN
-  ;affiche le menu:
+      ;Display menu
       call set_background_color
       mov ah,09h
       mov dh,0
@@ -19,7 +19,7 @@ Menu:
 
   
 wait_keypress:
-     ;test les key pressed:
+    ;wait for a key to be pressed:
     mov ah, 0h
     int 16h                                              
     
@@ -40,7 +40,7 @@ start_maze_game:
     call CLEAR_SCREEN
     call set_background_color
     
-    ;include "maze_test.asm" 
+    ;draw the maze in 2 step:
     include "maze_part1.asm" 
      maze_part2:
      
@@ -49,21 +49,18 @@ start_maze_game:
    
           
 init_var:
-    ColliderDetected DB 'n';passe a 'y' si une collision est detecte
+    ColliderDetected DB 'n';switched to 'y' if a collision is detected
     
-    IsGreen DB 'n';passe a 'y' si la clef verte est rammasse
+    IsGreen DB 'n';switched to 'y' if the green key is recover 
     
         
-    EE_eggs Dw 0 ;nombre d'oeuf rammasser
+    EE_eggs Dw 0 ;number of egg pick up
    
-    Event_key Dw 1 ;(peut ne plus etre necessaire);eviter duplication d'evenement key
-    mov Event_key,1
-    whichKey Dw 0;variable d'ouverture de porte / si la bonne key
-    mov whichKey,0 
-    MovesCount Dw 0;store how many moves that you make in the game
-    mov MovesCount,0
+    Event_key Dw 1 ;avoid key event duplication
+    whichKey Dw 0;door opening variable / if player has the right key 
+    MovesCount Dw 0;store how many moves that you make before finishing the maze
     
-    ;stock la derniere position du joueur
+    ;stores the player's last position
     DhPlayer Db 1
     DlPlayer Db 1
     
@@ -81,10 +78,10 @@ main:
        
     
     inside_loop:
-    ;clear_collidervar:
+    ;set ColliderDetected to his default state:
     mov ColliderDetected,'n' 
     
-     ;test les key pressed:
+     ;wait for a key to be pressed:
     mov ah, 0h
     int 16h                                              
     
@@ -130,14 +127,15 @@ main:
  
 
     Right:
-        ;move cursor to new location
         add dl, 2
         call SetCursor
         call TestColid
         sub dl,2
         call SetCursor
+        ;test if a collider is detected:
         cmp ColliderDetected,'y'
         je main
+        ;if not move the player to his new location:
         call clear_player
         add dl,1
         call SetCursor
@@ -161,15 +159,17 @@ main:
             
          
     Left:
-      ;move player to his new location
       sub dl, 1
       call SetCursor
       call TestColid
       add dl,1
       call SetCursor
-      PRINT '(:'
+      ;moves the rotation of the player's head: 
+      PRINT '(:' 
+      ;test if a collider is detected:
       cmp ColliderDetected,'y'
       je main
+      ;if not move the player to his new location:
       call clear_player
       sub dl,1
       call SetCursor
@@ -192,7 +192,6 @@ main:
       ret
 
    Up:
-     ;move player to his new location
       sub dh, 1
       call SetCursor
       call TestColid
@@ -202,8 +201,10 @@ main:
       sub dl,1      
       add dh,1
       call SetCursor
+      ;test if a collider is detected:
       cmp ColliderDetected,'y'
       je main
+      ;if not move the player to his new location:
       call clear_player
       sub dh,1
       call SetCursor
@@ -226,7 +227,6 @@ main:
       ret
 
    Down:
-      ;move player to his new location
       add dh, 1
       call SetCursor
       call TestColid
@@ -236,8 +236,10 @@ main:
       sub dl,1  
       sub dh,1
       call SetCursor
+      ;test if a collider is detected:
       cmp ColliderDetected,'y'
       je main
+      ;if not move the player to his new location:
       call clear_player
       add dh,1
       call SetCursor
@@ -260,11 +262,13 @@ main:
       ret
 
    SetCursor:
+   ;update the cursor position:
        mov ah, 02h
        mov bh, 00
        int 10h
        ret
    TestColid:
+   ;test if next charactere is a "blacklist" one:
        mov ah, 08h
        int 10h
        
@@ -297,11 +301,11 @@ main:
        
        cmp al,185  
        je CollidYes
-       ;mur horizontal
+       ;horizontal wall
        cmp al,205 
        je CollidYes
        
-       ;mur vertical
+       ;vertical wall
        cmp al,186 
        je CollidYes 
        
@@ -321,12 +325,7 @@ main:
        cmp al,216 
        je objectpickup       
        
-       cmp ah,40
-       je testos
-       ret
-     testos:
-     PRINT 'YEEES'
-     ret  
+       
     CollidYes:
         mov ColliderDetected,'y'
         ret
@@ -344,7 +343,7 @@ main:
             mov dh,6
             call SetCursor
           
-            ;message pour prevenir de l'obtention de l'objet  
+            ;message to prevent getting the object:  
             PRINT 'You found'
             mov dl,62
             mov dh,7
@@ -356,7 +355,7 @@ main:
             call Load_PlayerLoc
       
       
-      
+      ;check if all the eggs have been picked up:
       cmp EE_eggs,13
       je win_EE
       ret
@@ -368,8 +367,8 @@ main:
             mov dh,6
             call SetCursor
           
-            ;message pour prevenir de l'obtention de l'objet  
-            PRINT 'Hello can u'
+            ;Display dialogue message from the EE_guy :   
+            PRINT 'Hello can u';lack of spelling voluntary:
             mov dl,62
             mov dh,7
             call SetCursor
@@ -382,12 +381,13 @@ main:
      
    
     keytest:
-            nokeytest:
+    ;look at what key we have:
+            nokeytest:;look at first if you have a key
             cmp whichKey,0
             je display_nokeymessage
             jmp redkeytest   
           
-     
+           ;test all key value:
            redkeytest:
                 
                         cmp whichKey,1
@@ -426,12 +426,13 @@ main:
                     jmp havenokey           
                     
                     GreenOrOrange:
-                    
+;if the key that we picked up was in the collum number 60 , that's the green key:
                     cmp dl,60
                     je isthatgreen
                     jmp opendoor4
                     
                     isthatgreen:
+                    ;verify if the boolean "IsGreen" is true:
                     cmp IsGreen,'y'
                     je opendoor5
                     
@@ -446,6 +447,7 @@ main:
    
    
    objectpickup:
+   ;look at what key we have picked up:
         key1check:
             cmp Event_key,1
             je key1pickup
@@ -476,7 +478,7 @@ main:
             mov dh,6
             call SetCursor
           
-            ;message pour prevenir de l'obtention de l'objet  
+            ;message to prevent getting the object:  
             PRINT 'You have found'
             mov dl,62
             mov dh,7
@@ -484,10 +486,10 @@ main:
           
             PRINT ' a redkey'
              
-            ;stock cette info dans une variable:
+            ;store this information in a variable:
             mov whichKey,1
-            call UpdateInv ;pour mettre a jour l'inventaire:
-            ;remet le cursor a sa position d'origine:
+            call UpdateInv ;to update the inventory:
+            ;return the cursor to its original position:
             call Load_PlayerLoc
             call SetCursor 
             mov Event_key,2
@@ -500,17 +502,17 @@ main:
             mov dh,6
             call SetCursor
           
-            ;message pour prevenir de l'obtention de l'objet  
+            ;message to prevent getting the object:  
             PRINT 'You have found'
             mov dl,62
             mov dh,7
             call SetCursor
           
             PRINT ' a pinkkey' 
-            ;stock cette info dans une variable:
+            ;store this information in a variable:
             mov whichKey,2
-            call UpdateInv
-            ;remet le cursor a sa position d'origine:
+            call UpdateInv ;to update the inventory:
+            ;return the cursor to its original position:
             call Load_PlayerLoc
             call SetCursor 
             mov Event_key,3
@@ -524,17 +526,17 @@ main:
             mov dh,6
             call SetCursor
           
-            ;message pour prevenir de l'obtention de l'objet  
+            ;message to prevent getting the object:  
             PRINT 'You have found'
             mov dl,62
             mov dh,7
             call SetCursor
           
             PRINT ' a bluekey' 
-            ;stock cette info dans une variable:
+            ;store this information in a variable:
             mov whichKey,3
-            call UpdateInv
-            ;remet le cursor a sa position d'origine:
+            call UpdateInv  ;to update the inventory:
+            ;return the cursor to its original position:
             call Load_PlayerLoc
             call SetCursor 
             mov Event_key,4
@@ -548,17 +550,17 @@ main:
             mov dh,6
             call SetCursor
           
-            ;message pour prevenir de l'obtention de l'objet  
+            ;message to prevent getting the object:  
             PRINT 'You have found'
             mov dl,62
             mov dh,7
             call SetCursor
           
             PRINT ' a Orangekey' 
-            ;stock cette info dans une variable:
+            ;store this information in a variable:
             mov whichKey,4
-            call UpdateInv
-            ;remet le cursor a sa position d'origine:
+            call UpdateInv  ;to update the inventory:
+            ;return the cursor to its original position:
             call Load_PlayerLoc
             call SetCursor 
             mov Event_key,5
@@ -571,18 +573,18 @@ main:
             mov dh,6
             call SetCursor
           
-            ;message pour prevenir de l'obtention de l'objet  
+            ;message to prevent getting the object:  
             PRINT 'You have found'
             mov dl,62
             mov dh,7
             call SetCursor
           
             PRINT ' a Greenkey' 
-            ;stock cette info dans une variable:
+            ;store this information in a variable:
             mov whichKey,5
-            mov IsGreen,'y' ; indique que la green key a été rammaser
-            call UpdateInv
-            ;remet le cursor a sa position d'origine:
+            mov IsGreen,'y';indicates that the green key has been picking up
+            call UpdateInv ;to update the inventory:
+           ;return the cursor to its original position:
             call Load_PlayerLoc
             call SetCursor 
             mov Event_key,6
@@ -590,8 +592,8 @@ main:
                     
         display_nokeymessage:
         
+;prevents the opening of the door because the player does not have the correct key or has not:
             call CollidYes
-            ;ret ; display_nokeymessage desactiver en attente de mise a jour:
             call Save_PlayerLoc
             call clear_oldmessage
             mov dl,62
@@ -606,7 +608,7 @@ main:
             PRINT ' or nokey'
           
           
-            ;remet le cursor a sa position d'origine:
+            ;return the cursor to its original position:
             call Load_PlayerLoc                                        
             mov ah, 02h
             call SetCursor
@@ -615,7 +617,6 @@ main:
                   
    opendoor1:
           call Save_PlayerLoc
-          ;call clear_player
           call clear_oldmessage
           
           mov dl,62
@@ -632,7 +633,6 @@ main:
          
           mov whichKey,0
           
-          ;draw purple key:
             draw_purplekey:
                 mov dl,17
                 mov dh,12
@@ -650,7 +650,7 @@ main:
                 int 10h       
                 PRINT 216
             
-          ;remet le cursor a sa position d'origine:
+          ;return the cursor to its original position:
           call Load_PlayerLoc
           call SetCursor
           ret 
@@ -674,8 +674,7 @@ main:
           
          
           mov whichKey,0
-          ;draw yellow key:
-            draw_bluekey:
+              draw_bluekey:
                 mov dl,14
                 mov dh,12
                 mov bh, 0
@@ -691,7 +690,7 @@ main:
                 mov bh, 00
                 int 10h       
                 PRINT 216
-          ;remet le cursor a sa position d'origine:
+          ;return the cursor to its original position:
           call Load_PlayerLoc
           call SetCursor
           ret     
@@ -716,7 +715,6 @@ main:
           
           
           mov whichKey,0
-          ;draw orrange key:
             draw_orangekey:
                 mov dl,38
                 mov dh,13
@@ -733,7 +731,7 @@ main:
                 mov bh, 00
                 int 10h       
                 PRINT 216
-          ;remet le cursor a sa position d'origine:
+          ;return the cursor to its original position:
           call Load_PlayerLoc
           call SetCursor     
           ret
@@ -756,7 +754,6 @@ main:
           
           
           mov whichKey,0
-          ;draw orrange key:
             draw_Greenkey:
                 mov dl,60
                 mov dh,16
@@ -793,7 +790,7 @@ main:
                 
                 
                 
-          ;remet le cursor a sa position d'origine:
+          ;return the cursor to its original position:
           call Load_PlayerLoc
           call SetCursor     
           ret
@@ -815,7 +812,7 @@ main:
           PRINT 'Green door'
          
                     
-          ;commande a ajouter dans la fonction de la derniere porte (pour gagner):
+          ;when the last door is opened , you won:
           jmp win
           
           
@@ -823,6 +820,7 @@ main:
   
   
    give_up:
+   ;display looser's screen:
         call CLEAR_SCREEN
         call set_background_color
         mov ah,09h
@@ -847,6 +845,7 @@ main:
         jmp theEND
    
    win:
+   ;display winning screen:
         call CLEAR_SCREEN
         call set_background_color
         mov ah,09h
@@ -896,7 +895,8 @@ main:
             jmp theEnd
 
            
-    win_EE: 
+    win_EE:
+    ;display easter egg winning screen: 
     
     call CLEAR_SCREEN
         call set_background_color
@@ -950,6 +950,7 @@ main:
     
    
    clear_oldmessage proc near
+    ;delete the old dialogue:
         mov dl,62
         mov dh,6 
         mov ah, 02h
@@ -967,7 +968,7 @@ main:
     clear_oldmessage endp
      
    Save_PlayerLoc proc near
-    
+     ;save player position:
      mov DhPlayer,dh
      mov DlPlayer,dl
        
@@ -977,7 +978,7 @@ main:
     Save_PlayerLoc endp 
    
    Load_PlayerLoc proc near
-    
+    ;change cursor position to the last saved player position:
      mov dh,DhPlayer
      mov dl,DlPlayer
        
@@ -988,12 +989,13 @@ main:
    
    
    UpdateInv proc near
+    ;update the inventory:
      testhavekey1:
              cmp whichKey,1
              je Draw_on_key1
              jmp testhavekey2
              Draw_on_key1:
-             ;ajoute de la couleur a la clef debloquer
+             ;draw in inventory which key we have unlocked:
              mov dl,65
              mov dh,4
              mov bh, 0
@@ -1016,7 +1018,7 @@ main:
              je Draw_on_key2
              jmp testhavekey3
              Draw_on_key2:
-             ;ajoute de la couleur a la clef debloquer
+             ;draw in inventory which key we have unlocked:
              mov dl,67
              mov dh,4
              mov bh, 0
@@ -1038,7 +1040,7 @@ main:
              je Draw_on_key3
              jmp testhavekey4
              Draw_on_key3:
-             ;ajoute de la couleur a la clef debloquer
+             ;draw in inventory which key we have unlocked:
              mov dl,69
              mov dh,4
              mov bh, 0
@@ -1060,7 +1062,7 @@ main:
              je Draw_on_key4
              jmp testhavekey5
              Draw_on_key4:
-             ;ajoute de la couleur a la clef debloquer
+             ;draw in inventory which key we have unlocked:
              mov dl,71
              mov dh,4
              mov bh, 0
@@ -1082,7 +1084,7 @@ main:
              je Draw_on_key5
              jmp end_UpdateInv
              Draw_on_key5:
-             ;ajoute de la couleur a la clef debloquer
+             ;draw in inventory which key we have unlocked:
              mov dl,73
              mov dh,4
              mov bh, 0
@@ -1105,7 +1107,7 @@ main:
     UpdateInv endp
    
    clear_player proc near
-    ;delete last player position 
+    ;delete last player position: 
             
             mov bh, 0
             mov ah, 0x2
@@ -1131,7 +1133,7 @@ main:
     mov bh, 0
     mov ah, 0x2
     int 0x10
-    mov cx, 2024 ; print 2000 chars
+    mov cx, 2024 ; print 2024 chars (all the screen)
     mov bh, 0
     mov bl, 0x19 ; color
     mov al, 0x20 ; blank char

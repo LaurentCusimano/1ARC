@@ -1,4 +1,4 @@
-           
+        
    draw_maze_contour:
         mov dl,1
         mov dh,0
@@ -241,7 +241,7 @@
         
        draw_purplezone:
        
-       ;le wall 1 est tout le contour de la zone
+      
        draw_wall1_purplezone_p1:
        
        mov dl,15

@@ -174,7 +174,7 @@ draw_OrangeANDGreenzone:
          PRINT 186
          
          cmp dh,20
-         je draw_wall4_OrangeANDGreenzone ; a changer
+         je draw_wall4_OrangeANDGreenzone
          loop draw_wall3_OrangeANDGreenzone_p2
                 
                 
@@ -506,7 +506,7 @@ draw_OrangeANDGreenzone:
        call SetCursor
         PRINT 186 
         
-        ;petit mur du bas
+        
         draw_wall6_OrangeANDGreenzone:
           mov dl,38
           mov dh,22
@@ -1031,14 +1031,10 @@ draw_OrangeANDGreenzone:
           
         
      draw_object_redzone:
-        ;object(1stkey RED) spawn draw 
             draw_redkey:
-            ;cursor pos:
             mov dl,13 
             mov dh,21
-            mov bh, 0
-            mov ah, 0x2
-            int 0x10
+            call SetCursor
             mov cx, 1 ; nb char
             mov bh, 0
             mov bl, 0x40 ; color
@@ -1053,13 +1049,9 @@ draw_OrangeANDGreenzone:
              
     
             draw_reddoor:
-                ;object(door) spawn draw 
-                ;cursor pos:
                 mov dl,14 
                 mov dh,17
-                mov bh, 0
-                mov ah, 0x2
-                int 0x10
+                call SetCursor
                 mov cx, 1 ; nb char
                 mov bh, 0
                 mov bl, 0x40 ; color
@@ -1074,13 +1066,9 @@ draw_OrangeANDGreenzone:
        draw_object_purplezone:
    
             draw_purpledoor:
-                ;object(door) spawn draw 
-                ;cursor pos:
                 mov dl,15 
                 mov dh,10
-                mov bh, 0
-                mov ah, 0x2
-                int 0x10
+                call SetCursor
                 mov cx, 1 ; nb char
                 mov bh, 0
                 mov bl, 0x50 ; color
@@ -1096,13 +1084,9 @@ draw_OrangeANDGreenzone:
          draw_object_yellowzone:
    
             draw_yellowdoor:
-                ;object(door) spawn draw 
-                ;cursor pos:
                 mov dl,24 
                 mov dh,6
-                mov bh, 0
-                mov ah, 0x2
-                int 0x10
+                call SetCursor
                 mov cx, 1 ; nb char
                 mov bh, 0
                 mov bl, 0x30 ; color
@@ -1117,13 +1101,9 @@ draw_OrangeANDGreenzone:
           draw_object_OrangeANDGreenzone:
    
             draw_Orangedoor:
-                ;object(door) spawn draw 
-                ;cursor pos:
                 mov dl,51 
                 mov dh,19
-                mov bh, 0
-                mov ah, 0x2
-                int 0x10
+                call SetCursor
                 mov cx, 1 ; nb char
                 mov bh, 0
                 mov bl, 0x60 ; color
@@ -1137,13 +1117,9 @@ draw_OrangeANDGreenzone:
                 
                 
             draw_Greendoor:
-                ;object(door) spawn draw 
-                ;cursor pos:
                 mov dl,60 
                 mov dh,2
-                mov bh, 0
-                mov ah, 0x2
-                int 0x10
+                call SetCursor
                 mov cx, 1 ; nb char
                 mov bh, 0
                 mov bl, 0x20 ; color
@@ -1239,8 +1215,8 @@ draw_OrangeANDGreenzone:
           draw_hero:
             
 
-              mov dl, 2 ; column
-              mov dh, 21 ; row 
+              mov dl, 2
+              mov dh, 21
 
               call SetCursor
         

@@ -1,4 +1,4 @@
-
+;draw 13 eggs in the maze:
 mov dl,7
 mov dh,4
 call SetCursor
