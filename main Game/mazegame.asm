@@ -28,7 +28,7 @@ wait_keypress:
     je start_maze_game 
 
     
-    cmp al, 27 ;if "ecs":
+    cmp al, 27 ;if "esc":
     je give_up
      
     jmp wait_keypress
@@ -50,14 +50,14 @@ start_maze_game:
 init_var:
     ColliderDetected DB 'n';switched to 'y' if a collision is detected
     
-    IsGreen DB 'n';switched to 'y' if the green key is recover 
+    IsGreen DB 'n';switched to 'y' if the green key is collected
     
         
-    EE_eggs Dw 0 ;number of egg pick up
+    EE_eggs Dw 0 ;number of egg picked up
    
     Event_key Dw 1 ;avoid key event duplication
     whichKey Dw 0;door opening variable / if player has the right key 
-    MovesCount Dw 0;store how many moves that you make before finishing the maze
+    MovesCount Dw 0;stores how many moves that you make before finishing the maze
     
     ;stores the player's last position
     DhPlayer Db 1
@@ -77,7 +77,7 @@ main:
        
     
     inside_loop:
-    ;set ColliderDetected to his default state:
+    ;set ColliderDetected to its default state:
     mov ColliderDetected,'n' 
     
      ;wait for a key to be pressed:
@@ -118,7 +118,7 @@ main:
     je Right
     
     ;other
-    cmp al, 27 ;if "ecs":
+    cmp al, 27 ;if "esc":
     je give_up
     
     jmp main
@@ -131,7 +131,7 @@ main:
         call TestColid
         sub dl,2
         call SetCursor
-        ;test if a collider is detected:
+        ;test if a collision is detected:
         cmp ColliderDetected,'y'
         je main
         ;if not move the player to his new location:
@@ -163,9 +163,9 @@ main:
       call TestColid
       add dl,1
       call SetCursor
-      ;moves the rotation of the player's head: 
+      ;moves the rotates player's head: 
       PRINT '(:' 
-      ;test if a collider is detected:
+      ;test if a collision is detected:
       cmp ColliderDetected,'y'
       je main
       ;if not move the player to his new location:
@@ -200,7 +200,7 @@ main:
       sub dl,1      
       add dh,1
       call SetCursor
-      ;test if a collider is detected:
+      ;test if a collision is detected:
       cmp ColliderDetected,'y'
       je main
       ;if not move the player to his new location:
@@ -235,7 +235,7 @@ main:
       sub dl,1  
       sub dh,1
       call SetCursor
-      ;test if a collider is detected:
+      ;test if a collision is detected:
       cmp ColliderDetected,'y'
       je main
       ;if not move the player to his new location:
@@ -267,7 +267,7 @@ main:
        int 10h
        ret
    TestColid:
-   ;test if next charactere is a "blacklist" one:
+   ;tests if next character is a "blacklist" one:
        mov ah, 08h
        int 10h
        
@@ -344,7 +344,7 @@ main:
             mov dh,6
             call SetCursor
           
-            ;message to prevent getting the object:  
+            ;message to let you know you collected an object:  
             PRINT 'You found'
             mov dl,62
             mov dh,7
@@ -368,7 +368,7 @@ main:
             mov dh,6
             call SetCursor
           
-            ;Display dialogue message from the EE_guy :   
+            ;Display dialog from the EE_guy :   
             PRINT 'Hello can u';lack of spelling voluntary:
             mov dl,62
             mov dh,7
@@ -382,7 +382,7 @@ main:
      
    
     keytest:
-    ;look at what key we have:
+    ;checks what key we have:
             nokeytest:;look at first if you have a key
             cmp whichKey,0
             je display_nokeymessage
@@ -427,7 +427,6 @@ main:
                     jmp havenokey           
                     
                     GreenOrOrange:
-;if the key that we picked up was in the collum number 60 , that's the green key:
                     cmp dl,60
                     je isthatgreen
                     jmp opendoor4
@@ -479,7 +478,7 @@ main:
             mov dh,6
             call SetCursor
           
-            ;message to prevent getting the object:  
+            ;message to let you know you collected an object:  
             PRINT 'You have found'
             mov dl,62
             mov dh,7
@@ -503,7 +502,7 @@ main:
             mov dh,6
             call SetCursor
           
-            ;message to prevent getting the object:  
+            ;message to let you know you collected an object:  
             PRINT 'You have found'
             mov dl,62
             mov dh,7
@@ -527,7 +526,7 @@ main:
             mov dh,6
             call SetCursor
           
-            ;message to prevent getting the object:  
+            ;message to let you know you collected an object:  
             PRINT 'You have found'
             mov dl,62
             mov dh,7
@@ -551,7 +550,7 @@ main:
             mov dh,6
             call SetCursor
           
-            ;message to prevent getting the object:  
+            ;message to let you know you collected an object:  
             PRINT 'You have found'
             mov dl,62
             mov dh,7
@@ -574,7 +573,7 @@ main:
             mov dh,6
             call SetCursor
           
-            ;message to prevent getting the object:  
+            ;message to let you know you collected an object: 
             PRINT 'You have found'
             mov dl,62
             mov dh,7
@@ -583,7 +582,7 @@ main:
             PRINT ' a Greenkey' 
             ;store this information in a variable:
             mov whichKey,5
-            mov IsGreen,'y';indicates that the green key has been picking up
+            mov IsGreen,'y';indicates that the green key has been picked up
             call UpdateInv ;to update the inventory:
            ;return the cursor to its original position:
             call Load_PlayerLoc
@@ -593,7 +592,7 @@ main:
                     
         display_nokeymessage:
         
-;prevents the opening of the door because the player does not have the correct key or has not:
+;prevents the opening of the door if the player does not have the right key:
             call CollidYes
             call Save_PlayerLoc
             call clear_oldmessage
@@ -813,7 +812,7 @@ main:
           PRINT 'Green door'
          
                     
-          ;when the last door is opened , you won:
+          ;when the last door is opened , you win:
           jmp win
           
           
@@ -821,7 +820,7 @@ main:
   
   
    give_up:
-   ;display looser's screen:
+   ;display loss screen:
         call CLEAR_SCREEN
         call set_background_color
         mov ah,09h
@@ -846,7 +845,7 @@ main:
         jmp theEND
    
    win:
-   ;display winning screen:
+   ;display win screen:
         call CLEAR_SCREEN
         call set_background_color
         mov ah,09h
@@ -939,7 +938,7 @@ main:
              PRINT 'times'
             
             
-            ;test les key pressed:
+            ;wait for a key to be pressed:
             mov ah, 0h
             int 16h                                              
     
@@ -951,7 +950,7 @@ main:
     
    
    clear_oldmessage proc near
-    ;delete the old dialogue:
+    ;delete the old dialog:
         mov dl,62
         mov dh,6 
         mov ah, 02h
@@ -1166,7 +1165,7 @@ dw '                                              ',0ah,0dh
 dw '                                              ',0ah,0dh
 dw '                                              ',0ah,0dh
 dw '            |---------------------------||---------------------------|  ',0ah,0dh
-dw '            | ^ Press "enter" to play ^ || ^   Press "ecs" to quit ^ | ',0ah,0dh
+dw '            | ^ Press "enter" to play ^ || ^   Press "esc" to quit ^ | ',0ah,0dh
 dw '            |___________________________||___________________________|',0ah,0dh
 
 dw '$',0ah,0dh 
